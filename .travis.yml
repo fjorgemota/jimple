@@ -4,3 +4,5 @@ node_js:
   - "4.1.0"
   - "iojs"
   - "node"
+notifications:
+  email: false
