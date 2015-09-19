@@ -1,0 +1,34 @@
+{
+  "name": "jimple",
+  "version": "1.0.0",
+  "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
+  "main": "src/Jimple.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/fjorgemota/jimple.git"
+  },
+  "keywords": [
+    "jimple",
+    "pimple",
+    "dependency",
+    "injection",
+    "di",
+    "container"
+  ],
+  "author": "Fernando Jorge Mota <f.j.mota13@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fjorgemota/jimple/issues"
+  },
+  "homepage": "https://github.com/fjorgemota/jimple#readme",
+  "devDependencies": {
+    "mocha": "^2.3.2",
+    "expect.js": "^0.3.1"
+  },
+  "engines" : {
+    "node" : ">=4.0.0"
+  }
+}
