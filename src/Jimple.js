@@ -2,7 +2,7 @@
 function isFunction(fn) {
     return Object.prototype.toString.call(fn) == "[object Function]";
 }
-module.exports = class Jimple { 
+class Jimple { 
     constructor (values) {
         this.items = {};
         this.instances = new Map();
@@ -96,3 +96,4 @@ module.exports = class Jimple {
          return this.items[key];
      }
 }
+module.exports = Jimple
