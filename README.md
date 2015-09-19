@@ -1,5 +1,7 @@
 # Jimple
 
+[![Build Status](https://travis-ci.org/fjorgemota/jimple.svg)](https://travis-ci.org/fjorgemota/jimple)
+
 This project is a "port" of Pimple Dependency Injection container to NodeJS using features provided by ES6.
 
 The code of this project may not be in his state-of-art, but seems to be a great start to learn a few more about ES6 and it's support to classes and Map/Set, that Node 4.0.0 implemented right away.
