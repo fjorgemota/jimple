@@ -19,6 +19,9 @@ class Jimple {
         }
     }
     get (key) {
+        if (!this.has(key)) {
+             throw `Identifier '${key}' is not defined.`;
+        }
         var item = this.items[key];
         var obj;
         if (isFunction(item)) {
@@ -48,7 +51,6 @@ class Jimple {
              throw "Service definition is not a Closure or invokable object";
          }
          this.factories.add(fn);
-         
          return fn;
     }
     protect (fn) {
@@ -69,11 +71,11 @@ class Jimple {
     }
     extend (key, fn) {
          if (!this.has(key)) {
-             throw `Identifier ${key} is not defined.`;
+             throw `Identifier '${key}' is not defined.`;
          }
          var originalItem = this.items[key]; 
          if (!isFunction(originalItem)) {
-             throw `Identifier ${key} does not contain an object definition`;
+             throw `Identifier '${key}' does not contain an object definition`;
          }
          if (!isFunction(fn)) {
              throw "Extension service definition is not a invokable object.";
@@ -91,7 +93,7 @@ class Jimple {
      }
      raw (key) {
          if (!this.has(key)) {
-            throw `Identifier ${key} is not defined`;
+            throw `Identifier '${key}' is not defined`;
          }
          return this.items[key];
      }

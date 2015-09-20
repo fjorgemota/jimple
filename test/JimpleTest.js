@@ -33,6 +33,12 @@ describe("Jimple", function() {
         });
     });
     describe("#get()", function() {
+        it("should throw an exception when getting non existent key", function() {
+            var jimple = new Jimple();
+            expect(function() {
+                jimple.get("non-existent-key");
+            }).to.throwException();
+        });
         it("should support getting parameters", function() {
             var jimple = new Jimple({"age":19,"name":"xpto"});
             expect(jimple.get("age")).to.be(19);
@@ -42,7 +48,7 @@ describe("Jimple", function() {
             var jimple = new Jimple({"age":function(){return 19}});
             expect(jimple.get("age")).to.be(19);
         });
-    it("should cache values of the services", function() {
+        it("should cache values of the services", function() {
             var jimple = new Jimple({"symbol":Symbol});
             expect(jimple.get("symbol")).to.be(jimple.get("symbol"));
         });
@@ -80,6 +86,12 @@ describe("Jimple", function() {
         });  
     });
     describe("#raw()", function() {
+        it("should throw an exception when getting non existent key", function() {
+            var jimple = new Jimple();
+            expect(function() {
+                jimple.raw("non-existent-key");
+            }).to.throwException();
+        });
         it("should return raw parameters", function() {
             var jimple = new Jimple();
             jimple.set("age", 19);
