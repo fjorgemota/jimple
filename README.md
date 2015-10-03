@@ -1,6 +1,9 @@
 # Jimple
 
 [![Build Status](https://travis-ci.org/fjorgemota/jimple.svg)](https://travis-ci.org/fjorgemota/jimple)
+[![npm](https://img.shields.io/npm/v/jimple.svg)](http://npmjs.org/package/jimple/)
+[![npm](https://img.shields.io/npm/dt/jimple.svg)](http://npmjs.org/package/jimple/)
+[![node](https://img.shields.io/node/v/jimple.svg)](http://npmjs.org/package/jimple)
 
 This project is a "port" of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) to NodeJS using features provided by ES6.
 
