@@ -1,6 +1,6 @@
 "use strict";
 function isFunction(fn) {
-    return Object.prototype.toString.call(fn) == "[object Function]";
+    return Object.prototype.toString.call(fn) === "[object Function]";
 }
 class Jimple { 
     constructor (values) {
