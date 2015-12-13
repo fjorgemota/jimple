@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
   "main": "src/Jimple.js",
+  "tonicExample": "var Jimple = require('jimple');",
   "scripts": {
     "test": "mocha -R spec"
   },
