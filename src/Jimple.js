@@ -1,4 +1,5 @@
 "use strict";
+
 function isFunction(fn) {
     return Object.prototype.toString.call(fn) === "[object Function]";
 }
@@ -42,6 +43,11 @@ class Jimple {
     }
     set (key, val) {
          this.items[key] = val;
+    }
+    alias (alias, key) {
+         this.set(alias, function (c) {
+             return c.get(key);
+         });
     }
     has (key) {
          return this.items.hasOwnProperty(key);

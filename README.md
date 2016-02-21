@@ -97,6 +97,36 @@ container.set('random_func', container.protect(function () {
 }));
 ```
 
+## Aliasing services or parameters
+
+Aliasing a service lets you use an alias instead of service/param key when defining dependencies. With `alias()` you can manipulate which dependencies to inject at the end just by setting proper alias
+
+```js
+container.set('user_repository.mysql', function (c) {
+    return new MySQLUserRepository();
+});
+
+container.set('user_repository.file', function (c) {
+    return new FileUserRepository();
+});
+
+container.set('my_service', function (c) {
+    return new MyService(c.get('user_repository'));
+});
+```
+
+depending on context you may use either file based repository (for example for testing)
+
+```js
+container.alias('user_repository', 'user_repository.file')
+```
+
+or mysql based repository
+
+```js
+container.alias('user_repository', 'user_repository.mysql')
+```
+
 ## Modifying Services after Definition
 
 In some cases you may want to modify a service definition after it has been defined. You can use the `extend()` method to define additional code to be run on your service just after it is created:
