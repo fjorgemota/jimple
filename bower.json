@@ -1,0 +1,31 @@
+{
+  "name": "jimple",
+  "version": "1.1.1",
+  "homepage": "https://github.com/fjorgemota/jimple",
+  "authors": [
+    "Fernando Jorge Mota <contato@fjorgemota.com>"
+  ],
+  "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
+  "main": "dist/Jimple.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "jimple",
+    "pimple",
+    "dependency",
+    "injection",
+    "di",
+    "container"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
