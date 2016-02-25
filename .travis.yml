@@ -1,12 +1,26 @@
 language: node_js
 node_js:
-  - "4.0"
-  - "4.1"
-  - "4.2"
-  - "5.0"
-  - "5.1"
-  - "5.2"
-  - "iojs"
-  - "node"
+- '4.0'
+- '4.1'
+- '4.2'
+- '4.3'
+- '5.0'
+- '5.1'
+- '5.2'
+- '5.3'
+- '5.4'
+- '5.5'
+- '5.6'
+- '5.7'
+- iojs
+- node
 notifications:
   email: false
+deploy:
+  provider: npm
+  email: contato@fjorgemota.com
+  api_key:
+    secure: EK/C5o7ept/CF3ZKuXxaBVBwGuoEcg2vO15j2MPdAj8IepasvgJyZ0QfTu54yxUnrsSUj3aJbvEISgG/14Y8+9d5XHps12WFUCVqgIfbiGVYmm5d5ZI/WERKkVaSCnm69O0te8kYzml+O7kh1odLz3NqG0d2wTgZzw/gu4GEWAG30bh6RoNjfBxw6O1NlkGHbKMzSXCGjLi5npshCY6MgqMsjkC3qF/WagTQu8NUOAUhTL/vYV4yqshp0ipPsvxI6bFfIY9oQIjtRqF1L5Kz+eI+1spKfTqZLasLSnYNgMPB9R7ZBV9ZRB3yCMPx7wgAeqP6Gg73ENwl9ujpFxkc0g/d3Ux9BcX4f+whfd1fTFVdkaTUW68OnyGdHkj5kqnlOa7QBM7uFAhIBHTvkP4dlRmvJGNRX4Ci2dRvrCajKFdDgBY7E4yE908WzleRgamnttBRGMkAuYqMH2emdncS4gYaEgpPUtMcFR8KEBWycUBQ86IhFd/xHU39u2JBqaJd6qdGfokx7Od50e3BEKxCcqPFJRQzu2Vr+vgQp5d5S1YlDzFts2Rtw4cpZfHkvUxCnsOL9m5eJYKTfxT5sHYQHsLT0+/KQEqqdHmWvQn0L8Le22qMbWVPlC0zbw4zA+pHWemX1ro9Kbt3MWUs2D3Z4B7odbVCASCqeI6QynZ75+U=
+  on:
+    tags: true
+    repo: fjorgemota/jimple
