@@ -24,3 +24,5 @@ deploy:
   on:
     tags: true
     repo: fjorgemota/jimple
+addons:
+  firefox: latest
