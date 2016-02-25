@@ -43,6 +43,7 @@
     "karma-mocha": "^0.2.2",
     "karma-spec-reporter": "0.0.24",
     "mocha": "^2.3.2",
+    "phantomjs-prebuilt": "^2.1.4",
     "watchify": "^3.7.0"
   },
   "engines": {
