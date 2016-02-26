@@ -89,6 +89,7 @@ module.exports = function(config) {
 
   if (process.env.TRAVIS) {
     configuration.browsers[0] = "Chrome_travis_ci";
+    configuration.concurrency = 1;
   }
   config.set(configuration);
 }
