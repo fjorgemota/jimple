@@ -9,7 +9,7 @@ module.exports = function(config) {
     plugins.splice(index, 1); // Will remove umd in babel because we're running on Browserify
   }
   babelrc['plugins'] = plugins;
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -75,9 +75,20 @@ module.exports = function(config) {
         debug: true,
         require: "babel-polyfill"
     },
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
 
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
+  });
+
+  if (process.env.TRAVIS) {
+    configuration.browsers[0] = "Chrome_travis_ci";
+  }
+  config.set(configuration);
 }
