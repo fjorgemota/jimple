@@ -14,6 +14,9 @@ node_js:
 - '5.7'
 - iojs
 - node
+env:
+- TEST_IN=browser
+- TEST_IN=node
 notifications:
   email: false
 deploy:
@@ -24,6 +27,7 @@ deploy:
   on:
     tags: true
     repo: fjorgemota/jimple
+script: "npm run-script test-in-$TEST_IN"
 addons:
   firefox: latest
   apt: 
