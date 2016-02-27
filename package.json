@@ -39,13 +39,13 @@
     "expect.js": "^0.3.1",
     "karma": "^0.13.21",
     "karma-browserify": "^5.0.2",
+    "karma-chrome-launcher": "^0.2.2",
     "karma-firefox-launcher": "^0.1.7",
     "karma-mocha": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.24",
-    "mocha": "^2.3.2",
+    "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.4",
-    "karma-chrome-launcher": "^0.2.2",
     "watchify": "^3.7.0"
   },
   "engines": {
