@@ -85,6 +85,21 @@ describe("Jimple", function() {
             expect(jimple.get("name")).to.be("xpto");
         });  
     });
+    describe("#alias()", function() {
+        it("should make a service/parameter accessible under different key", function() {
+            var jimple = new Jimple();
+            jimple.set("age.integer", function (c) {
+                return 19;
+            });
+            jimple.set("age.string", function (c) {
+                return "nineteen";
+            });
+            jimple.alias("age", "age.integer");
+            expect(jimple.get("age")).to.be(19);
+            jimple.alias("age", "age.string");
+            expect(jimple.get("age")).to.be("nineteen");
+        });
+    });
     describe("#raw()", function() {
         it("should throw an exception when getting non existent key", function() {
             var jimple = new Jimple();
