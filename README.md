@@ -42,20 +42,25 @@ var container = new Jimple();
 
 In the browser, you can load Jimple using various ways:
 
-- AMD:
-    ```js
-      define(["jimple"], function(Jimple) {
-          // Code using Jimple here..
-      });
-    ```
+- AMD
+
+```js
+    define(["jimple"], function(Jimple) {
+        // Code using Jimple here..
+    });
+```
+
 - CommonJS/Browserify:
-    ```js
-      var Jimple = require("jimple");
-    ```
+
+```js
+    var Jimple = require("jimple");
+```
+
 - Script tag:
-    ```html
-      <script language="javascript" src="path/to/Jimple.js"></script>
-    ```
+
+```html
+    <script language="javascript" src="path/to/Jimple.js"></script>
+```
 
 Again, it's important to note that Jimple needs of a polyfill to Map and Set classes - which are not supported by all the latest browsers actually - to do so, you can choice between some options, like [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) for example.
 
