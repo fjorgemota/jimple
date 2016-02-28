@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "homepage": "https://github.com/fjorgemota/jimple",
   "authors": [
     "Fernando Jorge Mota <contato@fjorgemota.com>"
@@ -18,7 +18,10 @@
     "dependency",
     "injection",
     "di",
-    "container"
+    "container",
+    "dependency injection", 
+    "services",
+    "parameters" 
   ],
   "license": "MIT",
   "ignore": [
