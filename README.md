@@ -228,16 +228,21 @@ var container = new Jimple();
 In the browser, you can load Jimple using various ways:
 
 - AMD:
+
     ```js
       define(["jimple"], function(Jimple) {
           // Code using Jimple here..
       });
     ```
+
 - CommonJS/Browserify:
+
     ```js
       var Jimple = require("jimple");
     ```
+
 - Script tag:
+
     ```html
       <script language="javascript" src="path/to/Jimple.js"></script>
     ```
