@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
   "main": "src/Jimple.js",
   "tonicExample": "var Jimple = require('jimple');",
