@@ -14,6 +14,9 @@ node_js:
 - '5.7'
 - iojs
 - node
+cache:
+  directories:
+  - node_modules
 notifications:
   email: false
 deploy:
