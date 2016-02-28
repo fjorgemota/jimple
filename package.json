@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
   "main": "src/Jimple.js",
   "tonicExample": "var Jimple = require('jimple');",
@@ -23,7 +23,9 @@
     "container",
     "dependency injection", 
     "services",
-    "parameters"
+    "parameters",
+    "inversion of control",
+    "IoC"
   ],
   "author": "Fernando Jorge Mota <contato@fjorgemota.com>",
   "license": "MIT",
