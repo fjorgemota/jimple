@@ -1,7 +1,7 @@
 {
   "name": "jimple",
-  "version": "1.2.2",
-  "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
+  "version": "1.3.0",
+  "description": "A port of Pimple Dependency Injection container to NodeJS and to the browser developed in ES6",
   "main": "src/Jimple.js",
   "tonicExampleFilename": "tonicExample.js",
   "scripts": {
