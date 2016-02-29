@@ -19,15 +19,17 @@ Good projects have good features. And because this here's the list of features t
 - Define services;
 - Define factories;
 - Define parameters easily;
-- Defining services/parameters/factories from another files (because you should be able to split your configuration easily);
+- Defining services/parameters/factories from another files - because you should be able to split your configuration easily;
 - Simple API;
 - Runs on NodeJS and on browser;
 - Allows extending services easily;
 - Allow to get the raw service creator easily;
 - Pure Javascript;
+- Stable API;
 - No module loader integrated - You can use **any** module loader you want;
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
-- Fully Documented; 
+- Fully Documented;
+- I already said that it have a really Simple API? :)
 
 ### Testing without installing anything
 
