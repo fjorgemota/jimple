@@ -3,7 +3,7 @@
   "version": "1.2.2",
   "description": "A port of Pimple Dependency Injection container to NodeJS using ES6",
   "main": "src/Jimple.js",
-  "tonicExample": "var Jimple = require('jimple');",
+  "tonicExampleFilename": "tonicExample.js",
   "scripts": {
     "build-for-browser": "babel -d dist src/",
     "test-in-browser": "karma start karma.config.js",
