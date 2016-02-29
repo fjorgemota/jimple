@@ -25,10 +25,13 @@ Good projects have good features. And because this here's the list of features t
 - Allows extending services easily;
 - Allow to get the raw service creator easily;
 - Pure Javascript;
+- No module loader integrated - You can use **any** module loader you want;
+- [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
+- Fully Documented; 
 
 ### Testing without installing anything
 
-If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your mahineby using [Tonic](https://tonicdev.com/npm/jimple). Give it a try. :)
+If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your machine by using [Tonic](https://tonicdev.com/npm/jimple). Give it a try. :)
 
 ## Installation
 
@@ -204,6 +207,59 @@ After creating a object with that structure, you can register it in the containe
 container.register(provider);
 ```
 
+### Extending a container from a file (NodeJS/Browserify only)
+
+If you want to split your container's configuration (so each file is more..simple and specific), you can create multiple files like that:
+
+**file1.js:**
+
+```js
+module.exports.register = function(container) {
+    // Define your services and parameters here
+}
+```
+
+To load the package, you can do something like:
+
+```js
+container.register(require("./file1"))
+```
+
+You can, inclusive, create **directories** with container's configuration, by doing something like that:
+
+**xpto/file1.js:**
+
+```js
+module.exports.register = function(container) {
+    // Define your services and parameters here
+}
+```
+
+**xpto/file2.js:**
+
+```js
+module.exports.register = function(container) {
+    // Define your services and parameters here
+}
+```
+
+**xpto/index.js:**
+
+```js
+module.exports.register = function(container) {
+    container.register(require("./file1"));
+    container.register(require("./file2"));   
+}
+```
+
+And, finally, in some file creating the container:
+
+```js
+container.register(require("./xpto"));
+```
+
+Note that the **index.js** file is loaded first on **xpto** directory, and that **index.js** file loads the files **file1.js** and **file2.js** present on that directory. You can do that for any number of directories. :)
+
 ## Fetching the Service Creation Function
 
 When you access an object, Jimple automatically calls the anonymous function that you defined, which creates the service object for you. If you want to get raw access to this function, but don't want to `protect()` that service, you can use the `raw()` method to access the function directly:
@@ -215,3 +271,19 @@ container.set('session', function (c) {
 
 var sessionFunction = container.raw('session');
 ```
+
+## Last, but not least important: Customization (NodeJS only)
+
+Do you wanna to customize Jimple's functionally? You can! Just extend it using ES6's class syntax:
+
+```js
+var Jimple = require("jimple");
+
+class ABigContainer extends Jimple {
+    // Overwrite any of Jimple's method here, or add new methods
+}
+
+var container = new ABigContainer(); 
+```
+
+Good customization. :)
