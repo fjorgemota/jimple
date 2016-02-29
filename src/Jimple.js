@@ -2,28 +2,34 @@
 function isFunction(fn) {
     return Object.prototype.toString.call(fn) === "[object Function]";
 }
+function isPlainObject(value) {
+    if (Object.prototype.toString.call(value) !== '[object Object]') {
+        return false;
+    } else {
+        let prototype = Object.getPrototypeOf(value);
+        return prototype === null || prototype === Object.prototype;
+    }
+}
+function checkDefined(container, key) {
+    if (!container.has(key)) {
+         throw new Error(`Identifier '${key}' is not defined.`);
+    }
+}
 class Jimple { 
     constructor (values) {
         this.items = {};
         this.instances = new Map();
         this.factories = new Set();
         this.protected = new Set();
-        var stringified = JSON.stringify(values);
-        if (!stringified || (stringified[0] !== "{" && stringified[stringified.length-1] !== "}")) {
-            values = {};
-        }
-        for (var key in values) {
-            if (values.hasOwnProperty(key)) { 
-                this.set(key, values[key]);
-            }
-        }
+        values = isPlainObject(values) ? values : {};
+        Object.keys(values).forEach(function(key) {
+            this.set(key, values[key]);
+        }, this);
     }
     get (key) {
-        if (!this.has(key)) {
-             throw `Identifier '${key}' is not defined.`;
-        }
-        var item = this.items[key];
-        var obj;
+        checkDefined(this, key)
+        let item = this.items[key];
+        let obj;
         if (isFunction(item)) {
             if (this.protected.has(item)) { 
                 obj = item;
@@ -48,37 +54,29 @@ class Jimple {
     }
     factory (fn) {
          if (!isFunction(fn)) {
-             throw "Service definition is not a Closure or invokable object";
+             throw new Error("Service definition is not a Closure or invokable object");
          }
          this.factories.add(fn);
          return fn;
     }
     protect (fn) {
          if (!isFunction(fn)) {
-             throw "Callable is not a Closure or invokable object";
+             throw new Error("Callable is not a Closure or invokable object");
          }
          this.protected.add(fn);
          return fn;
     }
     keys () {
-         var results = [];
-         for (var key in this.items) {
-             if (this.items.hasOwnProperty(key)) {
-                 results.push(key);
-             }
-         }
-         return results;
+         return Object.keys(this.items);
     }
     extend (key, fn) {
-         if (!this.has(key)) {
-             throw `Identifier '${key}' is not defined.`;
-         }
-         var originalItem = this.items[key]; 
+         checkDefined(this, key)
+         let originalItem = this.items[key]; 
          if (!isFunction(originalItem)) {
-             throw `Identifier '${key}' does not contain an object definition`;
+             throw new Error(`Identifier '${key}' does not contain an object definition`);
          }
          if (!isFunction(fn)) {
-             throw "Extension service definition is not a invokable object.";
+             throw new Error(`The 'new' service definition for '${key}' is not a invokable object.`);
          }
          this.items[key] = function(app) {
              return fn(originalItem(app), app);
@@ -92,9 +90,7 @@ class Jimple {
          provider.register(this);
      }
      raw (key) {
-         if (!this.has(key)) {
-            throw `Identifier '${key}' is not defined`;
-         }
+         checkDefined(this, key)
          return this.items[key];
      }
 }
