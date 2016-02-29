@@ -26,7 +26,6 @@ Good projects have good features. And because this here's the list of features t
 - Allow to get the raw service creator easily;
 - Pure Javascript;
 
-
 ### Testing without installing anything
 
 If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your mahineby using [Tonic](https://tonicdev.com/npm/jimple). Give it a try. :)
@@ -134,7 +133,7 @@ Now, each time you call `container.get('session')`, a new instance of `Session` 
 Defining a parameter allows to ease the configuration of your container from the outside and to store global values. In Jimple, parameters are defined as anything that it's not a function:
 
 ```js
-// define some parameters
+// define a parameter called cookie_name
 container.set('cookie_name', 'SESSION_ID');
 ```
 
@@ -147,6 +146,15 @@ container.set('session_storage', function (c) {
 ```
 
 You can now easily change the cookie name by overriding the `cookie_name` parameter instead of redefining the service definition.
+
+### Defining parameters based on environment variables (NodeJS only)
+
+Do you wanna do define parameters in the container based on environment variables? It's okay! You can define it easily like that:
+
+```js
+//define parameter based on environment variable
+container.set('cookie_name', process.env.COOKIE_NAME);
+```
 
 ## Protecting parameters
 
