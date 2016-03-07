@@ -12,8 +12,15 @@ function isPlainObject(value) {
 }
 function checkDefined(container, key) {
     if (!container.has(key)) {
-         throw new Error(`Identifier '${key}' is not defined.`);
+        throw new Error(`Identifier '${key}' is not defined.`);
     }
+}
+function addFunctionTo(set, fn) {
+    if (!isFunction(fn)) {
+        throw new Error("Service definition is not a Closure or invokable object");
+    }
+    set.add(fn);
+    return fn;
 }
 class Jimple { 
     constructor (values) {
@@ -38,7 +45,7 @@ class Jimple {
             } else {
                 obj = item(this);
                 if (!this.factories.has(item)) { 
-                    this.instances.set(item, obj);
+                     this.instances.set(item, obj);
                 }
             }
          } else {
@@ -53,18 +60,10 @@ class Jimple {
          return this.items.hasOwnProperty(key);
     }
     factory (fn) {
-         if (!isFunction(fn)) {
-             throw new Error("Service definition is not a Closure or invokable object");
-         }
-         this.factories.add(fn);
-         return fn;
+        return addFunctionTo(this.factories, fn);
     }
     protect (fn) {
-         if (!isFunction(fn)) {
-             throw new Error("Callable is not a Closure or invokable object");
-         }
-         this.protected.add(fn);
-         return fn;
+        return addFunctionTo(this.protected, fn);
     }
     keys () {
          return Object.keys(this.items);
