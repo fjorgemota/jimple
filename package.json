@@ -7,8 +7,8 @@
   "scripts": {
     "build-for-browser": "babel -d dist src/",
     "test-in-browser": "karma start karma.config.js",
-    "test-in-node": "mocha -R spec",
-    "test": "npm run-script test-in-node && npm run-script test-in-browser"
+    "test-in-node": "istanbul cover _mocha -- -R spec",
+    "test": "npm run test-in-node && npm run-script test-in-browser"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "expect.js": "^0.3.1",
+    "istanbul": "^0.4.2",
     "karma": "^0.13.21",
     "karma-browserify": "^5.0.2",
     "karma-chrome-launcher": "^0.2.2",
