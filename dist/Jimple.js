@@ -53,6 +53,13 @@
             throw new Error("Identifier '" + key + "' is not defined.");
         }
     }
+    function addFunctionTo(set, fn) {
+        if (!isFunction(fn)) {
+            throw new Error("Service definition is not a Closure or invokable object");
+        }
+        set.add(fn);
+        return fn;
+    }
 
     var Jimple = function () {
         function Jimple(values) {
@@ -103,20 +110,12 @@
         }, {
             key: "factory",
             value: function factory(fn) {
-                if (!isFunction(fn)) {
-                    throw new Error("Service definition is not a Closure or invokable object");
-                }
-                this.factories.add(fn);
-                return fn;
+                return addFunctionTo(this.factories, fn);
             }
         }, {
             key: "protect",
             value: function protect(fn) {
-                if (!isFunction(fn)) {
-                    throw new Error("Callable is not a Closure or invokable object");
-                }
-                this.protected.add(fn);
-                return fn;
+                return addFunctionTo(this.protected, fn);
             }
         }, {
             key: "keys",
