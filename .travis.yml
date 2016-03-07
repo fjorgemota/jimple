@@ -44,3 +44,4 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 after_script:
   - npm run publish-codeclimate
+  - npm run publish-codacy
