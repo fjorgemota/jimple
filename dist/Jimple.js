@@ -80,7 +80,7 @@
             value: function get(key) {
                 checkDefined(this, key);
                 var item = this.items[key];
-                var obj = undefined;
+                var obj = void 0;
                 if (isFunction(item)) {
                     if (this.protected.has(item)) {
                         obj = item;
