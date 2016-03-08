@@ -29,6 +29,7 @@ Good projects have good features. And because this here's the list of features t
 - Allow to get the raw service creator easily;
 - Pure Javascript;
 - Stable API;
+- No dependencies (in node, in browser we need a shim); 
 - No module loader integrated - You can use **any** module loader you want;
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
 - Fully Documented;
@@ -54,7 +55,7 @@ If using NodeJS (this installs the package based purely on ES 6), or:
 
 If you want to use this package in the browser.
 
-Note that the bower package uses a version compiled by [Babel](http://babeljs.io). And because this you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other polyfill for Map and Set support) **before** the load of this package on the browser.
+Note that the bower package uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to Map and Set yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill) **before** the load of this package on the browser.
 
 ## Usage
 
@@ -163,6 +164,19 @@ Do you wanna do define parameters in the container based on environment variable
 //define parameter based on environment variable
 container.set('cookie_name', process.env.COOKIE_NAME);
 ```
+
+## Optional/Default parameters/services
+
+Not all services need all the services or parameters always, and you may do well with a default value for an parameter or service. In this case, you can do something like that:
+
+```js
+container.set('session_storage', function (c) {
+    return new SessionStorage(c.has('cookie_name') ? c.get('cookie_name') : 'COOKIE_ID');
+});
+```
+
+In this example, if the parameter `cookie_name` does not exist, the SessionStorage will be instantiated with the default `'COOKIE_ID'`, and this works for services too. :)
+
 
 ## Protecting parameters
 
