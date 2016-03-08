@@ -9,7 +9,7 @@
 [![Test Coverage](https://codeclimate.com/github/fjorgemota/jimple/badges/coverage.svg)](https://codeclimate.com/github/fjorgemota/jimple/coverage)
 [![Issue Count](https://codeclimate.com/github/fjorgemota/jimple/badges/issue_count.svg)](https://codeclimate.com/github/fjorgemota/jimple)
 
-This project is a "port" of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) to NodeJS and to browser using features provided by ES6.
+This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) to NodeJS and to browser using features provided by ES6.
 
 The code of this project may not be in his state-of-art, but seems to be a great start to learn a few more about ES6 and it's support to classes and Map/Set, that Node 4.0.0 implemented right away.
 
@@ -32,6 +32,7 @@ Good projects have good features. And because this here's the list of features t
 - No dependencies (in node, in browser we need a shim); 
 - No module loader integrated - You can use **any** module loader you want;
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
+- [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage); 
 - Fully Documented;
 - I already said that it have a really Simple API? :)
 
