@@ -114,22 +114,48 @@ describe("Jimple", function() {
             expect(jimple.raw("symbol")).to.be(Symbol);
          });
     });
+    describe("#factory()", function() {
+         it("should throw exception if parameter is passed in", function(){
+            var jimple = new Jimple();
+            expect(jimple.factory.bind(jimple)).withArgs(19).to.throwError();
+            expect(jimple.factory.bind(jimple)).withArgs("xpto").to.throwError();
+         });
+         it("should not throw exceptions if function is passed in", function() {
+            var jimple = new Jimple();
+            expect(jimple.factory.bind(jimple)).withArgs(Symbol).to.not.throwError();
+            expect(jimple.factory.bind(jimple)).withArgs(function() {
+                return "xpto"
+            }).to.not.throwError();
+         });
+         it("should return unmodified function", function() {
+            var jimple = new Jimple();
+            var fn = function() {
+                return "xpto"
+            };
+            expect(jimple.factory(Symbol)).to.be(Symbol);
+            expect(jimple.factory(fn)).to.be(fn);
+         });
+    });
     describe("#protect()", function() {
          it("should throw exception if parameter is passed in", function(){
             var jimple = new Jimple();
-            expect(jimple.protect).withArgs(19).to.throwError();
-            expect(jimple.protect).withArgs("xpto").to.throwError();
+            expect(jimple.protect.bind(jimple)).withArgs(19).to.throwError();
+            expect(jimple.protect.bind(jimple)).withArgs("xpto").to.throwError();
          });
-         it("should return raw services", function() {
+         it("should not throw exceptions if function is passed in", function() {
             var jimple = new Jimple();
-            jimple.set("symbol", jimple.protect(Symbol));
-            jimple.set("age", jimple.protect(function() { return 19 }));
-            expect(jimple.keys()).to.contain("symbol");
-            expect(jimple.keys()).to.contain("age");
-            expect(jimple.get("age")).to.be.a("function");
-            expect(jimple.get("age")()).to.be(19);
-            expect(jimple.get("symbol")).to.be(jimple.get("symbol"));
-            expect(jimple.get("symbol")).to.be(Symbol);
+            expect(jimple.protect.bind(jimple)).withArgs(Symbol).to.not.throwError();
+            expect(jimple.protect.bind(jimple)).withArgs(function() {
+                return "xpto"
+            }).to.not.throwError();
+         });
+         it("should return unmodified function", function() {
+            var jimple = new Jimple();
+            var fn = function() {
+                return "xpto"
+            };
+            expect(jimple.protect(Symbol)).to.be(Symbol);
+            expect(jimple.protect(fn)).to.be(fn);
          });
     });
     describe("#keys()", function() {
@@ -246,6 +272,18 @@ describe("Jimple", function() {
                 return result + app.get("one");
             });
             expect(jimple.get("age")).to.be(20);
+        });
+       it("should update factories correctly", function() {
+            var jimple = new Jimple();
+            var counter = 0;
+            jimple.set("age", jimple.factory(function() { return 19+(counter++); }));
+            jimple.set("one", 1);
+            expect(jimple.get("age")).to.be(19);
+            expect(jimple.get("age")).to.be(20);
+            jimple.extend("age", function(result, app) {
+                return result + app.get("one");
+            });
+            expect(jimple.get("age")).to.be(22);
         });
     });
     
