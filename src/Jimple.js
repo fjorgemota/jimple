@@ -34,7 +34,7 @@ class Jimple {
         }, this);
     }
     get (key) {
-        checkDefined(this, key)
+        checkDefined(this, key);
         let item = this.items[key];
         let obj;
         if (isFunction(item)) {
@@ -69,10 +69,10 @@ class Jimple {
          return Object.keys(this.items);
     }
     extend (key, fn) {
-         checkDefined(this, key)
+         checkDefined(this, key);
          let originalItem = this.items[key]; 
          if (!isFunction(originalItem)) {
-             throw new Error(`Identifier '${key}' does not contain an object definition`);
+             throw new Error(`Identifier '${key}' does not contain a service definition`);
          }
          if (!isFunction(fn)) {
              throw new Error(`The 'new' service definition for '${key}' is not a invokable object.`);
@@ -89,7 +89,7 @@ class Jimple {
          provider.register(this);
      }
      raw (key) {
-         checkDefined(this, key)
+         checkDefined(this, key);
          return this.items[key];
      }
 }
