@@ -127,9 +127,10 @@
             value: function extend(key, fn) {
                 checkDefined(this, key);
                 var originalItem = this.items[key];
-                if (!isFunction(originalItem)) {
-                    throw new Error("Identifier '" + key + "' does not contain an object definition");
+                if (!isFunction(originalItem) || this.protected.has(originalItem)) {
+                    throw new Error("Identifier '" + key + "' does not contain a service definition");
                 }
+
                 if (!isFunction(fn)) {
                     throw new Error("The 'new' service definition for '" + key + "' is not a invokable object.");
                 }

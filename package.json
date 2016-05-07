@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
   "main": "src/Jimple.js",
   "tonicExampleFilename": "tonicExample.js",
