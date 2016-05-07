@@ -256,6 +256,15 @@ describe("Jimple", function() {
                 jimple.extend("age", function(){});
             }).to.throwException();
         });
+	   it("should throw an error on protected key", function() {
+            var jimple = new Jimple();
+            jimple.set("theAnswer", jimple.protect(function () {
+                return 42;
+            }));
+            expect(function() {
+                jimple.extend("theAnswer", function(){ return 41; });
+            }).to.throwException();
+        });
        it("should throw an error on invalid callable", function() {
             var jimple = new Jimple();
             jimple.set("age", function() { return 19; });
