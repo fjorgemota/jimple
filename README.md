@@ -27,10 +27,10 @@ Good projects have good features. And because this here's the list of features t
 - Allow to get the raw service creator easily;
 - Pure Javascript;
 - Stable API;
-- No dependencies (in node, in browser we need a shim); 
+- No dependencies (in node, in browser we need a shim);
 - No module loader integrated - You can use **any** module loader you want;
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
-- [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage); 
+- [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage);
 - Fully Documented;
 - I already said that it have a really Simple API? :)
 
@@ -189,7 +189,7 @@ container.set('random_func', container.protect(function () {
 
 ## Modifying Services after Definition
 
-In some cases you may want to modify a service definition after it has been defined. You can use the `extend()` method to define additional code to be run on your service just after it is created:
+In some cases you may want to modify a **service definition** (note that you cannot extend a parameter, including protected parameters) after it has been defined. You can use the `extend()` method to define additional code to be run on your service just after it is created:
 
 ```js
 container.set('session_storage', function (c) {
@@ -203,7 +203,7 @@ container.extend('session_storage', function (storage, c) {
 });
 ```
 
-The first argument is the name of the service to extend, the second a function that gets access to the object instance and the container.
+The first argument is the name of the service to extend, the second a function that gets access to the object instance and the container. Note that you
 
 ## Extending a Container
 
@@ -301,7 +301,7 @@ class ABigContainer extends Jimple {
     // Overwrite any of Jimple's method here, or add new methods
 }
 
-var container = new ABigContainer(); 
+var container = new ABigContainer();
 ```
 
 Good customization. :)
