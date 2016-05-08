@@ -97,7 +97,7 @@ Jimple, as Pimple and many other dependency injections containers, manage two di
 
 As Pimple describes, a service is an object that does something as part of a larger system. Examples of services: a database connection, a templating engine, or a mailer. Almost any global object can be a service.
 
-Services in Jimple (and in Pimple too!) are defined by anonymous functions that return an instance of an object. Different from Pimple, however, here we need to call the method `set()` on Jimple container, as Proxies in NodeJS seems to not be stable:
+Services in Jimple (and in Pimple too!) are defined by anonymous functions that return an instance of an object. Note that, in Jimple, you cannot use a generator as a service, as they will be detected as parameters, so, just **pure** functions can be a service. Different from Pimple, however, here we need to call the method `set()` on Jimple container, as Proxies in NodeJS seems to not be stable:
 
 ```js
 // define some services
