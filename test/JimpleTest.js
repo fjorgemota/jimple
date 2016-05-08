@@ -1,15 +1,16 @@
-var expect = require("expect.js");
-var Jimple = require("..");
+"use strict";
+let expect = require("expect.js");
+let Jimple = require("..");
 
 describe("Jimple", function() {
     describe("#constructor()", function() {
         it("should support passing no parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple).to.be.a(Jimple);
             expect(jimple.keys()).to.be.empty();
         });
         it("should support passing some parameters", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "name": "xpto",
                 "age": 19
             });
@@ -19,7 +20,7 @@ describe("Jimple", function() {
             expect(jimple.get("age")).to.be(19);
         });
         it("should support passing some services", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "n2": function(app) {
                     return app.get("n") + 1
                 },
@@ -34,7 +35,7 @@ describe("Jimple", function() {
             expect(jimple.raw("n")).to.be.a("function");
         });
         it("should support passing some services and parameters", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "n2": function(app) {
                     return app.get("n") + 1
                 },
@@ -49,21 +50,38 @@ describe("Jimple", function() {
     });
     describe("#get()", function() {
         it("should throw an exception when getting non existent key", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(function() {
                 jimple.get("non-existent-key");
             }).to.throwException();
         });
         it("should support getting parameters", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "age": 19,
                 "name": "xpto"
             });
             expect(jimple.get("age")).to.be(19);
             expect(jimple.get("name")).to.be("xpto");
         });
+        it("should treat generator function as parameters", function() {
+            let jimple = new Jimple({
+                "age": function*() {
+                  yield 19
+                }
+            });
+            expect(jimple.get("age")).to.not.be(19);
+            let it = jimple.get("age")();
+            expect(it.next()).to.eql({
+              "value": 19,
+              "done": false
+            });
+            expect(it.next()).to.eql({
+              "value": undefined,
+              "done": true
+            });
+        });
         it("should support getting services", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "age": function() {
                     return 19
                 }
@@ -71,25 +89,25 @@ describe("Jimple", function() {
             expect(jimple.get("age")).to.be(19);
         });
         it("should cache values of the services", function() {
-            var jimple = new Jimple({
+            let jimple = new Jimple({
                 "symbol": Symbol
             });
             expect(jimple.get("symbol")).to.be(jimple.get("symbol"));
         });
         it("should not cache values of factories", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("symbol", jimple.factory(Symbol));
             expect(jimple.get("symbol")).not.to.be(jimple.get("symbol"));
         });
         it("should return raw values of protected closures", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("symbol", jimple.protect(Symbol));
             expect(jimple.get("symbol")).to.be(Symbol);
         });
     });
     describe("#set()", function() {
         it("should support saving parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", 19);
             jimple.set("name", "xpto");
             expect(jimple.keys()).to.contain("age");
@@ -98,7 +116,7 @@ describe("Jimple", function() {
             expect(jimple.get("name")).to.be("xpto");
         });
         it("should support saving services", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", function() {
                 return 19;
             });
@@ -115,13 +133,13 @@ describe("Jimple", function() {
     });
     describe("#raw()", function() {
         it("should throw an exception when getting non existent key", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(function() {
                 jimple.raw("non-existent-key");
             }).to.throwException();
         });
         it("should return raw parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", 19);
             jimple.set("name", "xpto");
             expect(jimple.keys()).to.contain("age");
@@ -130,7 +148,7 @@ describe("Jimple", function() {
             expect(jimple.raw("name")).to.be("xpto");
         });
         it("should return raw services", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("symbol", Symbol);
             jimple.set("age", function() {
                 return 19
@@ -146,19 +164,19 @@ describe("Jimple", function() {
     });
     describe("#factory()", function() {
         it("should throw exception if parameter is passed in", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.factory.bind(jimple)).withArgs(19).to.throwError();
             expect(jimple.factory.bind(jimple)).withArgs("xpto").to.throwError();
         });
         it("should not throw exceptions if function is passed in", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.factory.bind(jimple)).withArgs(Symbol).to.not.throwError();
             expect(jimple.factory.bind(jimple)).withArgs(function() {
                 return "xpto"
             }).to.not.throwError();
         });
         it("should return unmodified function", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             var fn = function() {
                 return "xpto"
             };
@@ -168,19 +186,19 @@ describe("Jimple", function() {
     });
     describe("#protect()", function() {
         it("should throw exception if parameter is passed in", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.protect.bind(jimple)).withArgs(19).to.throwError();
             expect(jimple.protect.bind(jimple)).withArgs("xpto").to.throwError();
         });
         it("should not throw exceptions if function is passed in", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.protect.bind(jimple)).withArgs(Symbol).to.not.throwError();
             expect(jimple.protect.bind(jimple)).withArgs(function() {
                 return "xpto"
             }).to.not.throwError();
         });
         it("should return unmodified function", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             var fn = function() {
                 return "xpto"
             };
@@ -190,7 +208,7 @@ describe("Jimple", function() {
     });
     describe("#keys()", function() {
         it("should return keys of parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.keys()).to.be.empty();
             jimple.set("age", 19);
             expect(jimple.keys()).to.contain("age");
@@ -201,7 +219,7 @@ describe("Jimple", function() {
             expect(jimple.keys()).to.contain("name");
         });
         it("should return keys of services", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.keys()).to.be.empty();
             jimple.set("age", function() {
                 return 19;
@@ -216,7 +234,7 @@ describe("Jimple", function() {
             expect(jimple.keys()).to.contain("name");
         });
         it("should return keys of services and parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.keys()).to.be.empty();
             jimple.set("age", 19);
             expect(jimple.keys()).to.contain("age");
@@ -231,7 +249,7 @@ describe("Jimple", function() {
     });
     describe("#has()", function() {
         it("should recognize parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.has("age")).not.to.be.ok();
             expect(jimple.has("name")).not.to.be.ok();
             jimple.set("age", 19);
@@ -242,7 +260,7 @@ describe("Jimple", function() {
             expect(jimple.has("name")).to.be.ok();
         });
         it("should recognize services", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.has("age")).not.to.be.ok();
             expect(jimple.has("name")).not.to.be.ok();
             jimple.set("age", function() {
@@ -257,7 +275,7 @@ describe("Jimple", function() {
             expect(jimple.has("name")).to.be.ok();
         });
         it("should return keys of services and parameters", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(jimple.has("age")).not.to.be.ok();
             expect(jimple.has("name")).not.to.be.ok();
             jimple.set("age", 19);
@@ -272,7 +290,7 @@ describe("Jimple", function() {
     });
     describe("#register()", function() {
         it("should call register() method on object", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             var called = false;
             var provider = {
                 "register": function(app) {
@@ -286,20 +304,20 @@ describe("Jimple", function() {
     });
     describe("#extend()", function() {
         it("should throw an error on non-existent key", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             expect(function() {
                 jimple.extend("not-found-key", function() {});
             }).to.throwException();
         });
         it("should throw an error on parameter key", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", 19);
             expect(function() {
                 jimple.extend("age", function() {});
             }).to.throwException();
         });
         it("should throw an error on protected key", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("theAnswer", jimple.protect(function() {
                 return 42;
             }));
@@ -310,7 +328,7 @@ describe("Jimple", function() {
             }).to.throwException();
         });
         it("should throw an error on invalid callable", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", function() {
                 return 19;
             });
@@ -319,7 +337,7 @@ describe("Jimple", function() {
             }).to.throwException();
         });
         it("should overwrite service correctly", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             jimple.set("age", function() {
                 return 19;
             });
@@ -331,7 +349,7 @@ describe("Jimple", function() {
             expect(jimple.get("age")).to.be(20);
         });
         it("should update factories correctly", function() {
-            var jimple = new Jimple();
+            let jimple = new Jimple();
             var counter = 0;
             jimple.set("age", jimple.factory(function() {
                 return 19 + (counter++);
