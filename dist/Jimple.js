@@ -37,8 +37,13 @@
         };
     }();
 
+    function assert(ok, message) {
+        if (!ok) {
+            throw new Error(message);
+        }
+    }
     function isFunction(fn) {
-        return Object.prototype.toString.call(fn) === "[object Function]";
+        return Object.prototype.toString.call(fn) === "[object Function]" && fn.constructor.name === "Function";
     }
     function isPlainObject(value) {
         if (Object.prototype.toString.call(value) !== '[object Object]') {
@@ -49,14 +54,10 @@
         }
     }
     function checkDefined(container, key) {
-        if (!container.has(key)) {
-            throw new Error("Identifier '" + key + "' is not defined.");
-        }
+        assert(container.has(key), "Identifier '" + key + "' is not defined.");
     }
     function addFunctionTo(set, fn) {
-        if (!isFunction(fn)) {
-            throw new Error("Service definition is not a Closure or invokable object");
-        }
+        assert(isFunction(fn), "Service definition is not a Closure or invokable object");
         set.add(fn);
         return fn;
     }
@@ -127,13 +128,8 @@
             value: function extend(key, fn) {
                 checkDefined(this, key);
                 var originalItem = this.items[key];
-                if (!isFunction(originalItem) || this.protected.has(originalItem)) {
-                    throw new Error("Identifier '" + key + "' does not contain a service definition");
-                }
-
-                if (!isFunction(fn)) {
-                    throw new Error("The 'new' service definition for '" + key + "' is not a invokable object.");
-                }
+                assert(isFunction(originalItem) && this.protected.has(originalItem) === false, "Identifier '" + key + "' does not contain a service definition");
+                assert(isFunction(fn), "The 'new' service definition for '" + key + "' is not a invokable object.");
                 this.items[key] = function (app) {
                     return fn(originalItem(app), app);
                 };
