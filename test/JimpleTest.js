@@ -66,18 +66,18 @@ describe("Jimple", function() {
         it("should treat generator function as parameters", function() {
             let jimple = new Jimple({
                 "age": function*() {
-                  yield 19
+                    yield 19
                 }
             });
             expect(jimple.get("age")).to.not.be(19);
             let it = jimple.get("age")();
             expect(it.next()).to.eql({
-              "value": 19,
-              "done": false
+                "value": 19,
+                "done": false
             });
             expect(it.next()).to.eql({
-              "value": undefined,
-              "done": true
+                "value": undefined,
+                "done": true
             });
         });
         it("should support getting services", function() {
