@@ -32,6 +32,7 @@ Good projects have good features. And because this here's the list of features t
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
 - [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage);
 - Fully Documented;
+- Less than [100 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
 - I already said that it have a really Simple API? :)
 
 ### Testing without installing anything
