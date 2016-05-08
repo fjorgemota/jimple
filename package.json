@@ -8,7 +8,7 @@
     "build-for-browser": "babel -d dist src/",
     "test-in-browser": "karma start karma.config.js",
     "test-in-node": "istanbul cover _mocha -- -R spec",
-    "test": "npm run test-in-node && npm run-script test-in-browser",
+    "test": "npm run test-in-node && npm run test-in-browser",
     "publish-codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "publish-codacy": "codacy-coverage < coverage/lcov.info"
   },
