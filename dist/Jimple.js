@@ -42,9 +42,11 @@
             throw new Error(message);
         }
     }
+
     function isFunction(fn) {
         return Object.prototype.toString.call(fn) === "[object Function]" && fn.constructor.name === "Function";
     }
+
     function isPlainObject(value) {
         if (Object.prototype.toString.call(value) !== '[object Object]') {
             return false;
@@ -53,9 +55,11 @@
             return prototype === null || prototype === Object.prototype;
         }
     }
+
     function checkDefined(container, key) {
         assert(container.has(key), "Identifier '" + key + "' is not defined.");
     }
+
     function addFunctionTo(set, fn) {
         assert(isFunction(fn), "Service definition is not a Closure or invokable object");
         set.add(fn);
