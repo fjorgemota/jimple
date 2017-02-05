@@ -31,6 +31,9 @@ node_js:
 - '6.7'
 - iojs
 - node
+branches:
+  except:
+    - gh-pages
 cache:
   directories:
   - node_modules
@@ -61,4 +64,3 @@ before_install:
 after_script:
   - npm run publish-codeclimate
   - npm run publish-codacy
-  - npm run publish-doc
