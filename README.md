@@ -204,7 +204,7 @@ container.extend('session_storage', function (storage, c) {
 });
 ```
 
-The first argument is the name of the service to extend, the second a function that gets access to the object instance and the container. Note that you
+The first argument is the name of the service to extend, the second a function that gets access to the object instance and the container.
 
 ## Extending a Container
 
