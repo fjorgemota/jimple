@@ -30,34 +30,42 @@ node_js:
 - node
 branches:
   except:
-    - gh-pages
+  - gh-pages
 cache:
   directories:
   - node_modules
 notifications:
   email: false
 deploy:
-  provider: npm
-  email: contato@fjorgemota.com
-  api_key:
-    secure: EK/C5o7ept/CF3ZKuXxaBVBwGuoEcg2vO15j2MPdAj8IepasvgJyZ0QfTu54yxUnrsSUj3aJbvEISgG/14Y8+9d5XHps12WFUCVqgIfbiGVYmm5d5ZI/WERKkVaSCnm69O0te8kYzml+O7kh1odLz3NqG0d2wTgZzw/gu4GEWAG30bh6RoNjfBxw6O1NlkGHbKMzSXCGjLi5npshCY6MgqMsjkC3qF/WagTQu8NUOAUhTL/vYV4yqshp0ipPsvxI6bFfIY9oQIjtRqF1L5Kz+eI+1spKfTqZLasLSnYNgMPB9R7ZBV9ZRB3yCMPx7wgAeqP6Gg73ENwl9ujpFxkc0g/d3Ux9BcX4f+whfd1fTFVdkaTUW68OnyGdHkj5kqnlOa7QBM7uFAhIBHTvkP4dlRmvJGNRX4Ci2dRvrCajKFdDgBY7E4yE908WzleRgamnttBRGMkAuYqMH2emdncS4gYaEgpPUtMcFR8KEBWycUBQ86IhFd/xHU39u2JBqaJd6qdGfokx7Od50e3BEKxCcqPFJRQzu2Vr+vgQp5d5S1YlDzFts2Rtw4cpZfHkvUxCnsOL9m5eJYKTfxT5sHYQHsLT0+/KQEqqdHmWvQn0L8Le22qMbWVPlC0zbw4zA+pHWemX1ro9Kbt3MWUs2D3Z4B7odbVCASCqeI6QynZ75+U=
-  on:
-    tags: true
-    repo: fjorgemota/jimple
+  - provider: npm
+    email: contato@fjorgemota.com
+    api_key:
+      secure: EK/C5o7ept/CF3ZKuXxaBVBwGuoEcg2vO15j2MPdAj8IepasvgJyZ0QfTu54yxUnrsSUj3aJbvEISgG/14Y8+9d5XHps12WFUCVqgIfbiGVYmm5d5ZI/WERKkVaSCnm69O0te8kYzml+O7kh1odLz3NqG0d2wTgZzw/gu4GEWAG30bh6RoNjfBxw6O1NlkGHbKMzSXCGjLi5npshCY6MgqMsjkC3qF/WagTQu8NUOAUhTL/vYV4yqshp0ipPsvxI6bFfIY9oQIjtRqF1L5Kz+eI+1spKfTqZLasLSnYNgMPB9R7ZBV9ZRB3yCMPx7wgAeqP6Gg73ENwl9ujpFxkc0g/d3Ux9BcX4f+whfd1fTFVdkaTUW68OnyGdHkj5kqnlOa7QBM7uFAhIBHTvkP4dlRmvJGNRX4Ci2dRvrCajKFdDgBY7E4yE908WzleRgamnttBRGMkAuYqMH2emdncS4gYaEgpPUtMcFR8KEBWycUBQ86IhFd/xHU39u2JBqaJd6qdGfokx7Od50e3BEKxCcqPFJRQzu2Vr+vgQp5d5S1YlDzFts2Rtw4cpZfHkvUxCnsOL9m5eJYKTfxT5sHYQHsLT0+/KQEqqdHmWvQn0L8Le22qMbWVPlC0zbw4zA+pHWemX1ro9Kbt3MWUs2D3Z4B7odbVCASCqeI6QynZ75+U=
+    on:
+      tags: true
+      repo: fjorgemota/jimple
+  - provider: pages
+    local_dir: doc
+    skip_cleanup: true
+    github_token:
+      secure: JhS5gc+VN5XKFGlfdrRpni/aEsI/uqSw9KZnGFq8A67OaBgQ2ZPZixHqMx5jUIk/nOqUh3J4RopKsvdM+1OUNC6cvbCnNCgkWVjZ4Djr2SYXR1j8ZiDFH7nZGgy44HzPKNgxMXd4HWQmuNWiczfhWip1kTJpmwncxatg7+AMsIoNSEPCI0b4aYi4v+OmO0UJZcsgQhccL/bYVDTNHUtjFvwPfdd0b53JfcVANFTO2Zr057B97TGhKivKOYvkbBtZOtj+SoXSpLyY40rJaGjm7dTlUidobwmFP0hhD+GeEBNDqpyl8P7CULgJkfLAgsx1g6z+HeZzNiZbFuC89G4ehNwMcOeKY662Fg8g3yHgt9y/GvgxR5aIUz8PVzaII0HSzVBttxNoCrH2CSrTEI7p8SNbxsI8yN5mYO85/hQHscNXZQQpl2SeE0wdobqFFg1NnOBmbPnP0WFKx//FgwACB7w0xT5xzCF4+wHpZk4Ip84CXcE8VubhkptZmtcutlQ/7wm3lfCI0AT1laFQH1Lx6MSACpUt6WJhQ+5wNXhhIrgYwzi1ZtQgt9mx4iDCQ/grXQOXKhvmx/sPoXxukKf/bs7Up5HWpzTAFYmQbnQ6rT0FtWOj/QRA3/gYvwAfv2G6HYv51vkKWxviAGSWUeTdUszoY36jiKtSlY7puc7vWgo=
+    on:
+      tags: true
 addons:
   firefox: latest
   apt:
     sources:
-      - google-chrome
+    - google-chrome
     packages:
-      - google-chrome-stable
+    - google-chrome-stable
   code_climate:
     repo_token: 5f7044d0caeea822858fa847e6d39b8cc7e5fd10718699785479e3630d243db9
 before_install:
-  - npm update -g npm
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- npm update -g npm
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 after_script:
-  - npm run publish-codeclimate
-  - npm run publish-codacy
+- npm run publish-codeclimate
+- npm run publish-codacy
+- npm run doc
