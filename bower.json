@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "homepage": "https://github.com/fjorgemota/jimple",
   "authors": [
     "Fernando Jorge Mota <contato@fjorgemota.com>"
@@ -19,7 +19,7 @@
     "injection",
     "di",
     "container",
-    "dependency injection", 
+    "dependency injection",
     "services",
     "parameters",
     "inversion of control",
