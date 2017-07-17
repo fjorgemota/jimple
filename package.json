@@ -3,7 +3,7 @@
   "version": "1.4.3",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
   "main": "src/Jimple.js",
-  "tonicExampleFilename": "tonicExample.js",
+  "runkitExampleFilename": "example.js",
   "scripts": {
     "build-for-browser": "babel -d dist src/",
     "test-in-browser": "karma start karma.config.js",
