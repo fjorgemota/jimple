@@ -61,7 +61,7 @@ before_install:
 - export CHROME_BIN=google-chrome-stable
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-after_script:
+after_success:
 - npm run publish-codeclimate
 - npm run publish-codacy
 - npm run doc
