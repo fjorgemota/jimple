@@ -50,6 +50,7 @@ deploy:
     github_token:
       secure: JhS5gc+VN5XKFGlfdrRpni/aEsI/uqSw9KZnGFq8A67OaBgQ2ZPZixHqMx5jUIk/nOqUh3J4RopKsvdM+1OUNC6cvbCnNCgkWVjZ4Djr2SYXR1j8ZiDFH7nZGgy44HzPKNgxMXd4HWQmuNWiczfhWip1kTJpmwncxatg7+AMsIoNSEPCI0b4aYi4v+OmO0UJZcsgQhccL/bYVDTNHUtjFvwPfdd0b53JfcVANFTO2Zr057B97TGhKivKOYvkbBtZOtj+SoXSpLyY40rJaGjm7dTlUidobwmFP0hhD+GeEBNDqpyl8P7CULgJkfLAgsx1g6z+HeZzNiZbFuC89G4ehNwMcOeKY662Fg8g3yHgt9y/GvgxR5aIUz8PVzaII0HSzVBttxNoCrH2CSrTEI7p8SNbxsI8yN5mYO85/hQHscNXZQQpl2SeE0wdobqFFg1NnOBmbPnP0WFKx//FgwACB7w0xT5xzCF4+wHpZk4Ip84CXcE8VubhkptZmtcutlQ/7wm3lfCI0AT1laFQH1Lx6MSACpUt6WJhQ+5wNXhhIrgYwzi1ZtQgt9mx4iDCQ/grXQOXKhvmx/sPoXxukKf/bs7Up5HWpzTAFYmQbnQ6rT0FtWOj/QRA3/gYvwAfv2G6HYv51vkKWxviAGSWUeTdUszoY36jiKtSlY7puc7vWgo=
     on:
+      branch: master
       tags: true
 addons:
   firefox: latest
