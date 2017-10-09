@@ -43,6 +43,7 @@ class Jimple {
         this._instances = new Map();
         this._factories = new Set();
         this._protected = new Set();
+        this._proxy = undefined;
         values = isPlainObject(values) ? values : {};
         Object.keys(values).forEach(function(key) {
             this.set(key, values[key]);
@@ -65,7 +66,7 @@ class Jimple {
             } else if (this._instances.has(item)) {
                 obj = this._instances.get(item);
             } else {
-                obj = item(this);
+                obj = item(this._proxy ? this._proxy : this);
                 if (!this._factories.has(item)) {
                     this._instances.set(item, obj);
                 }
@@ -212,6 +213,7 @@ class Jimple {
                 }
             }
         });
+        container._proxy = result;
         return result;
     }
 }
