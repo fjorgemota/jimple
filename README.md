@@ -11,7 +11,7 @@
 [![Issue Count](https://codeclimate.com/github/fjorgemota/jimple/badges/issue_count.svg)](https://codeclimate.com/github/fjorgemota/jimple)
 [![](https://data.jsdelivr.com/v1/package/npm/jimple/badge)](https://www.jsdelivr.com/package/npm/jimple)
 
-This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) to NodeJS and to browser using features provided by ES6.
+This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for NodeJS and for browsers using features provided by ES6.
 
 All the code is tested using Mocha and seems to be stable. Below is the documentation for the project:
 
