@@ -307,7 +307,6 @@ In ES6, we can use a Proxy object to define custom behavior for some fundamental
 However, for access that mode you cannot use the *Jimple* constructor, but a static method called `proxy()`. So, the code below:
 
 ```js
-const Jimple = require("jimple");
 const container = Jimple.proxy();
 
 container['session_storage'] = function (c) {
@@ -322,7 +321,6 @@ container['session'] = function (c) {
 Is in fact equivalent to that:
 
 ```js
-const Jimple = require("jimple");
 const container = new Jimple();
 
 container.set('session_storage', function (c) {
@@ -337,14 +335,12 @@ container.set('session', function (c) {
 Please note that the `proxy()` method can receive a parameter, like the `Jimple` constructor. So you can note that:
 
 ```js
-const Jimple = require("jimple");
 const container = Jimple.proxy({"SESSION_ID": "test"});
 ```
 
 Is in fact equivalent for:
 
 ```js
-const Jimple = require("jimple");
 const container = new Jimple({"SESSION_ID": "test"});
 ```
 
@@ -353,7 +349,6 @@ By the way, observe that *Proxy* is an API that's not really supported everywher
 Of course, this option has some limitations: basically, you **CANNOT** use certain names like the names of the methods available in the container as names of your services/parameters. So something like:
 
 ```js
-const Jimple = require("jimple");
 const container = Jimple.proxy();
 container.set = 42;
 ```
