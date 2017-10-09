@@ -9,6 +9,7 @@
 [![Code Climate](https://codeclimate.com/github/fjorgemota/jimple/badges/gpa.svg)](https://codeclimate.com/github/fjorgemota/jimple)
 [![Test Coverage](https://codeclimate.com/github/fjorgemota/jimple/badges/coverage.svg)](https://codeclimate.com/github/fjorgemota/jimple/coverage)
 [![Issue Count](https://codeclimate.com/github/fjorgemota/jimple/badges/issue_count.svg)](https://codeclimate.com/github/fjorgemota/jimple)
+[![](https://data.jsdelivr.com/v1/package/npm/jimple/badge)](https://www.jsdelivr.com/package/npm/jimple)
 
 This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) to NodeJS and to browser using features provided by ES6.
 
@@ -33,7 +34,8 @@ Good projects have good features. And because this here's the list of features t
 - [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
 - [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage);
 - Fully Documented;
-- Less than [200 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
+- Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
+- ~1KB minified and gzipped;
 - I already said that it have a really Simple API? :)
 
 ### Testing without installing anything
@@ -54,9 +56,15 @@ If using NodeJS (this installs the package based purely on ES 6), or:
     bower install --save jimple
 ```
 
-If you want to use this package in the browser.
+If you want to use this package in the browser. You can also use the version provided by a CDN, like [JSDelivr](https://www.jsdelivr.com/package/npm/jimple). So you can paste the code below on a page and start using Jimple really fast:
 
-Note that the bower package uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to Map and Set yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill) **before** the load of this package on the browser.
+```html
+<script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
+```
+
+**WARNING**: Please note that the code above uses always the latest version of Jimple. In production, please replace *latest* with a [valid version number from the Releases page](https://github.com/fjorgemota/jimple/releases) or use Bower or NPM to install a fixed version for you. =)
+
+Note that the browser version of this library uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to `Map` and `Set` yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill that implements `Map` and `Set` support) **before** the load of this package on the browser.
 
 ## Usage
 
@@ -291,6 +299,56 @@ container.set('session', function (c) {
 
 var sessionFunction = container.raw('session');
 ```
+
+## Proxy - ES6
+
+In ES6, we can use a Proxy object to define custom behavior for some fundamental operations ([see more here clicking here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)). That allows us to customize Jimple to have a experience very near from that provided by Pimple, which can get services and parameters directly without calling `get()` or set services and parameters without calling `set()`.
+
+However, for access that mode you cannot use the *Jimple* constructor, but a static method called `proxy()`. So, the code below:
+
+```js
+const Jimple = require("jimple");
+const container = Jimple.proxy();
+
+container['session_storage'] = function (c) {
+    return new SessionStorage('SESSION_ID');
+};
+
+container['session'] = function (c) {
+    return new Session(c['session_storage']);
+};
+```
+
+Is in fact equivalent to that:
+
+```js
+const Jimple = require("jimple");
+const container = new Jimple();
+
+container.set('session_storage', function (c) {
+    return new SessionStorage('SESSION_ID');
+});
+
+container.set('session', function (c) {
+    return new Session(c.get('session_storage'));
+});
+```
+
+Please note that the `proxy()` method can receive a parameter, like the `Jimple` constructor. So you can note that:
+
+```js
+const Jimple = require("jimple");
+const container = Jimple.proxy({"SESSION_ID": "test"});
+```
+
+Is in fact equivalent for:
+
+```js
+const Jimple = require("jimple");
+const container = new Jimple({"SESSION_ID": "test"});
+```
+
+By the way, observe that *Proxy* is an API that's not really supported everywhere (it's supported in NodeJS >= 6, for example). So we do not recommend it's use in browser environments, for example.
 
 ## Last, but not least important: Customization
 
