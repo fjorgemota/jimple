@@ -83,6 +83,7 @@
             this._instances = new Map();
             this._factories = new Set();
             this._protected = new Set();
+            this._proxy = undefined;
             values = isPlainObject(values) ? values : {};
             Object.keys(values).forEach(function (key) {
                 this.set(key, values[key]);
@@ -109,7 +110,7 @@
                     } else if (this._instances.has(item)) {
                         obj = this._instances.get(item);
                     } else {
-                        obj = item(this);
+                        obj = item(this._proxy ? this._proxy : this);
                         if (!this._factories.has(item)) {
                             this._instances.set(item, obj);
                         }
@@ -174,29 +175,35 @@
             key: "proxy",
             value: function proxy(values) {
                 assert(typeof Proxy !== "undefined", "The actual environment does not support ES6 Proxy");
-                var container = new this(values);
+                var container = new this();
+                // The variable 'hasValues' exists because Proxy can only really proxy
+                // attributes that EXIST on the object it is proxying.
+                // So hasValues basically contains all container keys, and all methods
+                // in the Container, in a way so we are able to respond correctly to
+                // that attribute.
                 var hasValues = {};
-                var methods = ["set", "get", "raw", "extend", "protect", "factory", "keys", "has", "register"];
-                methods.forEach(function (key) {
-                    return hasValues[key] = true;
+                // Methods contain a dynamic list of all the methods of the application
+                // Which CANNOT be replaced in any way
+                var methods = Object.getOwnPropertyNames(Object.getPrototypeOf(container)).filter(function (key) {
+                    return isFunction(container[key]);
                 });
-                container.keys().forEach(function (key) {
-                    return hasValues[key] = true;
+                methods.forEach(function (key) {
+                    return hasValues[key] = 1;
                 });
                 var result = new Proxy(hasValues, {
                     get: function get(obj, key) {
-                        var value = methods.includes(key) ? container[key].bind(container) : container.get(key);
+                        var value = methods.indexOf(key) > -1 ? container[key].bind(container) : container.get(key);
                         if (key === "set") {
                             return function (k, val) {
-                                obj[k] = true;
+                                obj[k] = 1;
                                 return value(k, val);
                             };
                         }
                         return value;
                     },
                     set: function set(obj, key, value) {
-                        assert(!methods.includes(key), "The key \"" + key + "\" isn't valid because it's the name of a method of the container");
-                        obj[key] = true;
+                        assert(methods.indexOf(key) === -1, "The key \"" + key + "\" isn't valid because it's the name of a method of the container");
+                        obj[key] = 1;
                         container.set(key, value);
                         return true;
                     },
@@ -210,13 +217,19 @@
                         if (!obj[key]) {
                             return undefined;
                         }
+                        var isPrivate = methods.indexOf(key) > -1;
                         return {
-                            'configurable': !container[key],
-                            'writable': !container[key],
-                            'enumerable': !container[key],
-                            'value': container.has(key) ? container.get(key) : undefined
+                            'configurable': !isPrivate,
+                            'writable': !isPrivate,
+                            'enumerable': !isPrivate,
+                            'value': isPrivate ? container[key] : container.get(key)
                         };
                     }
+                });
+                container._proxy = result;
+                values = isPlainObject(values) ? values : {};
+                Object.keys(values).forEach(function (key) {
+                    result[key] = values[key];
                 });
                 return result;
             }
