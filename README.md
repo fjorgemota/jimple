@@ -64,7 +64,7 @@ If you want to use this package in the browser. You can also use the version pro
 
 **WARNING**: Please note that the code above uses always the latest version of Jimple. In production, please replace *latest* with a [valid version number from the Releases page](https://github.com/fjorgemota/jimple/releases) or use Bower or NPM to install a fixed version for you. =)
 
-Note that the browser version of this library uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to `Map` and `Set` yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill that implements `Map` and `Set` support) **before** the load of this package on the browser.
+Note that the browser version of this library uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to `Map` and `Set` yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill that implements `Map` and `Set` support) **before** loading this package on the browser.
 
 ## Usage
 
