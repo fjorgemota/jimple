@@ -415,20 +415,26 @@ describe("Jimple", function() {
             expect("name" in jimple).to.equal(true);
         });
         it("should support Object.getOwnPropertyNames", function() {
-            let jimple = Jimple.proxy();
+            let jimple = Jimple.proxy({
+                "country": "Brazil"
+            });
             jimple["age"] = function() {
                 return 19
             };
             jimple["name"] = "xpto";
             expect(jimple["age"]).to.equal(19);
             expect(jimple["name"]).to.equal("xpto");
+            expect(jimple["country"]).to.equal("Brazil");
             let keys = Object.getOwnPropertyNames(jimple);
-            expect(keys).to.have.length(2);
+            expect(keys).to.have.length(3);
             expect(keys).to.include("age");
             expect(keys).to.include("name");
+            expect(keys).to.include("country");
         });
         it("should support Object.getOwnPropertyDescriptor", function() {
-            let jimple = Jimple.proxy();
+            let jimple = Jimple.proxy({
+                "country": "Brazil"
+            });
             jimple.set("age", 19);
             jimple["name"] = "xpto";
             expect(jimple["age"]).to.equal(19);
@@ -439,6 +445,9 @@ describe("Jimple", function() {
             let name = Object.getOwnPropertyDescriptor(jimple, "name");
             expect(name.writable).to.equal(true);
             expect(name.value).to.equal("xpto");
+            let country = Object.getOwnPropertyDescriptor(jimple, "country");
+            expect(country.writable).to.equal(true);
+            expect(country.value).to.equal("Brazil");
             let non_existent_key = Object.getOwnPropertyDescriptor(jimple, "non-existent-key");
             expect(non_existent_key).to.equal(undefined);
             expect(function() {
