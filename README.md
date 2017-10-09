@@ -350,6 +350,16 @@ const container = new Jimple({"SESSION_ID": "test"});
 
 By the way, observe that *Proxy* is an API that's not really supported everywhere (it's supported in NodeJS >= 6, for example). So we do not recommend it's use in browser environments, for example.
 
+Of course, this option has some limitations: basically, you **CANNOT** use certain names like the names of the methods available in the container as names of your services/parameters. So something like:
+
+```js
+const Jimple = require("jimple");
+const container = Jimple.proxy();
+container.set = 42;
+```
+
+Is forbidden and throws an exception automatically.
+
 ## Last, but not least important: Customization
 
 Do you wanna to customize Jimple's functionally? You can! Just extend it using ES6's class syntax:
