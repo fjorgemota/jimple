@@ -186,7 +186,7 @@ class Jimple {
         methods.forEach((key) => hasValues[key] = 1);
         let result = new Proxy(hasValues, {
             get(obj, key) {
-                let value = methods.indexOf(key) > -1 ?
+                let value = methods.includes(key) ?
                             container[key].bind(container) :
                             container.get(key);
                 if (key === "set") {
@@ -198,7 +198,7 @@ class Jimple {
                 return value;
             },
             set(obj, key, value) {
-                assert(methods.indexOf(key) === -1, `The key "${key}" isn't valid because it's the name of a method of the container`);
+                assert(!methods.includes(key), `The key "${key}" isn't valid because it's the name of a method of the container`);
                 obj[key] = 1;
                 container.set(key, value);
                 return true;
@@ -213,7 +213,7 @@ class Jimple {
                 if (!obj[key]) {
                     return undefined;
                 }
-                let isPrivate = methods.indexOf(key) > -1;
+                let isPrivate = methods.includes(key);
                 return {
                     'configurable': !isPrivate,
                     'writable': !isPrivate,
