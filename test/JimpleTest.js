@@ -1,6 +1,6 @@
 "use strict";
 const { expect } = require("chai");
-const Jimple = require("..");
+const Jimple = require("../src/Jimple.js");
 
 describe("Jimple", function() {
     describe("#constructor()", function() {
@@ -468,6 +468,13 @@ describe("Jimple", function() {
                     "get": 42
                 });
             }).to.throw();
+        })
+        it("should work correctly with private attribute", function() {
+            let jimple = Jimple.proxy({
+                "_item": 42
+            });
+            jimple["_protected"] = (c) => c["_item"]
+            expect(jimple["_protected"]).to.equal(42);
         })
     })
 });
