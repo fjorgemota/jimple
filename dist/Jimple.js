@@ -192,7 +192,7 @@
                 });
                 var result = new Proxy(hasValues, {
                     get: function get(obj, key) {
-                        var value = methods.indexOf(key) > -1 ? container[key].bind(container) : container.get(key);
+                        var value = methods.includes(key) ? container[key].bind(container) : container.get(key);
                         if (key === "set") {
                             return function (k, val) {
                                 obj[k] = 1;
@@ -202,7 +202,7 @@
                         return value;
                     },
                     set: function set(obj, key, value) {
-                        assert(methods.indexOf(key) === -1, "The key \"" + key + "\" isn't valid because it's the name of a method of the container");
+                        assert(!methods.includes(key), "The key \"" + key + "\" isn't valid because it's the name of a method of the container");
                         obj[key] = 1;
                         container.set(key, value);
                         return true;
@@ -217,7 +217,7 @@
                         if (!obj[key]) {
                             return undefined;
                         }
-                        var isPrivate = methods.indexOf(key) > -1;
+                        var isPrivate = methods.includes(key);
                         return {
                             'configurable': !isPrivate,
                             'writable': !isPrivate,
