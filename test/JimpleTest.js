@@ -454,13 +454,19 @@ describe("Jimple", function() {
                 let get = Object.getOwnPropertyDescriptor(jimple, "get");
                 expect(get.writable).to.equal(false);
             }).to.throw();
-
         });
-        it("should not overwrite methods names", function() {
+        it("should not overwrite methods names via set", function() {
             let jimple = Jimple.proxy();
             expect(jimple.get).to.be.a('function');
             expect(function() {
                 jimple["get"] = 20
+            }).to.throw();
+        })
+        it("should not overwrite methods names via initial parameters", function() {
+            expect(function() {
+                let jimple = Jimple.proxy({
+                    "get": 42
+                });
             }).to.throw();
         })
     })
