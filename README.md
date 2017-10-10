@@ -35,7 +35,7 @@ Good projects have good features. And because this here's the list of features t
 - [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage);
 - Fully Documented;
 - Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
-- ~1KB minified and gzipped;
+- ~1KB minified and gzipped - **Tested** on CI using [size-limit](https://github.com/ai/size-limit);
 - I already said that it have a really Simple API? :)
 
 ### Testing without installing anything

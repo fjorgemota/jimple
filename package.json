@@ -9,11 +9,12 @@
     "build-for-browser": "babel -d dist src/ && uglifyjs --compress --mangle -o dist/Jimple.min.js dist/Jimple.js",
     "test-in-browser": "karma start",
     "test-in-node": "istanbul cover _mocha -- -R spec",
-    "test": "npm run test-in-node && npm run test-in-browser",
+    "test": "npm run size && npm run test-in-node && npm run test-in-browser",
     "publish-codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "publish-codacy": "codacy-coverage < coverage/lcov.info",
     "doc": "documentation build src/** -f html -o out",
-    "publish-doc": "npm run doc && gh-pages -d out"
+    "publish-doc": "npm run doc && gh-pages -d out",
+    "size": "size-limit"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,12 @@
     "url": "https://github.com/fjorgemota/jimple/issues"
   },
   "homepage": "https://github.com/fjorgemota/jimple#readme",
+  "size-limit": [
+      {
+          "path": "src/Jimple.js",
+          "limit": "1 KB"
+      }
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -61,6 +68,7 @@
     "karma-spec-reporter": "0.0.31",
     "mocha": "^4.0.1",
     "phantomjs-prebuilt": "^2.1.15",
+    "size-limit": "^0.11.6",
     "uglify-js": "^3.1.3",
     "watchify": "^3.7.0"
   },
