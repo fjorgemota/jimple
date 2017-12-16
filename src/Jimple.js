@@ -232,3 +232,4 @@ class Jimple {
 }
 
 module.exports = Jimple;
+module.exports.provider = (register) => ({ register });
