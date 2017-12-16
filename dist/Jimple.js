@@ -239,4 +239,7 @@
     }();
 
     module.exports = Jimple;
+    module.exports.provider = function (register) {
+        return { register: register };
+    };
 });
