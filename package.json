@@ -14,7 +14,8 @@
     "publish-codacy": "codacy-coverage < coverage/lcov.info",
     "doc": "documentation build src/** -f html -o out",
     "publish-doc": "npm run doc && gh-pages -d out",
-    "size": "size-limit"
+    "size": "size-limit",
+    "lint": "eslint src/Jimple.js"
   },
   "repository": {
     "type": "git",
@@ -40,10 +41,10 @@
   },
   "homepage": "https://github.com/fjorgemota/jimple#readme",
   "size-limit": [
-      {
-          "path": "src/Jimple.js",
-          "limit": "1 KB"
-      }
+    {
+      "path": "src/Jimple.js",
+      "limit": "1 KB"
+    }
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
