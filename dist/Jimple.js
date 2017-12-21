@@ -72,6 +72,13 @@
      */
 
     var Jimple = function () {
+        _createClass(Jimple, null, [{
+            key: "provider",
+            value: function provider(register) {
+                return { register: register };
+            }
+        }]);
+
         /**
          * Create a Jimple Container.
          * @param {Object?} [values] - An optional object whose keys and values will be associated in the container at initialization

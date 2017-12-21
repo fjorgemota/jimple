@@ -288,6 +288,29 @@ container.register(require("./xpto"));
 
 Note that the **index.js** file is loaded first on **xpto** directory, and that **index.js** file loads the files **file1.js** and **file2.js** present on that directory. You can do that for any number of directories. :)
 
+### Extending a container using the shorthand function
+
+You can use the exported `provider` shorthand method to easily create your container's configuration with a simple callback:
+
+```js
+const { provider } = require('jimple');
+
+module.exports = provider((container) => {
+    // Define your services and parameters here
+});
+```
+
+It can be used exact same way as the previous method (from a file), but it also can be used to export multiple configurations at the same time:
+
+```js
+const { provider } = require('jimple');
+
+module.exports = {
+    configurationA: provider((container) => { ... }),
+    configurationB: provider((container) => { ... }),
+};
+```
+
 ## Fetching the Service Creation Function
 
 When you access an object, Jimple automatically calls the anonymous function that you defined, which creates the service object for you. If you want to get raw access to this function, but don't want to `protect()` that service, you can use the `raw()` method to access the function directly:
