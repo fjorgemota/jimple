@@ -34,6 +34,9 @@ function addFunctionTo(set, fn) {
  * @public
  */
 class Jimple {
+    static provider(register) {
+      return ({ register });
+    }
     /**
      * Create a Jimple Container.
      * @param {Object?} [values] - An optional object whose keys and values will be associated in the container at initialization

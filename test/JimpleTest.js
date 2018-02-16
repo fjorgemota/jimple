@@ -477,4 +477,16 @@ describe("Jimple", function() {
             expect(jimple["_protected"]).to.equal(42);
         })
     })
+    describe('#provider', function() {
+      it("should register a provider created by the shorthand static method", function() {
+        let jimple = new Jimple();
+        var called = false;
+        var provider = Jimple.provider(function(app) {
+            expect(app).to.equal(jimple);
+            called = true;
+        });
+        jimple.register(provider);
+        expect(called).to.be.ok;
+      });
+    });
 });
