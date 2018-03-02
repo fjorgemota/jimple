@@ -57,7 +57,7 @@
     "chai": "^4.1.2",
     "codacy-coverage": "^2.0.3",
     "codeclimate-test-reporter": "^0.5.0",
-    "documentation": "^5.3.2",
+    "documentation": "^6.0.0",
     "gh-pages": "^1.0.0",
     "istanbul": "^0.4.2",
     "karma": "^1.7.1",
