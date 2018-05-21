@@ -60,7 +60,7 @@
     "documentation": "^6.0.0",
     "gh-pages": "^1.0.0",
     "istanbul": "^0.4.2",
-    "karma": "^1.7.1",
+    "karma": "^2.0.0",
     "karma-browserify": "^5.0.2",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.0.1",
