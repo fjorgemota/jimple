@@ -1,6 +1,6 @@
 {
   "name": "jimple",
-  "version": "1.4.6",
+  "version": "1.5.0",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
   "main": "src/Jimple.js",
   "browser": "dist/Jimple.js",
