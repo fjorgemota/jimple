@@ -40,7 +40,7 @@ Good projects have good features. And because this here's the list of features t
 
 ### Testing without installing anything
 
-If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your machine by using [Tonic](https://tonicdev.com/npm/jimple). Give it a try. :)
+If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your machine by using [Runkit](https://npm.runkit.com/jimple). Give it a try. :)
 
 ## Installation
 
