@@ -2,7 +2,8 @@
   "presets": [
       ["env", {
         "targets": {
-          "node": "4.0"
+          "node": "4.0",
+	  "browsers": [ ">0.25%" ]
         }
       }]
    ] ,
