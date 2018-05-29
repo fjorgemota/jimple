@@ -24,7 +24,7 @@ branches:
   - gh-pages
 cache:
   directories:
-  - node_modules
+  - $HOME/.npm
 notifications:
   email: false
 deploy:
