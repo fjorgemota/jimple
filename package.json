@@ -59,7 +59,7 @@
     "documentation": "^8.0.0",
     "gh-pages": "^1.1.0",
     "istanbul": "^0.4.2",
-    "karma": "^2.0.0",
+    "karma": "^3.0.0",
     "karma-browserify": "^5.2.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
