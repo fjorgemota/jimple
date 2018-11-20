@@ -61,22 +61,27 @@ class Jimple {
     get(key) {
         checkDefined(this, key);
         let item = this._items[key];
-        let obj;
-        if (isFunction(item)) {
-            if (this._protected.has(item)) {
-                obj = item;
-            } else if (this._instances.has(item)) {
-                obj = this._instances.get(item);
-            } else {
-                obj = item(this);
+        let isItemFunction = isFunction(item);
+        if (isItemFunction) {
+            let isItProtected = this._protected.has(item);
+            let isItInstance = this._instances.has(item);
+            if (isItProtected) {
+                return item;
+            }
+            if (!isItProtected && isItInstance) {
+                return this._instances.get(item);
+            }
+            if(!isItProtected && !isItInstance){
+                let obj = item(this);
                 if (!this._factories.has(item)) {
                     this._instances.set(item, obj);
                 }
+                return obj;
             }
-        } else {
-            obj = item;
         }
-        return obj;
+        if(!isItemFunction){
+            return item;
+        }
     }
     /**
      * Defines a new parameter or service.
