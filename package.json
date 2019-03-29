@@ -68,7 +68,7 @@
     "karma-spec-reporter": "0.0.32",
     "mocha": "^6.0.0",
     "phantomjs-prebuilt": "^2.1.16",
-    "size-limit": "^0.21.0",
+    "size-limit": "^0.22.0",
     "uglify-js": "^3.4.8",
     "watchify": "^3.11.0"
   },
