@@ -7,11 +7,7 @@ function assert(ok, message) {
 }
 
 function isFunction(fn) {
-    return Object.prototype.toString.call(fn) === "[object Function]" && fn.constructor.name === "Function";
-}
-
-function isAsyncFunction(fn) {
-    return Object.prototype.toString.call(fn) === "[object AsyncFunction]" && fn.constructor.name === "AsyncFunction";
+    return (typeof fn) === 'function';
 }
 
 function isPlainObject(value) {
@@ -66,7 +62,7 @@ class Jimple {
         checkDefined(this, key);
         let item = this._items[key];
         let obj;
-        if (isFunction(item) || isAsyncFunction(item)) {
+        if (isFunction(item)) {
             if (this._protected.has(item)) {
                 obj = item;
             } else if (this._instances.has(item)) {
