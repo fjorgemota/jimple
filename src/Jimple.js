@@ -7,7 +7,7 @@ function assert(ok, message) {
 }
 
 function isFunction(fn) {
-    return (typeof === 'function');
+    return (typeof fn) === 'function';
 }
 
 function isPlainObject(value) {
