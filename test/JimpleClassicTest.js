@@ -1,12 +1,12 @@
 "use strict";
 const { expect } = require("chai");
 const Jimple = require("../src/Jimple.js");
+const MySymbol = require("./symbol");
 
-describe("Jimple", function() {
+describe("JimpleClassic", function() {
     describe("#constructor()", function() {
         it("should support passing no parameters", function() {
-            let jimple = new Jimple();
-            expect(jimple).to.be.an.instanceof(Jimple);
+            let jimple = Jimple();
             expect(jimple.keys()).to.be.empty;
         });
         it("should support passing some parameters", function() {
@@ -90,19 +90,19 @@ describe("Jimple", function() {
         });
         it("should cache values of the services", function() {
             let jimple = new Jimple({
-                "symbol": Symbol
+                "symbol": MySymbol
             });
             expect(jimple.get("symbol")).to.equal(jimple.get("symbol"));
         });
         it("should not cache values of factories", function() {
             let jimple = new Jimple();
-            jimple.set("symbol", jimple.factory(Symbol));
+            jimple.set("symbol", jimple.factory(MySymbol));
             expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
         });
         it("should return raw values of protected closures", function() {
             let jimple = new Jimple();
-            jimple.set("symbol", jimple.protect(Symbol));
-            expect(jimple.get("symbol")).to.equal(Symbol);
+            jimple.set("symbol", jimple.protect(MySymbol));
+            expect(jimple.get("symbol")).to.equal(MySymbol);
         });
     });
     describe("#set()", function() {
@@ -149,7 +149,7 @@ describe("Jimple", function() {
         });
         it("should return raw services", function() {
             let jimple = new Jimple();
-            jimple.set("symbol", Symbol);
+            jimple.set("symbol", MySymbol);
             jimple.set("age", function() {
                 return 19
             });
@@ -159,7 +159,7 @@ describe("Jimple", function() {
             expect(jimple.raw("age")).to.be.a("function");
             expect(jimple.raw("age")()).to.equal(19);
             expect(jimple.get("symbol")).to.equal(jimple.get("symbol"));
-            expect(jimple.raw("symbol")).to.equal(Symbol);
+            expect(jimple.raw("symbol")).to.equal(MySymbol);
         });
     });
     describe("#factory()", function() {
@@ -175,7 +175,7 @@ describe("Jimple", function() {
         it("should not throw exceptions if function is passed in", function() {
             let jimple = new Jimple();
             expect(function() {
-                jimple.factory(Symbol)
+                jimple.factory(MySymbol)
             }).to.not.throw();
             expect(function() {
                 jimple.factory(function(){
@@ -188,7 +188,7 @@ describe("Jimple", function() {
             var fn = function() {
                 return "xpto"
             };
-            expect(jimple.factory(Symbol)).to.equal(Symbol);
+            expect(jimple.factory(MySymbol)).to.equal(MySymbol);
             expect(jimple.factory(fn)).to.equal(fn);
         });
     });
@@ -205,7 +205,7 @@ describe("Jimple", function() {
         it("should not throw exceptions if function is passed in", function() {
             let jimple = new Jimple();
             expect(function() {
-                jimple.protect(Symbol)
+                jimple.protect(MySymbol)
             }).to.not.throw();
             expect(function() {
                 jimple.protect(function(){
@@ -218,7 +218,7 @@ describe("Jimple", function() {
             var fn = function() {
                 return "xpto"
             };
-            expect(jimple.protect(Symbol)).to.equal(Symbol);
+            expect(jimple.protect(MySymbol)).to.equal(MySymbol);
             expect(jimple.protect(fn)).to.equal(fn);
         });
     });
@@ -380,15 +380,15 @@ describe("Jimple", function() {
         });
     });
     describe('#provider', function() {
-      it("should register a provider created by the shorthand static method", function() {
-        let jimple = new Jimple();
-        var called = false;
-        var provider = Jimple.provider(function(app) {
-            expect(app).to.equal(jimple);
-            called = true;
+        it("should register a provider created by the shorthand static method", function() {
+            let jimple = new Jimple();
+            var called = false;
+            var provider = Jimple.provider(function(app) {
+                expect(app).to.equal(jimple);
+                called = true;
+            });
+            jimple.register(provider);
+            expect(called).to.be.ok;
         });
-        jimple.register(provider);
-        expect(called).to.be.ok;
-      });
     });
 });

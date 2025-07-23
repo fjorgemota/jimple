@@ -1,15 +1,14 @@
-// Karma configuration
-// Generated on Thu Feb 25 2016 16:35:31 GMT-0300 (BRT)
-var fs = require("fs");
+const fs = require("fs");
+
 module.exports = function(config) {
-  var babelrc = JSON.parse(fs.readFileSync("./.babelrc").toString());
-  var plugins = babelrc['plugins']||[];
-  var index;
+  const babelrc = JSON.parse(fs.readFileSync("./.babelrc").toString());
+  const plugins = babelrc['plugins']||[];
+  let index;
   if ((index = plugins.indexOf("transform-es2015-modules-umd")) !== -1) {
     plugins.splice(index, 1); // Will remove umd in babel because we're running on Browserify
   }
   babelrc['plugins'] = plugins;
-  var configuration = {
+  const configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -22,8 +21,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/babel-polyfill/dist/polyfill.js',
-      'test/*.js' // Will include Jimple automatically
+      'node_modules/@babel/polyfill/dist/polyfill.js',
+      'test/*.js', // Will include Jimple automatically
+      {
+        pattern: '**/*.js.map',
+        included: false
+      }
     ],
 
 
@@ -73,7 +76,7 @@ module.exports = function(config) {
     browserify: {
         transform: [['babelify', babelrc]],
         debug: true,
-        require: "babel-polyfill"
+        require: "@babel/polyfill"
     },
     customLaunchers: {
       Chrome_travis_ci: {
