@@ -2,10 +2,9 @@
   "presets": [
       ["env", {
         "targets": {
-          "node": "4.0",
-	  "browsers": [ ">0.25%" ]
+          "node": "22.0",
+	      "browsers": [ "not dead"]
         }
       }]
-   ] ,
-  "plugins": ["transform-es2015-modules-umd"]
+   ]
 }
