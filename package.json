@@ -1,12 +1,20 @@
 {
   "name": "jimple",
+  "type": "module",
   "version": "1.5.0",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
-  "main": "src/Jimple.js",
+  "source": "src/Jimple.js",
+  "exports": {
+    "require": "./dist/Jimple.cjs",
+    "default": "./dist/Jimple.modern.js"
+  },
+  "main": "./dist/Jimple.cjs",
+  "module": "./dist/Jimple.module.js",
+  "umd:main": "./dist/Jimple.umd.js",
   "browser": "dist/Jimple.js",
   "runkitExampleFilename": "example.js",
   "scripts": {
-    "build-for-browser": "babel -d dist src/ && uglifyjs --compress --mangle -o dist/Jimple.min.js dist/Jimple.js",
+    "build-for-browser": "microbundle",
     "test": "npm run size && npm run test:node && npm run test:browser:firefox && npm run test:browser:chrome",
     "publish-codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "publish-codacy": "codacy-coverage < coverage/lcov.info",
@@ -62,12 +70,10 @@
     "documentation": "^14.0.3",
     "gh-pages": "^6.3.0",
     "istanbul": "^0.4.5",
-    "phantomjs-prebuilt": "^2.1.16",
+    "microbundle": "^0.15.1",
     "playwright": "^1.54.1",
     "size-limit": "^11.2.0",
-    "uglify-js": "^3.19.3",
-    "vitest": "^3.2.4",
-    "watchify": "^4.0.0"
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=4.0.0"
