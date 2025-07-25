@@ -31,6 +31,3 @@ jobs:
         if: success()
         run: npm run publish-codeclimate
 
-      - name: Publish Codacy report
-        if: success()
-        run: npm run publish-codacy
