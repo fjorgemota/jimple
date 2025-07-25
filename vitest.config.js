@@ -14,7 +14,8 @@ export default defineConfig({
     },
     coverage: {
       provider: "istanbul",
-      include: ["src/*.js"]
+      include: ["src/*.js"],
+      reporter: ["lcov", "html"]
     },
   },
 })
