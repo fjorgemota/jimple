@@ -12,5 +12,9 @@ export default defineConfig({
         { browser: 'firefox' },
       ],
     },
+    coverage: {
+      provider: "istanbul",
+      include: ["src/*.js"]
+    },
   },
 })
