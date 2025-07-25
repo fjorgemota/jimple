@@ -169,4 +169,4 @@ class Jimple {
     }
 }
 
-module.exports = Jimple;
+export default Jimple;
