@@ -2,7 +2,7 @@
   "presets": [
       ["env", {
         "targets": {
-          "node": "22.0",
+          "node": "20.0",
 	      "browsers": [ "not dead"]
         }
       }]
