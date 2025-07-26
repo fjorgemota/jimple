@@ -27,8 +27,8 @@ Good projects have good features. And because this here's the list of features t
 - Stable API;
 - No dependencies (in nodejs, in browser we need a shim);
 - No module loader integrated - You can use **any** module loader you want;
-- [Fully tested](https://travis-ci.org/fjorgemota/jimple) on each commit;
-- [100% code coverage](https://codeclimate.com/github/fjorgemota/jimple/coverage);
+- [Fully tested](https://github.com/fjorgemota/jimple/actions/workflows/test.yml) on each commit;
+- 100% code coverage;
 - Fully Documented;
 - Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
 - ~1KB minified and gzipped - **Tested** on CI using [size-limit](https://github.com/ai/size-limit);
