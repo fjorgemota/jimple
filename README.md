@@ -1,7 +1,6 @@
 # Jimple
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/fjorgemota/jimple.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/fjorgemota/jimple.svg)](https://travis-ci.org/fjorgemota/jimple)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fjorgemota/jimple/test.yml)
 [![npm](https://img.shields.io/npm/v/jimple.svg)](http://npmjs.org/package/jimple/)
 [![npm](https://img.shields.io/npm/dt/jimple.svg)](http://npmjs.org/package/jimple/)
 [![node](https://img.shields.io/node/v/jimple.svg)](http://npmjs.org/package/jimple)
