@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  test:
+  docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,4 +22,4 @@ jobs:
         run: npm run doc
 
       - name: Publish documentation
-        run: npm run publish-docs
+        run: npm run publish-doc
