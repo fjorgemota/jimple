@@ -21,5 +21,10 @@ jobs:
       - name: Generate documentation
         run: npm run doc
 
+      - name: Set up Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
       - name: Publish documentation
         run: npm run publish-doc
