@@ -16,7 +16,6 @@
   "scripts": {
     "build": "microbundle",
     "test": "npm run size && npm run test:node && npm run test:browser",
-    "publish-codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "doc": "documentation build src/** -f html -o docs",
     "publish-doc": "npm run doc && gh-pages -d docs",
     "size": "size-limit",
@@ -60,7 +59,6 @@
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-istanbul": "^3.2.4",
     "babel-cli": "^6.26.0",
-    "codeclimate-test-reporter": "^0.5.1",
     "documentation": "^14.0.3",
     "gh-pages": "^6.3.0",
     "microbundle": "^0.15.1",

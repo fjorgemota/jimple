@@ -5,10 +5,6 @@
 [![npm](https://img.shields.io/npm/v/jimple.svg)](http://npmjs.org/package/jimple/)
 [![npm](https://img.shields.io/npm/dt/jimple.svg)](http://npmjs.org/package/jimple/)
 [![node](https://img.shields.io/node/v/jimple.svg)](http://npmjs.org/package/jimple)
-[![Codacy Badge](https://api.codacy.com/project/badge/1f3ecae240a747d090bef0340251f57c)](https://www.codacy.com/app/fjorgemota/jimple)
-[![Code Climate](https://codeclimate.com/github/fjorgemota/jimple/badges/gpa.svg)](https://codeclimate.com/github/fjorgemota/jimple)
-[![Test Coverage](https://codeclimate.com/github/fjorgemota/jimple/badges/coverage.svg)](https://codeclimate.com/github/fjorgemota/jimple/coverage)
-[![Issue Count](https://codeclimate.com/github/fjorgemota/jimple/badges/issue_count.svg)](https://codeclimate.com/github/fjorgemota/jimple)
 [![](https://data.jsdelivr.com/v1/package/npm/jimple/badge)](https://www.jsdelivr.com/package/npm/jimple)
 
 This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for NodeJS and for browsers using features provided by ES6.

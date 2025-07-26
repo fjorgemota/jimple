@@ -29,8 +29,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-      - name: Publish Code Climate report
-        if: success()
-        run: npm run publish-codeclimate
-
