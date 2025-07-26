@@ -7,385 +7,282 @@
 [![node](https://img.shields.io/node/v/jimple.svg)](http://npmjs.org/package/jimple)
 [![](https://data.jsdelivr.com/v1/package/npm/jimple/badge)](https://www.jsdelivr.com/package/npm/jimple)
 
-This project is a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for NodeJS and for browsers using features provided by ES6.
+This project is a port of the [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node.js and browsers using ES6 features.
 
-All the code is tested using Mocha and seems to be stable. Below is the documentation for the project:
+All code is tested using `vitest` and considered stable. Below is the documentation:
 
 ## Features
 
-Good projects have good features. And because this here's the list of features that Jimple supports:
+Good projects have good features. Here's what Jimple supports:
 
-- Define services;
-- Define factories;
-- Define parameters easily;
-- Defining services/parameters/factories from another files - because you should be able to split your configuration easily;
-- Simple API;
-- Runs on NodeJS and on browser;
-- Allows extending services easily;
-- Allow to get the raw service creator easily;
-- Pure Javascript;
-- Stable API;
-- No dependencies (in nodejs, in browser we need a shim);
-- No module loader integrated - You can use **any** module loader you want;
-- [Fully tested](https://github.com/fjorgemota/jimple/actions/workflows/test.yml) on each commit;
-- 100% code coverage;
-- Fully Documented;
-- Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
-- ~1KB minified and gzipped - **Tested** on CI using [size-limit](https://github.com/ai/size-limit);
-- I already said that it have a really Simple API? :)
+* Define services;
+* Define factories;
+* Define parameters easily;
+* Define services/parameters/factories from separate files — so you can split your configuration easily;
+* Simple API;
+* Runs on Node.js and in the browser;
+* Allows extending services easily;
+* Allows access to raw service creators;
+* Pure JavaScript;
+* Stable API;
+* No dependencies (in Node.js; in the browser, a shim is required);
+* No built-in module loader — use **any** loader you prefer;
+* [Fully tested](https://github.com/fjorgemota/jimple/actions/workflows/test.yml) on every commit;
+* 100% code coverage;
+* Fully documented;
+* Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
+* \~1KB minified and gzipped — **tested** on CI using [size-limit](https://github.com/ai/size-limit);
+* Did I mention it has a really simple API? :)
 
-### Testing without installing anything
+### Try it Online
 
-If you liked that features, feel free to test Jimple **free** on a NodeJS environment without installing anything on your machine by using [Runkit](https://npm.runkit.com/jimple). Give it a try. :)
+If you liked these features, feel free to test Jimple in a Node.js environment without installing anything by using [RunKit](https://npm.runkit.com/jimple). Give it a try! :)
 
 ## Installation
 
-The installation of this package is very simple: In fact, it can be installed by just running:
+Install via npm:
 
 ```
-    npm install --save jimple
+npm install --save jimple
 ```
 
-If using NodeJS (this installs the package based purely on ES 6), or:
-
-```
-    bower install --save jimple
-```
-
-If you want to use this package in the browser. You can also use the version provided by a CDN, like [JSDelivr](https://www.jsdelivr.com/package/npm/jimple). So you can paste the code below on a page and start using Jimple really fast:
+You can also use a CDN like [JSDelivr](https://www.jsdelivr.com/package/npm/jimple). Just include the following in your HTML:
 
 ```html
-<script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
 ```
 
-**WARNING**: Please note that the code above uses always the latest version of Jimple. In production, please replace *latest* with a [valid version number from the Releases page](https://github.com/fjorgemota/jimple/releases) or use Bower or NPM to install a fixed version for you. =)
-
-Note that the browser version of this library uses a version compiled by [Babel](http://babeljs.io). And because this, and because browsers does not have great support to `Map` and `Set` yet, you will need to load [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) (or some other similar polyfill that implements `Map` and `Set` support) **before** loading this package on the browser.
+**WARNING**: The snippet above always loads the latest version. For production, replace *latest* with a [specific version](https://github.com/fjorgemota/jimple/releases) or install via `npm`.
 
 ## Usage
 
-Creating a Jimple Container is just a matter of creating a Jimple instance:
+To create a container:
 
 ```js
-var Jimple = require("jimple");
-
-var container = new Jimple();
+const Jimple = require("jimple");
+const container = new Jimple();
 ```
 
-In the browser, you can load Jimple using various ways:
+In the browser:
 
-- AMD
+### AMD
 
 ```js
-    define(["jimple"], function(Jimple) {
-        // Code using Jimple here..
-    });
+define(["jimple"], function(Jimple) {
+  // Use Jimple here
+});
 ```
 
-- CommonJS/Browserify:
+### CommonJS/Browserify
 
 ```js
-    var Jimple = require("jimple");
+const Jimple = require("jimple");
 ```
 
-- Script tag:
+### Script tag
 
 ```html
-    <script language="javascript" src="path/to/Jimple.js"></script>
+<script src="path/to/Jimple.js"></script>
 ```
 
-Again, it's important to note that Jimple needs of a polyfill to Map and Set classes - which are not supported by all the latest browsers actually - to do so, you can choice between some options, like [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) for example.
+Note: Jimple requires a polyfill for `Map` and `Set` if targeting older browsers. [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) is a good option.
 
-Jimple, as Pimple and many other dependency injections containers, manage two different kind of data: **services** and **parameters**.
+Jimple manages two types of data: **services** and **parameters**.
 
-## Defining services
+## Defining Services
 
-As Pimple describes, a service is an object that does something as part of a larger system. Examples of services: a database connection, a templating engine, or a mailer. Almost any global object can be a service.
+As in Pimple, a service is an object that performs a task within a system — e.g., a DB connection or mailer.
 
-Services in Jimple (and in Pimple too!) are defined by anonymous functions that return an instance of an object. Note that, in Jimple, you cannot use a generator as a service, as they will be detected as parameters, so, just **pure** functions can be a service. Different from Pimple, however, here we need to call the method `set()` on Jimple container, as Proxies in NodeJS seems to not be stable:
+Define services using functions:
 
 ```js
-// define some services
 container.set('session_storage', function (c) {
-    return new SessionStorage('SESSION_ID');
+  return new SessionStorage('SESSION_ID');
 });
 
 container.set('session', function (c) {
-    return new Session(c.get('session_storage'));
+  return new Session(c.get('session_storage'));
 });
 ```
 
-Notice that the anonymous function that define a service has access to the current container instance, allowing references to other services or parameters.
-
-The objects are created on demand, just when you get them. The order of the definitions does not matter.
-
-Using the defined services is very easy, too:
+Service functions receive the container instance. They are lazy-loaded when first accessed, and order of definition doesn't matter.
 
 ```js
-// get the session object
-var session = container.get('session');
-
-// the above call is roughly equivalent to the following code:
-// var storage = new SessionStorage('SESSION_ID');
-// var session = new Session(storage);
+const session = container.get('session');
 ```
 
-## Defining factory services
+## Factory Services
 
-By default, when you get a service, Jimple automatically cache it's value, returning always the **same instance** of it. If you want a different instance to be returned for all calls, wrap your anonymous function with the `factory()` method:
+By default, services are cached. To return a **new instance** each time:
 
 ```js
 container.set('session', container.factory(function (c) {
-    return new Session(c.get('session_storage'));
+  return new Session(c.get('session_storage'));
 }));
 ```
 
-Now, each time you call `container.get('session')`, a new instance of `Session` is returned for you.
+## Parameters
 
-## Defining parameters
-
-Defining a parameter allows to ease the configuration of your container from the outside and to store global values. In Jimple, parameters are defined as anything that it's not a function:
+Anything that's not a function is treated as a parameter:
 
 ```js
-// define a parameter called cookie_name
 container.set('cookie_name', 'SESSION_ID');
 ```
 
-If you change the `session_storage` service definition like below:
+You can use parameters inside services:
 
 ```js
 container.set('session_storage', function (c) {
-    return new SessionStorage(c.get('cookie_name'));
+  return new SessionStorage(c.get('cookie_name'));
 });
 ```
 
-You can now easily change the cookie name by overriding the `cookie_name` parameter instead of redefining the service definition.
-
-### Defining parameters based on environment variables (NodeJS only)
-
-Do you wanna do define parameters in the container based on environment variables? It's okay! You can define it easily like that:
+### Environment-Based Parameters (Node.js)
 
 ```js
-//define parameter based on environment variable
 container.set('cookie_name', process.env.COOKIE_NAME);
 ```
 
-## Optional/Default parameters/services
+## Optional/Default Parameters
 
-Not all services need all the services or parameters always, and you may do well with a default value for an parameter or service. In this case, you can do something like that:
+You can fallback to default values:
 
 ```js
 container.set('session_storage', function (c) {
-    return new SessionStorage(c.has('cookie_name') ? c.get('cookie_name') : 'COOKIE_ID');
+  return new SessionStorage(c.has('cookie_name') ? c.get('cookie_name') : 'COOKIE_ID');
 });
 ```
 
-In this example, if the parameter `cookie_name` does not exist, the SessionStorage will be instantiated with the default `'COOKIE_ID'`, and this works for services too. :)
+## Protecting Functions
 
-
-## Protecting parameters
-
-Because Jimple see anything that is a function as a service, you need to wrap anonymous functions with the `protect()` method to store them as parameters:
+Functions are treated as services. To store a function as a parameter:
 
 ```js
 container.set('random_func', container.protect(function () {
-    return Math.random();
+  return Math.random();
 }));
 ```
 
-## Modifying Services after Definition
+## Extending Services
 
-In some cases you may want to modify a **service definition** (note that you cannot extend a parameter, including protected parameters) after it has been defined. You can use the `extend()` method to define additional code to be run on your service just after it is created:
+To add behavior to a service after creation:
 
 ```js
-container.set('session_storage', function (c) {
-    return new SessionStorage(c.get('cookie_name'));
-});
-
 container.extend('session_storage', function (storage, c) {
-    storage.someMethod();
-
-    return storage;
+  storage.someMethod();
+  return storage;
 });
 ```
 
-The first argument is the name of the service to extend, the second a function that gets access to the object instance and the container.
+> Parameters and protected functions cannot be extended.
 
-## Extending a Container
+## Using Providers
 
-If you use the same libraries over and over, you might want to reuse some services from one project to the next one; package your services into a provider by implementing the following object structure by duck-typing:
-
-```js
-var provider = {
-	"register": function(c) {
-		// Define your services and parameters here
-	}
-}
-```
-
-Because JS has no support to interfaces yet, we cannot validate too much the structure of the provider.
-
-After creating a object with that structure, you can register it in the container:
+You can modularize configuration by creating provider objects:
 
 ```js
+const provider = {
+  register(container) {
+    // define services/parameters
+  }
+};
+
 container.register(provider);
 ```
 
-### Extending a container from a file (NodeJS/Browserify only)
-
-If you want to split your container's configuration (so each file is more..simple and specific), you can create multiple files like that:
-
-**file1.js:**
+### Providers from Files (Node.js/Browserify)
 
 ```js
+// file1.js
 module.exports.register = function(container) {
-    // Define your services and parameters here
-}
+  // define stuff
+};
+
+container.register(require("./file1"));
 ```
 
-To load the package, you can do something like:
+You can even use an `index.js` to organize modules:
 
 ```js
-container.register(require("./file1"))
-```
-
-You can, inclusive, create **directories** with container's configuration, by doing something like that:
-
-**xpto/file1.js:**
-
-```js
+// xpto/index.js
 module.exports.register = function(container) {
-    // Define your services and parameters here
-}
-```
-
-**xpto/file2.js:**
-
-```js
-module.exports.register = function(container) {
-    // Define your services and parameters here
-}
-```
-
-**xpto/index.js:**
-
-```js
-module.exports.register = function(container) {
-    container.register(require("./file1"));
-    container.register(require("./file2"));   
-}
-```
-
-And, finally, in some file creating the container:
-
-```js
-container.register(require("./xpto"));
-```
-
-Note that the **index.js** file is loaded first on **xpto** directory, and that **index.js** file loads the files **file1.js** and **file2.js** present on that directory. You can do that for any number of directories. :)
-
-### Extending a container using the shorthand function
-
-You can use the exported `provider` shorthand method to easily create your container's configuration with a simple callback:
-
-```js
-const { provider } = require('jimple');
-
-module.exports = provider((container) => {
-    // Define your services and parameters here
-});
-```
-
-It can be used exact same way as the previous method (from a file), but it also can be used to export multiple configurations at the same time:
-
-```js
-const { provider } = require('jimple');
-
-module.exports = {
-    configurationA: provider((container) => { ... }),
-    configurationB: provider((container) => { ... }),
+  container.register(require("./file1"));
+  container.register(require("./file2"));
 };
 ```
 
-## Fetching the Service Creation Function
+### Shorthand Provider Function
 
-When you access an object, Jimple automatically calls the anonymous function that you defined, which creates the service object for you. If you want to get raw access to this function, but don't want to `protect()` that service, you can use the `raw()` method to access the function directly:
+```js
+const { provider } = require("jimple");
+
+module.exports = provider((container) => {
+  // define things
+});
+```
+
+You can also export multiple providers:
+
+```js
+module.exports = {
+  configA: provider((c) => {}),
+  configB: provider((c) => {})
+};
+```
+
+## Accessing Raw Functions
 
 ```js
 container.set('session', function (c) {
-    return new Session(c.get('session_storage'));
+  return new Session(c.get('session_storage'));
 });
 
-var sessionFunction = container.raw('session');
+const sessionFn = container.raw('session');
 ```
 
-## Proxy - ES6
+## Proxy Mode (ES6)
 
-In ES6, we can use a Proxy object to define custom behavior for some fundamental operations ([see more here clicking here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)). That allows us to customize Jimple to have a experience very near from that provided by Pimple, which can get services and parameters directly without calling `get()` or set services and parameters without calling `set()`.
-
-However, for access that mode you cannot use the *Jimple* constructor, but a static method called `proxy()`. So, the code below:
+To avoid calling `.get()` and `.set()` manually, use:
 
 ```js
 const container = Jimple.proxy();
 
-container['session_storage'] = function (c) {
-    return new SessionStorage('SESSION_ID');
-};
-
-container['session'] = function (c) {
-    return new Session(c['session_storage']);
-};
+container['session'] = (c) => new Session(c['session_storage']);
 ```
 
-Is in fact equivalent to that:
+Equivalent to:
 
 ```js
 const container = new Jimple();
-
-container.set('session_storage', function (c) {
-    return new SessionStorage('SESSION_ID');
-});
-
-container.set('session', function (c) {
-    return new Session(c.get('session_storage'));
-});
+container.set('session', (c) => new Session(c.get('session_storage')));
 ```
 
-Please note that the `proxy()` method can receive a parameter, like the `Jimple` constructor. So you can note that:
+Note: `proxy()` can accept a config object:
 
 ```js
-const container = Jimple.proxy({"SESSION_ID": "test"});
+Jimple.proxy({ SESSION_ID: 'test' });
 ```
 
-Is in fact equivalent for:
+⚠️ **Proxy is not supported in all environments**. It's safe in Node.js (v6+), but avoid it in older browsers.
+
+Also, avoid overwriting method names like `set` or `get`:
 
 ```js
-const container = new Jimple({"SESSION_ID": "test"});
+container.set = 42; // ❌ Throws
 ```
 
-By the way, observe that *Proxy* is an API that's not really supported everywhere (it's supported in NodeJS >= 6, for example). So we do not recommend it's use in browser environments, for example.
+## Extending Jimple (Customization)
 
-Of course, this option has some limitations: basically, you **CANNOT** use certain names like the names of the methods available in the container as names of your services/parameters. So something like:
-
-```js
-const container = Jimple.proxy();
-container.set = 42;
-```
-
-Is forbidden and throws an exception automatically.
-
-## Last, but not least important: Customization
-
-Do you wanna to customize Jimple's functionally? You can! Just extend it using ES6's class syntax:
+You can subclass Jimple using ES6 classes:
 
 ```js
-var Jimple = require("jimple");
+const Jimple = require("jimple");
 
-class ABigContainer extends Jimple {
-    // Overwrite any of Jimple's method here, or add new methods
+class MyContainer extends Jimple {
+  // override methods or add your own
 }
 
-var container = new ABigContainer();
+const container = new MyContainer();
 ```
 
-Good customization. :)
+Happy customizing! 🎉
