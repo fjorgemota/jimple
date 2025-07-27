@@ -38,7 +38,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
     return prototype === null || prototype === Object.prototype;
 }
 
-function checkDefined<TMap, TKey extends keyof TMap>(
+function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
     container: Jimple<TMap>,
     key: TKey
 ): void {
@@ -71,7 +71,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     constructor(values?: Partial<InitialServiceMap<TMap, Jimple<TMap>>>) {
         if (isPlainObject(values)) {
             Object.keys(values).forEach((key) => {
-                this.set(key as keyof TMap, values[key]);
+                const value = values[key as keyof TMap];
+                if (!!value)  {
+                    this.set(key as keyof TMap, value);
+                }
             });
         }
     }
