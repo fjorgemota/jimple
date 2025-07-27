@@ -78,6 +78,12 @@ define(["jimple"], function(Jimple) {
 const Jimple = require("jimple");
 ```
 
+### ES6 Modules
+
+```js
+import Jimple from "jimple";
+```
+
 ### Script tag
 
 ```html
