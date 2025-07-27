@@ -268,6 +268,52 @@ Also, avoid overwriting method names like `set` or `get`:
 container.set = 42; // ❌ Throws
 ```
 
+# Typescript Support
+
+Jimple is fully typed with TypeScript. You can use it in your TypeScript projects without any issues, and define an interface for your services and parameters, like this:
+
+```ts
+import Jimple from "jimple";
+interface ServiceParameters {
+    session_storage: SessionStorage;
+    session: Session;
+    session_max_age: number;
+}
+const container = new Jimple<ServiceParameters>({
+    session_storage: (c) => new SessionStorage(c.get('session_max_age')),
+    session: (c) => new Session(c.get('session_storage')),
+    session_max_age: 3600,
+});
+const session: Session = container.get('session'); // works just fine
+const session2: SessionStorage = container.get('session'); // fails at compile time
+```
+
+However, for using Proxy mode, you'll want to construct the object using the `create` static method:
+
+```ts
+import Jimple from "jimple";
+interface ServiceParameters {
+    session_storage: SessionStorage;
+    session: Session;
+    session_max_age: number;
+}
+const container = Jimple.create({
+  session_storage: (c) => new SessionStorage(c.session_max_age),
+  session: (c) => new Session(c.session_storage),
+  session_max_age: 3600,
+});
+const session : Session = container.session; // works just fine
+const session2: SessionStorage = container.session; // fails at compile time
+```
+
+Due to TypeScript limitations, you won't be able to set properties directly on the container like `container.session = ...`. Instead, you should use the `set` method:
+
+```ts
+container.set('session', (c) => new Session(c.session_storage));
+```
+
+You can set properties normally in JS, this is just a TypeScript limitation thanks to how it handles types with proxies.
+
 ## Extending Jimple (Customization)
 
 You can subclass Jimple using ES6 classes:
