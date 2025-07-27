@@ -29,7 +29,7 @@ Good projects have good features. Here's what Jimple supports:
 * [Fully tested](https://github.com/fjorgemota/jimple/actions/workflows/test.yml) on every commit;
 * 100% code coverage;
 * Fully documented;
-* Less than [300 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.js);
+* Less than [200 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.ts);
 * \~1KB minified and gzipped — **tested** on CI using [size-limit](https://github.com/ai/size-limit);
 * Did I mention it has a really simple API? :)
 
