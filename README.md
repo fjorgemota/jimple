@@ -247,28 +247,20 @@ const sessionFn = container.raw('session');
 
 ## Proxy Mode (ES6)
 
-To avoid calling `.get()` and `.set()` manually, use:
+Since v2.0, you can avoid using `get` and `set` methods by using a proxy object. This allows you to access services as properties:
 
 ```js
-const container = Jimple.proxy();
+const container = new Jimple();
 
 container['session'] = (c) => new Session(c['session_storage']);
 ```
 
-Equivalent to:
+Which is equivalent to:
 
 ```js
 const container = new Jimple();
 container.set('session', (c) => new Session(c.get('session_storage')));
 ```
-
-Note: `proxy()` can accept a config object:
-
-```js
-Jimple.proxy({ SESSION_ID: 'test' });
-```
-
-⚠️ **Proxy is not supported in all environments**. It's safe in Node.js (v6+), but avoid it in older browsers.
 
 Also, avoid overwriting method names like `set` or `get`:
 
