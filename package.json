@@ -19,8 +19,8 @@
     "doc": "documentation build src/** -f html -o docs",
     "size": "npm run build && size-limit",
     "lint": "eslint src/Jimple.js",
-    "test:browser": "vitest --run --reporter dot",
-    "test:node": "vitest --run --browser.enabled=false --reporter dot --coverage",
+    "test:browser": "vitest --run",
+    "test:node": "vitest --run --browser.enabled=false --coverage",
     "test:watch": "vitest --browser.enabled=false"
   },
   "repository": {
