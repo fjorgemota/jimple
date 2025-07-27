@@ -24,7 +24,7 @@ Good projects have good features. Here's what Jimple supports:
 * Allows access to raw service creators;
 * Pure JavaScript;
 * Stable API;
-* No dependencies (in Node.js; in the browser, a shim is required);
+* No dependencies (in Node.js; in very old browser, a shim might be required);
 * No built-in module loader — use **any** loader you prefer;
 * [Fully tested](https://github.com/fjorgemota/jimple/actions/workflows/test.yml) on every commit;
 * 100% code coverage;
