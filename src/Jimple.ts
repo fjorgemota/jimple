@@ -53,7 +53,7 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
 /**
  * The Jimple Container class with TypeScript support
  */
-export class Jimple<TMap extends ServiceMap = ServiceMap> {
+export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     private _items: Record<string, unknown> = {};
     private _instances = new Map<Function, unknown>();
     private _factories = new Set<Function>();
@@ -181,5 +181,3 @@ export class Jimple<TMap extends ServiceMap = ServiceMap> {
         return this._items[key as string] as ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, this>;
     }
 }
-
-export default Jimple;
