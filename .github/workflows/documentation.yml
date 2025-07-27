@@ -15,6 +15,15 @@ jobs:
         with:
           node-version: 20
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+            ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install --no-audit
 
