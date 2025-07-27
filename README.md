@@ -22,7 +22,7 @@ Good projects have good features. Here's what Jimple supports:
 * Runs on Node.js and in the browser;
 * Allows extending services easily;
 * Allows access to raw service creators;
-* Pure JavaScript;
+* Fully typed with TypeScript;
 * Stable API;
 * No dependencies (in Node.js; in very old browser, a shim might be required);
 * No built-in module loader — use **any** loader you prefer;
