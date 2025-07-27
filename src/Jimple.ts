@@ -14,6 +14,10 @@ type ServiceType<TMap, TKey extends keyof TMap> = TMap[TKey];
 
 type InitialServiceMap<TMap, TContainer> = {[TKey in keyof TMap]: TMap[TKey] |  ServiceFactory<ServiceType<TMap, TKey>, TContainer>};
 
+export type JimpleWithProxy<TMap extends ServiceMap> = Jimple<TMap> & {
+    readonly [TKey in keyof TMap]: ServiceType<TMap, TKey>;
+};
+
 function assert(ok: boolean, message: string): asserts ok {
     if (!ok) {
         throw new Error(message);
@@ -54,10 +58,11 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
  * The Jimple Container class with TypeScript support
  */
 export default class Jimple<TMap extends ServiceMap = ServiceMap> {
-    private _items: Record<string, unknown> = {};
-    private _instances = new Map<Function, unknown>();
-    private _factories = new Set<Function>();
-    private _protected = new Set<Function>();
+    private readonly _items: Record<string, unknown> = {};
+    private readonly _instances = new Map<Function, unknown>();
+    private readonly _factories = new Set<Function>();
+    private readonly _protected = new Set<Function>();
+    private readonly _bind : JimpleWithProxy<TMap>;
 
     static provider<TContainer>(
         register: (container: TContainer) => void
@@ -65,18 +70,96 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
         return { register };
     }
 
+    static create<TMap extends ServiceMap = ServiceMap>(
+        values?: Partial<InitialServiceMap<TMap, JimpleWithProxy<TMap>>>
+    ): JimpleWithProxy<TMap> {
+        return new this<TMap>(values) as JimpleWithProxy<TMap>;
+    }
+
     /**
      * Create a Jimple Container.
      */
-    constructor(values?: Partial<InitialServiceMap<TMap, Jimple<TMap>>>) {
+    constructor(values?: Partial<InitialServiceMap<TMap, JimpleWithProxy<TMap>>>) {
         if (isPlainObject(values)) {
             Object.keys(values).forEach((key) => {
                 const value = values[key as keyof TMap];
-                if (!!value)  {
+                if (typeof value !== "undefined")  {
                     this.set(key as keyof TMap, value);
                 }
             });
         }
+
+        this._bind = new Proxy(this, {
+            get(target: Jimple<TMap>, prop: string | symbol): any {
+                // Se a propriedade existe na classe (métodos como set, get, has, etc.)
+                if (prop in target && typeof prop === 'string') {
+                    const value = (target as any)[prop];
+                    if (isFunction(value)) {
+                        return value.bind(target);
+                    }
+                }
+
+                // Caso contrário, tenta buscar como service
+                if (target.has(prop as keyof TMap)) {
+                    return target.get(prop as keyof TMap);
+                }
+
+                return undefined;
+            },
+
+            set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {
+                // Se a propriedade existe na classe (métodos como set, get, has, etc.)
+                if (prop in target && typeof prop === 'string') {
+                    const value = (target as any)[prop];
+                    if (isFunction(value)) {
+                        throw new Error(`Cannot set method '${prop}' directly. Use the method 'set' to set this value instead.`);
+                    }
+                }
+                target.set(prop as keyof TMap, value);
+                return true;
+            },
+
+            has(target: Jimple<TMap>, prop: string | symbol): boolean {
+                // Verifica se é uma propriedade da classe
+                if (prop in target) {
+                    return true;
+                }
+
+                // Verifica se é um service registrado
+                if (typeof prop === 'string') {
+                    return target.has(prop as keyof TMap);
+                }
+
+                return false;
+            },
+
+            ownKeys(target: Jimple<TMap>): ArrayLike<string | symbol> {
+                // Retorna tanto as propriedades da classe quanto os services
+                const classKeys = Object.getOwnPropertyNames(target);
+                const serviceKeys = target.keys().map(k => String(k));
+                return [...new Set([...classKeys, ...serviceKeys])];
+            },
+
+            getOwnPropertyDescriptor(target: Jimple<TMap>, prop: string | symbol) {
+                // Se é uma propriedade da classe
+                if (prop in target) {
+                    return Object.getOwnPropertyDescriptor(target, prop);
+                }
+
+                // Se é um service
+                if (typeof prop === 'string' && target.has(prop as keyof TMap)) {
+                    return {
+                        enumerable: true,
+                        configurable: true,
+                        get: () => target.get(prop as keyof TMap),
+                        set: (value: any) => target.set(prop as keyof TMap, value)
+                    };
+                }
+
+                return undefined;
+            }
+        }) as JimpleWithProxy<TMap>;
+        return this._bind;
     }
 
     /**
@@ -92,7 +175,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
             } else if (this._instances.has(item)) {
                 return this._instances.get(item) as ServiceType<TMap, TKey>;
             } else {
-                const obj = (item as ServiceFactory<ServiceType<TMap, TKey>, this>)(this);
+                const obj = (item as ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>)(this._bind);
                 if (!this._factories.has(item)) {
                     this._instances.set(item, obj);
                 }
@@ -108,7 +191,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
      */
     set<TKey extends keyof TMap>(
         key: TKey,
-        value: ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, this>
+        value: ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>
     ): void {
         this._items[key as string] = value;
     }
@@ -148,10 +231,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
      */
     extend<TKey extends keyof TMap, TResult extends ServiceType<TMap, TKey>>(
         key: TKey,
-        fn: ServiceExtender<TResult, this>
+        fn: ServiceExtender<TResult, JimpleWithProxy<TMap>>
     ): void {
         checkDefined(this, key);
-        const originalItem = this._items[key as string] as ServiceFactory<TResult, this>;
+        const originalItem = this._items[key as string] as ServiceFactory<TResult,  JimpleWithProxy<TMap>>;
 
         assert(
             isFunction(originalItem) && !this._protected.has(originalItem),
@@ -159,8 +242,8 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
         );
         assert(isFunction(fn), `The 'new' service definition for '${String(key)}' is not a invokable object.`);
 
-        this._items[key as string] = (app: this) => {
-            return fn(originalItem(app), app);
+        this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
+            return fn(originalItem(app), this._bind);
         };
 
         if (this._factories.has(originalItem)) {
@@ -172,15 +255,15 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     /**
      * Uses a provider to extend the service
      */
-    register(provider: Provider<this>): void {
-        provider.register(this);
+    register(provider: Provider<JimpleWithProxy<TMap>>): void {
+        provider.register(this._bind);
     }
 
     /**
      * Returns the raw value of a service or parameter
      */
-    raw<TKey extends keyof TMap>(key: TKey): ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, this> {
+    raw<TKey extends keyof TMap>(key: TKey): ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>> {
         checkDefined(this, key);
-        return this._items[key as string] as ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, this>;
+        return this._items[key as string] as ServiceType<TMap, TKey> | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>;
     }
 }

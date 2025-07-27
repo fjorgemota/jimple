@@ -1,6 +1,6 @@
 "use strict";
 import { describe, it, expect } from "vitest";
-import  Jimple from "./Jimple.js";
+import Jimple, {JimpleWithProxy} from "./Jimple";
 
 describe("Jimple", function() {
     describe("#constructor()", function() {
@@ -382,10 +382,11 @@ describe("Jimple", function() {
     });
     describe("#register()", function() {
         it("should call register() method on object", function() {
-            let jimple = new Jimple();
+            interface EmptyServiceMap {}
+            let jimple = new Jimple<EmptyServiceMap>();
             var called = false;
             var provider = {
-                "register": function(app) {
+                "register": function(app: Jimple) {
                     expect(app).toBe(jimple);
                     called = true;
                 }
@@ -475,7 +476,7 @@ describe("Jimple", function() {
             expect(jimple.get("age")).toBe(22);
         });
     });
-    describe('#provider', function() {
+    describe('#provider()', function() {
       it("should register a provider created by the shorthand static method", function() {
         let jimple = new Jimple();
         var called = false;
@@ -487,4 +488,99 @@ describe("Jimple", function() {
         expect(called).to.be.ok;
       });
     });
+    describe("#proxy", function() {
+        it("should allows accessing parameters as properties", function() {
+            interface ParameterServiceMap {
+                "name": string,
+                "age": number
+            }
+            let jimple = Jimple.create<ParameterServiceMap>({
+                "name": "xpto",
+                "age": 19
+            });
+            expect(jimple.name).toBe("xpto");
+            expect(jimple.age).toBe(19);
+        });
+        it("should allows accessing services as properties", function() {
+            interface ParameterServiceMap {
+                "age": number,
+                "one": number,
+                "nextAge": number
+            }
+            let jimple = Jimple.create<ParameterServiceMap>({
+                "age": () => 19,
+                "one": 1,
+                "nextAge": (j) => j.age + j.one
+            });
+            expect(jimple.nextAge).toBe(20);
+        });
+        it("should allow setting services and properties after initialization", function() {
+            interface ParameterServiceMap {
+                "age": number,
+                "one": number,
+                "nextAge": number
+            }
+            let jimple = Jimple.create<ParameterServiceMap>();
+            // @ts-ignore
+            jimple.age = () => 19;
+            // @ts-ignore
+            jimple.one = 1;
+            // @ts-ignore
+            jimple.nextAge = (j) => j.age + j.one;
+            expect(jimple.nextAge).toBe(20);
+        });
+        it("should throw an error when trying to set a method", function() {
+            let jimple = Jimple.create();
+            expect(function() {
+                // @ts-ignore
+                jimple.keys = () => [];
+            }).to.throw();
+        });
+        it("should support protect()", function() {
+            interface ParameterServiceMap {
+                "age": number,
+                "one": number,
+                "nextAge": number
+            }
+            const v = (j : JimpleWithProxy<ParameterServiceMap>) => j.age + j.one;
+            let jimple = Jimple.create<ParameterServiceMap>();
+            // @ts-ignore
+            jimple.age = () => 19;
+            // @ts-ignore
+            jimple.one = 1;
+            // @ts-ignore
+            jimple.nextAge = jimple.protect(v);
+            expect(jimple.nextAge).toBe(v);
+        });
+        it("should support factory()", function() {
+            interface SymbolServiceMap {
+                "symbol": () => symbol,
+                "cachedSymbol": () => symbol,
+            }
+            let jimple = Jimple.create<SymbolServiceMap>();
+            // @ts-ignore
+            jimple.symbol = jimple.factory(Symbol);
+            expect(jimple.symbol).to.not.equal(jimple.symbol);
+            expect(jimple.cachedSymbol).to.equal(jimple.cachedSymbol);
+        });
+
+        it("should support raw()", function() {
+            interface ParameterServiceMap {
+                "age": number,
+                "one": number,
+                "nextAge": number
+            }
+            const v = (j : JimpleWithProxy<ParameterServiceMap>) => j.age + j.one;
+            let jimple = Jimple.create<ParameterServiceMap>();
+            // @ts-ignore
+            jimple.age = () => 19;
+            // @ts-ignore
+            jimple.one = 1;
+            // @ts-ignore
+            jimple.nextAge = v;
+            expect(jimple.nextAge).toBe(20);
+            expect(jimple.raw("nextAge")).toBe(v);
+        });
+
+    })
 });
