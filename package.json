@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.5.0",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
-  "source": "src/Jimple.js",
+  "source": "src/Jimple.ts",
   "exports": {
     "require": "./dist/Jimple.cjs",
     "default": "./dist/Jimple.modern.js"
@@ -17,7 +17,7 @@
     "build": "microbundle",
     "test": "npm run size && npm run test:node && npm run test:browser",
     "doc": "documentation build src/** -f html -o docs",
-    "size": "size-limit",
+    "size": "npm run build && size-limit",
     "lint": "eslint src/Jimple.js",
     "test:browser": "vitest --run --reporter dot",
     "test:node": "vitest --run --browser.enabled=false --reporter dot --coverage",
@@ -48,7 +48,7 @@
   "homepage": "https://github.com/fjorgemota/jimple#readme",
   "size-limit": [
     {
-      "path": "src/Jimple.js",
+      "path": "dist/Jimple.umd.js",
       "limit": "1 KB"
     }
   ],
@@ -62,6 +62,7 @@
     "microbundle": "^0.15.1",
     "playwright": "^1.54.1",
     "size-limit": "^11.2.0",
+    "typescript": "^5.8.3",
     "vite": "^7.0.6",
     "vitest": "^3.2.4"
   },
