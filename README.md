@@ -31,6 +31,7 @@ Good projects have good features. Here's what Jimple supports:
 * Fully documented;
 * Less than [200 SLOC](https://github.com/fjorgemota/jimple/blob/master/src/Jimple.ts);
 * \~1KB minified and gzipped — **tested** on CI using [size-limit](https://github.com/ai/size-limit);
+* Supports [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) for a more Pimple-like API;
 * Did I mention it has a really simple API? :)
 
 ## Installation
