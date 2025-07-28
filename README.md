@@ -33,10 +33,6 @@ Good projects have good features. Here's what Jimple supports:
 * \~1KB minified and gzipped — **tested** on CI using [size-limit](https://github.com/ai/size-limit);
 * Did I mention it has a really simple API? :)
 
-### Try it Online
-
-If you liked these features, feel free to test Jimple in a Node.js environment without installing anything by using [RunKit](https://npm.runkit.com/jimple). Give it a try! :)
-
 ## Installation
 
 Install via npm:
