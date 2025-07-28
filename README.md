@@ -268,7 +268,7 @@ Also, avoid overwriting method names like `set` or `get`:
 container.set = 42; // ❌ Throws
 ```
 
-# Typescript Support
+## Typescript Support
 
 Jimple is fully typed with TypeScript. You can use it in your TypeScript projects without any issues, and define an interface for your services and parameters, like this:
 
