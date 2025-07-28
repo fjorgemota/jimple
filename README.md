@@ -64,12 +64,11 @@ const container = new Jimple();
 
 In the browser:
 
-### AMD
+
+### ES6 Modules
 
 ```js
-define(["jimple"], function(Jimple) {
-  // Use Jimple here
-});
+import Jimple from "jimple";
 ```
 
 ### CommonJS/Browserify
@@ -78,16 +77,18 @@ define(["jimple"], function(Jimple) {
 const Jimple = require("jimple");
 ```
 
-### ES6 Modules
+### AMD
 
 ```js
-import Jimple from "jimple";
+define(["jimple"], function(Jimple) {
+  // Use Jimple here
+});
 ```
 
 ### Script tag
 
 ```html
-<script src="path/to/Jimple.js"></script>
+<script src="path/to/Jimple.umd.js"></script>
 ```
 
 Note: Jimple requires a polyfill for `Map` and `Set` if targeting older browsers. [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) is a good option.
@@ -262,18 +263,25 @@ const container = new Jimple();
 container.set('session', (c) => new Session(c.get('session_storage')));
 ```
 
-Also, avoid overwriting method names like `set` or `get`:
+Note, however, that you can't overwrite method names like `set` or `get`:
 
 ```js
 container.set = 42; // ❌ Throws
 ```
+
+And that, if you try to get a property/service/parameter that doesn't exist, it will throw an error:
+
+```js
+const container = new Jimple();
+container.non_existent; // ❌ Throws
+```
+
 
 ## Typescript Support
 
 Jimple is fully typed with TypeScript. You can use it in your TypeScript projects without any issues, and define an interface for your services and parameters, like this:
 
 ```ts
-import Jimple from "jimple";
 interface ServiceParameters {
     session_storage: SessionStorage;
     session: Session;
@@ -291,7 +299,6 @@ const session2: SessionStorage = container.get('session'); // fails at compile t
 However, for using Proxy mode, you'll want to construct the object using the `create` static method:
 
 ```ts
-import Jimple from "jimple";
 interface ServiceParameters {
     session_storage: SessionStorage;
     session: Session;
