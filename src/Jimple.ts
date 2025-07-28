@@ -111,13 +111,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
             return value.bind(target);
           }
         }
-
-        // Caso contrário, tenta buscar como service
-        if (target.has(prop as keyof TMap)) {
-          return target.get(prop as keyof TMap);
-        }
-
-        return undefined;
+        return target.get(prop as keyof TMap);
       },
 
       set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {

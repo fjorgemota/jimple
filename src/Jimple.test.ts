@@ -113,7 +113,7 @@ describe("Jimple", function () {
         symbol: () => symbol;
       }
       const jimple = new Jimple<SymbolServiceMap>({
-        symbol: Symbol,
+        symbol: () => Symbol(),
       });
       expect(jimple.get("symbol")).toBe(jimple.get("symbol"));
     });
@@ -122,7 +122,7 @@ describe("Jimple", function () {
         symbol: () => symbol;
       }
       const jimple = new Jimple<SymbolServiceMap>();
-      jimple.set("symbol", jimple.factory(Symbol));
+      jimple.set("symbol", jimple.factory(() => Symbol()));
       expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
     });
     it("should return raw values of protected closures", function () {
@@ -196,7 +196,8 @@ describe("Jimple", function () {
         symbol: () => symbol;
       }
       const jimple = new Jimple<RawServiceMap>();
-      jimple.set("symbol", Symbol);
+      const s = () => Symbol();
+      jimple.set("symbol", s);
       jimple.set("age", function () {
         return 19;
       });
@@ -207,7 +208,7 @@ describe("Jimple", function () {
       expect(rawAge).to.be.a("function");
       expect((rawAge as Function)()).toBe(19);
       expect(jimple.get("symbol")).toBe(jimple.get("symbol"));
-      expect(jimple.raw("symbol")).toBe(Symbol);
+      expect(jimple.raw("symbol")).toBe(s);
     });
   });
   describe("#factory()", function () {
@@ -522,6 +523,14 @@ describe("Jimple", function () {
       });
       expect(jimple.nextAge).toBe(20);
     });
+    it("Should throw an error when trying to access non-existent key", function () {
+        interface EmptyServiceMap {}
+        const jimple = Jimple.create<EmptyServiceMap>();
+        expect(function () {
+            // @ts-ignore
+            jimple.nonExistentKey;
+        }).to.throw();
+    })
     it("should allow setting services and properties after initialization", function () {
       interface ParameterServiceMap {
         age: number;
@@ -567,7 +576,9 @@ describe("Jimple", function () {
       }
       const jimple = Jimple.create<SymbolServiceMap>();
       // @ts-ignore
-      jimple.symbol = jimple.factory(Symbol);
+      jimple.symbol = jimple.factory(() => Symbol());
+      // @ts-ignore
+      jimple.cachedSymbol = () => Symbol();
       expect(jimple.symbol).to.not.equal(jimple.symbol);
       expect(jimple.cachedSymbol).to.equal(jimple.cachedSymbol);
     });
