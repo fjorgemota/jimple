@@ -5,12 +5,12 @@ import Jimple, { JimpleWithProxy } from "./Jimple";
 describe("Jimple", function () {
   describe("#constructor()", function () {
     it("should support passing no parameters", function () {
-      let jimple = new Jimple();
+      const jimple = new Jimple();
       expect(jimple).to.be.an.instanceof(Jimple);
       expect(jimple.keys()).to.be.empty;
     });
     it("should support passing some parameters", function () {
-      let jimple = new Jimple({
+      const jimple = new Jimple({
         name: "xpto",
         age: 19,
       });
@@ -24,7 +24,7 @@ describe("Jimple", function () {
         n: number;
         n2: number;
       }
-      let jimple = new Jimple<NServiceMap>({
+      const jimple = new Jimple<NServiceMap>({
         n2: function (app) {
           return app.get("n") + 1;
         },
@@ -43,7 +43,7 @@ describe("Jimple", function () {
         n: number;
         n2: number;
       }
-      let jimple = new Jimple<NServiceMap>({
+      const jimple = new Jimple<NServiceMap>({
         n2: function (app) {
           return app.get("n") + 1;
         },
@@ -59,7 +59,7 @@ describe("Jimple", function () {
   describe("#get()", function () {
     it("should throw an exception when getting non existent key", function () {
       interface EmptyServiceMap {}
-      let jimple = new Jimple<EmptyServiceMap>();
+      const jimple = new Jimple<EmptyServiceMap>();
       expect(function () {
         // @ts-ignore
         jimple.get("non-existent-key");
@@ -70,7 +70,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>({
+      const jimple = new Jimple<ParameterServiceMap>({
         age: 19,
         name: "xpto",
       });
@@ -81,13 +81,13 @@ describe("Jimple", function () {
       interface GeneratorServiceMap {
         age: () => Generator<number>;
       }
-      let jimple = new Jimple<GeneratorServiceMap>({
+      const jimple = new Jimple<GeneratorServiceMap>({
         age: function* () {
           yield 19;
         },
       });
       expect(jimple.get("age")).to.not.equal(19);
-      let it = jimple.get("age")();
+      const it = jimple.get("age")();
       expect(it.next()).to.eql({
         value: 19,
         done: false,
@@ -101,7 +101,7 @@ describe("Jimple", function () {
       interface ParameterServiceMap {
         age: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>({
+      const jimple = new Jimple<ParameterServiceMap>({
         age: function () {
           return 19;
         },
@@ -112,7 +112,7 @@ describe("Jimple", function () {
       interface SymbolServiceMap {
         symbol: () => symbol;
       }
-      let jimple = new Jimple<SymbolServiceMap>({
+      const jimple = new Jimple<SymbolServiceMap>({
         symbol: Symbol,
       });
       expect(jimple.get("symbol")).toBe(jimple.get("symbol"));
@@ -121,7 +121,7 @@ describe("Jimple", function () {
       interface SymbolServiceMap {
         symbol: () => symbol;
       }
-      let jimple = new Jimple<SymbolServiceMap>();
+      const jimple = new Jimple<SymbolServiceMap>();
       jimple.set("symbol", jimple.factory(Symbol));
       expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
     });
@@ -129,7 +129,7 @@ describe("Jimple", function () {
       interface SymbolServiceMap {
         symbol: () => Symbol;
       }
-      let jimple = new Jimple<SymbolServiceMap>();
+      const jimple = new Jimple<SymbolServiceMap>();
       jimple.set("symbol", jimple.protect(Symbol));
       expect(jimple.get("symbol")).toBe(Symbol);
     });
@@ -140,7 +140,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", 19);
       jimple.set("name", "xpto");
       expect(jimple.keys()).toContain("age");
@@ -153,7 +153,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", function () {
         return 19;
       });
@@ -171,7 +171,7 @@ describe("Jimple", function () {
   describe("#raw()", function () {
     it("should throw an exception when getting non existent key", function () {
       interface EmptyServiceMap {}
-      let jimple = new Jimple<EmptyServiceMap>();
+      const jimple = new Jimple<EmptyServiceMap>();
       expect(function () {
         // @ts-ignore
         jimple.raw("non-existent-key");
@@ -182,7 +182,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", 19);
       jimple.set("name", "xpto");
       expect(jimple.keys()).toContain("age");
@@ -195,7 +195,7 @@ describe("Jimple", function () {
         age: number;
         symbol: () => symbol;
       }
-      let jimple = new Jimple<RawServiceMap>();
+      const jimple = new Jimple<RawServiceMap>();
       jimple.set("symbol", Symbol);
       jimple.set("age", function () {
         return 19;
@@ -212,7 +212,7 @@ describe("Jimple", function () {
   });
   describe("#factory()", function () {
     it("should throw exception if parameter is passed in", function () {
-      let jimple = new Jimple();
+      const jimple = new Jimple();
       expect(function () {
         // @ts-ignore
         jimple.factory(19);
@@ -223,7 +223,7 @@ describe("Jimple", function () {
       }).to.throw();
     });
     it("should not throw exceptions if function is passed in", function () {
-      let jimple = new Jimple();
+      const jimple = new Jimple();
       expect(function () {
         jimple.factory(Symbol);
       }).to.not.throw();
@@ -234,8 +234,8 @@ describe("Jimple", function () {
       }).to.not.throw();
     });
     it("should return unmodified function", function () {
-      let jimple = new Jimple();
-      var fn = function () {
+      const jimple = new Jimple();
+      const fn = function () {
         return "xpto";
       };
       expect(jimple.factory(Symbol)).toBe(Symbol);
@@ -244,7 +244,7 @@ describe("Jimple", function () {
   });
   describe("#protect()", function () {
     it("should throw exception if parameter is passed in", function () {
-      let jimple = new Jimple();
+      const jimple = new Jimple();
       expect(function () {
         // @ts-ignore
         jimple.protect(19);
@@ -255,7 +255,7 @@ describe("Jimple", function () {
       }).to.throw();
     });
     it("should not throw exceptions if function is passed in", function () {
-      let jimple = new Jimple();
+      const jimple = new Jimple();
       expect(function () {
         jimple.protect(Symbol);
       }).to.not.throw();
@@ -266,8 +266,8 @@ describe("Jimple", function () {
       }).to.not.throw();
     });
     it("should return unmodified function", function () {
-      let jimple = new Jimple();
-      var fn = function () {
+      const jimple = new Jimple();
+      const fn = function () {
         return "xpto";
       };
       expect(jimple.protect(Symbol)).toBe(Symbol);
@@ -280,7 +280,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.keys()).to.be.empty;
       jimple.set("age", 19);
       expect(jimple.keys()).toContain("age");
@@ -295,7 +295,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.keys()).to.be.empty;
       jimple.set("age", function () {
         return 19;
@@ -314,7 +314,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.keys()).to.be.empty;
       jimple.set("age", 19);
       expect(jimple.keys()).toContain("age");
@@ -333,7 +333,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.has("age")).to.not.be.ok;
       expect(jimple.has("name")).to.not.be.ok;
       jimple.set("age", 19);
@@ -348,7 +348,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.has("age")).to.not.be.ok;
       expect(jimple.has("name")).to.not.be.ok;
       jimple.set("age", function () {
@@ -367,7 +367,7 @@ describe("Jimple", function () {
         age: number;
         name: string;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       expect(jimple.has("age")).to.not.be.ok;
       expect(jimple.has("name")).to.not.be.ok;
       jimple.set("age", 19);
@@ -383,9 +383,9 @@ describe("Jimple", function () {
   describe("#register()", function () {
     it("should call register() method on object", function () {
       interface EmptyServiceMap {}
-      let jimple = new Jimple<EmptyServiceMap>();
-      var called = false;
-      var provider = {
+      const jimple = new Jimple<EmptyServiceMap>();
+      let called = false;
+      const provider = {
         register: function (app: Jimple) {
           expect(app).toBe(jimple);
           called = true;
@@ -398,7 +398,7 @@ describe("Jimple", function () {
   describe("#extend()", function () {
     it("should throw an error on non-existent key", function () {
       interface EmptyServiceMap {}
-      let jimple = new Jimple<EmptyServiceMap>();
+      const jimple = new Jimple<EmptyServiceMap>();
       expect(function () {
         // @ts-ignore
         jimple.extend("not-found-key", function () {});
@@ -408,7 +408,7 @@ describe("Jimple", function () {
       interface ParameterServiceMap {
         age: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", 19);
       expect(function () {
         jimple.extend("age", function (): number {
@@ -420,7 +420,7 @@ describe("Jimple", function () {
       interface ParameterServiceMap {
         theAnswer: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set(
         "theAnswer",
         jimple.protect(function () {
@@ -437,7 +437,7 @@ describe("Jimple", function () {
       interface ParameterServiceMap {
         age: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", function () {
         return 19;
       });
@@ -451,7 +451,7 @@ describe("Jimple", function () {
         age: number;
         one: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
+      const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", function () {
         return 19;
       });
@@ -467,8 +467,8 @@ describe("Jimple", function () {
         age: number;
         one: number;
       }
-      let jimple = new Jimple<ParameterServiceMap>();
-      var counter = 0;
+      const jimple = new Jimple<ParameterServiceMap>();
+      let counter = 0;
       jimple.set(
         "age",
         jimple.factory(function () {
@@ -486,9 +486,9 @@ describe("Jimple", function () {
   });
   describe("#provider()", function () {
     it("should register a provider created by the shorthand static method", function () {
-      let jimple = new Jimple();
-      var called = false;
-      var provider = Jimple.provider(function (app) {
+      const jimple = new Jimple();
+      let called = false;
+      const provider = Jimple.provider(function (app) {
         expect(app).toBe(jimple);
         called = true;
       });
@@ -502,7 +502,7 @@ describe("Jimple", function () {
         name: string;
         age: number;
       }
-      let jimple = Jimple.create<ParameterServiceMap>({
+      const jimple = Jimple.create<ParameterServiceMap>({
         name: "xpto",
         age: 19,
       });
@@ -515,7 +515,7 @@ describe("Jimple", function () {
         one: number;
         nextAge: number;
       }
-      let jimple = Jimple.create<ParameterServiceMap>({
+      const jimple = Jimple.create<ParameterServiceMap>({
         age: () => 19,
         one: 1,
         nextAge: (j) => j.age + j.one,
@@ -528,7 +528,7 @@ describe("Jimple", function () {
         one: number;
         nextAge: number;
       }
-      let jimple = Jimple.create<ParameterServiceMap>();
+      const jimple = Jimple.create<ParameterServiceMap>();
       // @ts-ignore
       jimple.age = () => 19;
       // @ts-ignore
@@ -538,7 +538,7 @@ describe("Jimple", function () {
       expect(jimple.nextAge).toBe(20);
     });
     it("should throw an error when trying to set a method", function () {
-      let jimple = Jimple.create();
+      const jimple = Jimple.create();
       expect(function () {
         // @ts-ignore
         jimple.keys = () => [];
@@ -551,7 +551,7 @@ describe("Jimple", function () {
         nextAge: number;
       }
       const v = (j: JimpleWithProxy<ParameterServiceMap>) => j.age + j.one;
-      let jimple = Jimple.create<ParameterServiceMap>();
+      const jimple = Jimple.create<ParameterServiceMap>();
       // @ts-ignore
       jimple.age = () => 19;
       // @ts-ignore
@@ -565,7 +565,7 @@ describe("Jimple", function () {
         symbol: () => symbol;
         cachedSymbol: () => symbol;
       }
-      let jimple = Jimple.create<SymbolServiceMap>();
+      const jimple = Jimple.create<SymbolServiceMap>();
       // @ts-ignore
       jimple.symbol = jimple.factory(Symbol);
       expect(jimple.symbol).to.not.equal(jimple.symbol);
@@ -579,7 +579,7 @@ describe("Jimple", function () {
         nextAge: number;
       }
       const v = (j: JimpleWithProxy<ParameterServiceMap>) => j.age + j.one;
-      let jimple = Jimple.create<ParameterServiceMap>();
+      const jimple = Jimple.create<ParameterServiceMap>();
       // @ts-ignore
       jimple.age = () => 19;
       // @ts-ignore
