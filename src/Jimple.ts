@@ -135,11 +135,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
         }
 
         // Verifica se é um service registrado
-        if (typeof prop === "string") {
-          return target.has(prop as keyof TMap);
-        }
-
-        return false;
+        return target.has(prop as keyof TMap);
       },
 
       ownKeys(target: Jimple<TMap>): ArrayLike<string | symbol> {

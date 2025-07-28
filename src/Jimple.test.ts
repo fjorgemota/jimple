@@ -553,6 +553,49 @@ describe("Jimple", function () {
         jimple.keys = () => [];
       }).to.throw();
     });
+    it("should be able to check if a property exists", function () {
+      interface ParameterServiceMap {
+        name: string;
+      }
+      const jimple = Jimple.create<ParameterServiceMap>({
+        name: "xpto"
+      })
+      expect("set" in jimple).toBe(true);
+      expect("name" in jimple).toBe(true);
+      expect("age" in jimple).toBe(false);
+    })
+    it("should be able to list keys", function () {
+        interface ParameterServiceMap {
+            name: string;
+            age: number;
+        }
+        const jimple = Jimple.create<ParameterServiceMap>({
+            name: "xpto",
+            age: 19
+        })
+        expect(Object.keys(jimple)).toContain("name");
+        expect(Object.keys(jimple)).toContain("age");
+    })
+    it("should return property descriptor for properties", function () {
+      interface ParameterServiceMap {
+        name: string;
+      }
+      const jimple = Jimple.create<ParameterServiceMap>({
+        name: "xpto",
+      });
+      const setDescriptor = Object.getOwnPropertyDescriptor(jimple, "set");
+      expect(setDescriptor).to.be.undefined;
+      const nameDescriptor = Object.getOwnPropertyDescriptor(jimple, "name");
+      expect(nameDescriptor).toBeDefined();
+      expect(nameDescriptor?.get).toBeDefined();
+      expect(nameDescriptor?.get!()).toBe("xpto");
+      nameDescriptor?.set!("name");
+      expect(nameDescriptor?.get!()).toBe("name");
+      expect(nameDescriptor?.enumerable).toBe(true);
+      expect(nameDescriptor?.configurable).toBe(true);
+      const nonExistentDescriptor = Object.getOwnPropertyDescriptor(jimple, "non_existent_key");
+      expect(nonExistentDescriptor).to.be.undefined;
+    });
     it("should support protect()", function () {
       interface ParameterServiceMap {
         age: number;
@@ -582,7 +625,6 @@ describe("Jimple", function () {
       expect(jimple.symbol).to.not.equal(jimple.symbol);
       expect(jimple.cachedSymbol).to.equal(jimple.cachedSymbol);
     });
-
     it("should support raw()", function () {
       interface ParameterServiceMap {
         age: number;
