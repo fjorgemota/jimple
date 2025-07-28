@@ -52,15 +52,7 @@ You can also use a CDN like [JSDelivr](https://www.jsdelivr.com/package/npm/jimp
 
 ## Usage
 
-To create a container:
-
-```js
-const Jimple = require("jimple");
-const container = new Jimple();
-```
-
-In the browser:
-
+To create a container, first import it. You can use different methods depending on your environment:
 
 ### ES6 Modules
 
@@ -88,7 +80,13 @@ define(["jimple"], function(Jimple) {
 <script src="path/to/Jimple.umd.js"></script>
 ```
 
-Note: Jimple requires a polyfill for `Map` and `Set` if targeting older browsers. [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) is a good option.
+Then, create a new container instance:
+
+```js
+const container = new Jimple();
+```
+
+Note: Jimple requires a polyfill for `Map` and `Set` if targeting very old browsers. [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) is a good option.
 
 Jimple manages two types of data: **services** and **parameters**.
 
