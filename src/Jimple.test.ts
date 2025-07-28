@@ -97,6 +97,18 @@ describe("Jimple", function () {
         done: true,
       });
     });
+    it("should treat async function as parameters", async function (ctx) {
+      interface GeneratorServiceMap {
+        age: Promise<number>;
+      }
+      const jimple = new Jimple<GeneratorServiceMap>({
+        age: async function () {
+          return 19;
+        },
+      });
+      expect(jimple.get("age")).to.not.equal(19);
+      expect(await jimple.get("age")).to.equal(19);
+    });
     it("should support getting services", function () {
       interface ParameterServiceMap {
         age: number;
@@ -515,11 +527,13 @@ describe("Jimple", function () {
         age: number;
         one: number;
         nextAge: number;
+        notDefined: undefined;
       }
       const jimple = Jimple.create<ParameterServiceMap>({
         age: () => 19,
         one: 1,
         nextAge: (j) => j.age + j.one,
+        notDefined: undefined,
       });
       expect(jimple.nextAge).toBe(20);
     });
@@ -529,6 +543,10 @@ describe("Jimple", function () {
         expect(function () {
             // @ts-ignore
             jimple.nonExistentKey;
+        }).to.throw();
+        expect(function () {
+          // @ts-ignore
+          jimple._items;
         }).to.throw();
     })
     it("should allow setting services and properties after initialization", function () {
@@ -546,11 +564,15 @@ describe("Jimple", function () {
       jimple.nextAge = (j) => j.age + j.one;
       expect(jimple.nextAge).toBe(20);
     });
-    it("should throw an error when trying to set a method", function () {
+    it("should throw an error when trying to set a method or private parameter", function () {
       const jimple = Jimple.create();
       expect(function () {
         // @ts-ignore
         jimple.keys = () => [];
+      }).to.throw();
+      expect(function () {
+        // @ts-ignore
+        jimple._items = 42;
       }).to.throw();
     });
     it("should be able to check if a property exists", function () {

@@ -1,4 +1,3 @@
-// Tipos utilitários
 type ServiceFactory<T, TContainer> = (container: TContainer) => T;
 type ServiceExtender<T, TContainer> = (original: T, container: TContainer) => T;
 
@@ -6,10 +5,8 @@ interface Provider<TContainer> {
   register: (container: TContainer) => void;
 }
 
-// Interface que define o mapeamento de chaves para tipos
 interface ServiceMap {}
 
-// Tipos condicionais para extrair o tipo correto
 type ServiceType<TMap, TKey extends keyof TMap> = TMap[TKey];
 
 type InitialServiceMap<TMap, TContainer> = {
@@ -104,7 +101,6 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
 
     this._bind = new Proxy(this, {
       get(target: Jimple<TMap>, prop: string | symbol): any {
-        // Se a propriedade existe na classe (métodos como set, get, has, etc.)
         if (prop in target && typeof prop === "string") {
           const value = (target as any)[prop];
           if (isFunction(value)) {
@@ -115,43 +111,34 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       },
 
       set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {
-        // Se a propriedade existe na classe (métodos como set, get, has, etc.)
         if (prop in target && typeof prop === "string") {
-          const value = (target as any)[prop];
-          if (isFunction(value)) {
-            throw new Error(
-              `Cannot set method '${prop}' directly. Use the method 'set' to set this value instead.`,
-            );
-          }
+          throw new Error(
+            `Cannot set method '${prop}' directly. Use the method 'set' to set this value instead.`,
+          );
         }
         target.set(prop as keyof TMap, value);
         return true;
       },
 
       has(target: Jimple<TMap>, prop: string | symbol): boolean {
-        // Verifica se é uma propriedade da classe
         if (prop in target) {
           return true;
         }
 
-        // Verifica se é um service registrado
         return target.has(prop as keyof TMap);
       },
 
       ownKeys(target: Jimple<TMap>): ArrayLike<string | symbol> {
-        // Retorna tanto as propriedades da classe quanto os services
         const classKeys = Object.getOwnPropertyNames(target);
         const serviceKeys = target.keys().map((k) => String(k));
         return [...new Set([...classKeys, ...serviceKeys])];
       },
 
       getOwnPropertyDescriptor(target: Jimple<TMap>, prop: string | symbol) {
-        // Se é uma propriedade da classe
         if (prop in target) {
           return Object.getOwnPropertyDescriptor(target, prop);
         }
 
-        // Se é um service
         if (typeof prop === "string" && target.has(prop as keyof TMap)) {
           return {
             enumerable: true,
