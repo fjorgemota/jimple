@@ -15,17 +15,17 @@ A lightweight, powerful dependency injection container for Node.js and browsers.
 - [Quick Start](#quick-start)
 - [Installation](#installation)
 - [Core Concepts](#core-concepts)
-    - [Services](#services)
-    - [Parameters](#parameters)
-    - [Factory Services](#factory-services)
+  - [Services](#services)
+  - [Parameters](#parameters)
+  - [Factory Services](#factory-services)
 - [Advanced Features](#advanced-features)
-    - [Protecting Functions](#protecting-functions)
-    - [Extending Services](#extending-services)
-    - [Optional Dependencies & Defaults](#optional-dependencies--defaults)
-    - [Raw Service Access](#raw-service-access)
-- [Modular Configuration with Providers](#modular-configuration-with-providers)
+  - [Protecting Functions](#protecting-functions)
+  - [Extending Services](#extending-services)
+  - [Optional Dependencies & Defaults](#optional-dependencies--defaults)
+  - [Raw Service Access](#raw-service-access)
 - [ES6 Proxy Mode](#es6-proxy-mode)
 - [TypeScript Support](#typescript-support)
+- [Modular Configuration with Providers](#modular-configuration-with-providers)
 - [API Reference](#api-reference)
 - [Real-World Example](#real-world-example)
 - [More Examples](#more-examples)
@@ -70,17 +70,148 @@ container.set('logger', (c) => {
   return {
     log: (msg) => console.log(`[${new Date().toISOString()}] ${msg}`)
   };
+```
+
+## ES6 Proxy Mode
+
+Use modern JavaScript syntax for a more natural API:
+
+```js
+const container = new Jimple();
+
+// Set services using property syntax
+container['logger'] = (c) => new Logger();
+container['userService'] = (c) => new UserService(c['logger']);
+
+// Access services as properties
+const userService = container.userService;
+```
+
+**Limitations:**
+- Can't overwrite built-in methods (`set`, `get`, etc.)
+- Accessing non-existent properties throws an error
+- TypeScript requires special handling (see below)
+
+## TypeScript Support
+
+Jimple provides full TypeScript support with interface definitions:
+
+### Basic TypeScript Usage
+
+```ts
+interface Services {
+  logger: Logger;
+  database: Database;
+  userService: UserService;
+  apiKey: string;
+}
+
+const container = new Jimple<Services>();
+
+container.set('apiKey', 'secret-key');
+container.set('logger', (c) => new Logger());
+container.set('database', (c) => new Database());
+container.set('userService', (c) => 
+  new UserService(c.get('logger'), c.get('database'))
+);
+
+// Type-safe access
+const userService: UserService = container.get('userService'); // ✅
+const wrong: Database = container.get('userService'); // ❌ Compile error
+```
+
+### TypeScript with Proxy Mode
+
+```ts
+interface Services {
+  logger: Logger;
+  userService: UserService;
+}
+
+const container = Jimple.create<Services>({
+  logger: (c) => new Logger(),
+  userService: (c) => new UserService(c.logger)
+});
+
+const userService: UserService = container.userService; // ✅ Type-safe
+```
+
+**Note**: Due to TypeScript limitations with proxies, you can't set properties directly. Use the `set` method instead:
+
+```ts
+container.set('newService', (c) => new Service()); // ✅ Works
+container.newService = (c) => new Service();       // ❌ TypeScript error
+```
+
+## Modular Configuration with Providers
+
+Organize your container configuration into reusable modules:
+
+### Basic Provider
+
+```js
+const databaseProvider = {
+  register(container) {
+    container.set('dbConfig', {
+      host: process.env.DB_HOST || 'localhost',
+      port: process.env.DB_PORT || 5432
+    });
+    
+    container.set('database', (c) => {
+      const config = c.get('dbConfig');
+      return new Database(config);
+    });
+  }
+};
+
+container.register(databaseProvider);
+```
+
+### File-based Providers (Node.js)
+
+```js
+// providers/database.js
+module.exports.register = function(container) {
+  container.set('database', (c) => new Database(c.get('dbConfig')));
+};
+
+// main.js
+container.register(require('./providers/database'));
+```
+
+### Provider Helper
+
+```js
+const { provider } = require("jimple");
+
+module.exports = provider((container) => {
+  container.set('apiService', (c) => new ApiService(c.get('apiConfig')));
+});
+```
+
+### Multiple Named Providers
+
+```js
+module.exports = {
+  database: provider((c) => {
+    c.set('database', () => new Database());
+  }),
+  cache: provider((c) => {
+    c.set('cache', () => new Cache());
+  })
+};
+```
 });
 
 // Define a service that depends on another
 container.set('userService', (c) => {
-  const logger = c.get('logger');
-  return {
-    createUser: (name) => {
-      logger.log(`Creating user: ${name}`);
-      return { id: Math.random(), name };
-    }
-  };
+const logger = c.get('logger');
+return {
+createUser: (name) => {
+logger.log(`Creating user: ${name}`);
+return { id: Math.random(), name };
+}
+};
 });
 
 // Use your services
@@ -229,6 +360,77 @@ container.set('database', (c) => new Database());
 const dbFactory = container.raw('database');
 const db1 = dbFactory(container);
 const db2 = dbFactory(container); // Create another instance manually
+```
+
+## ES6 Proxy Mode
+
+Use modern JavaScript syntax for a more natural API:
+
+```js
+const container = new Jimple();
+
+// Set services using property syntax
+container['logger'] = (c) => new Logger();
+container['userService'] = (c) => new UserService(c['logger']);
+
+// Access services as properties
+const userService = container.userService;
+```
+
+**Limitations:**
+- Can't overwrite built-in methods (`set`, `get`, etc.)
+- Accessing non-existent properties throws an error
+- TypeScript requires special handling (see below)
+
+## TypeScript Support
+
+Jimple provides full TypeScript support with interface definitions:
+
+### Basic TypeScript Usage
+
+```ts
+interface Services {
+  logger: Logger;
+  database: Database;
+  userService: UserService;
+  apiKey: string;
+}
+
+const container = new Jimple<Services>();
+
+container.set('apiKey', 'secret-key');
+container.set('logger', (c) => new Logger());
+container.set('database', (c) => new Database());
+container.set('userService', (c) => 
+  new UserService(c.get('logger'), c.get('database'))
+);
+
+// Type-safe access
+const userService: UserService = container.get('userService'); // ✅
+const wrong: Database = container.get('userService'); // ❌ Compile error
+```
+
+### TypeScript with Proxy Mode
+
+```ts
+interface Services {
+  logger: Logger;
+  userService: UserService;
+}
+
+const container = Jimple.create<Services>({
+  logger: (c) => new Logger(),
+  userService: (c) => new UserService(c.logger)
+});
+
+const userService: UserService = container.userService; // ✅ Type-safe
+```
+
+**Note**: Due to TypeScript limitations with proxies, you can't set properties directly. Use the `set` method instead:
+
+```ts
+container.set('newService', (c) => new Service()); // ✅ Works
+container.newService = (c) => new Service();       // ❌ TypeScript error
 ```
 
 ## Modular Configuration with Providers
@@ -472,19 +674,19 @@ You can create custom container classes:
 
 ```js
 class MyContainer extends Jimple {
-    constructor() {
-        super();
-        this.loadDefaultServices();
-    }
-
-    loadDefaultServices() {
-        this.set('logger', () => new DefaultLogger());
-    }
-
-    // Add custom methods
-    getLogger() {
-        return this.get('logger');
-    }
+  constructor() {
+    super();
+    this.loadDefaultServices();
+  }
+  
+  loadDefaultServices() {
+    this.set('logger', () => new DefaultLogger());
+  }
+  
+  // Add custom methods
+  getLogger() {
+    return this.get('logger');
+  }
 }
 
 const container = new MyContainer();
@@ -512,8 +714,8 @@ const userService = new UserService(logger, database);
 ```js
 container.set('logger', () => new Logger());
 container.set('database', (c) => new Database(c.get('config')));
-container.set('userService', (c) =>
-    new UserService(c.get('logger'), c.get('database'))
+container.set('userService', (c) => 
+  new UserService(c.get('logger'), c.get('database'))
 );
 ```
 
@@ -533,45 +735,45 @@ container.set('corsOrigins', process.env.CORS_ORIGINS?.split(',') ?? ['http://lo
 
 // Services
 container.set('app', (c) => {
-    const app = express();
-    app.use(express.json());
-    return app;
+  const app = express();
+  app.use(express.json());
+  return app;
 });
 
 container.set('cors', (c) => {
-    return (req, res, next) => {
-        const origin = req.headers.origin;
-        if (c.get('corsOrigins').includes(origin)) {
-            res.header('Access-Control-Allow-Origin', origin);
-        }
-        next();
-    };
+  return (req, res, next) => {
+    const origin = req.headers.origin;
+    if (c.get('corsOrigins').includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
+    next();
+  };
 });
 
 container.set('userController', (c) => {
-    return {
-        getUsers: (req, res) => res.json([{ id: 1, name: 'Alice' }]),
-        createUser: (req, res) => res.json({ id: 2, ...req.body })
-    };
+  return {
+    getUsers: (req, res) => res.json([{ id: 1, name: 'Alice' }]),
+    createUser: (req, res) => res.json({ id: 2, ...req.body })
+  };
 });
 
 // Setup routes
 container.set('server', (c) => {
-    const app = c.get('app');
-    const cors = c.get('cors');
-    const userController = c.get('userController');
-
-    app.use(cors);
-    app.get('/users', userController.getUsers);
-    app.post('/users', userController.createUser);
-
-    return app;
+  const app = c.get('app');
+  const cors = c.get('cors');
+  const userController = c.get('userController');
+  
+  app.use(cors);
+  app.get('/users', userController.getUsers);
+  app.post('/users', userController.createUser);
+  
+  return app;
 });
 
 // Start server
 const server = container.get('server');
 server.listen(container.get('port'), () => {
-    console.log(`Server running on port ${container.get('port')}`);
+  console.log(`Server running on port ${container.get('port')}`);
 });
 ```
 
@@ -586,7 +788,7 @@ container.set('userService', (c) => new UserService(c.get('emailService')));
 // Test container with mocks
 const testContainer = new Jimple();
 testContainer.set('emailService', () => ({
-    send: jest.fn().mockResolvedValue({ success: true })
+  send: jest.fn().mockResolvedValue({ success: true })
 }));
 testContainer.set('userService', (c) => new UserService(c.get('emailService')));
 
@@ -606,17 +808,17 @@ container.set('pluginManager', (c) => new PluginManager(c.get('eventBus')));
 
 // Plugin provider
 const analyticsPlugin = {
-    register(container) {
-        container.set('analytics', (c) => {
-            const analytics = new Analytics();
-            const eventBus = c.get('eventBus');
-
-            eventBus.on('user.created', (user) => analytics.track('user_signup', user));
-            eventBus.on('user.login', (user) => analytics.track('user_login', user));
-
-            return analytics;
-        });
-    }
+  register(container) {
+    container.set('analytics', (c) => {
+      const analytics = new Analytics();
+      const eventBus = c.get('eventBus');
+      
+      eventBus.on('user.created', (user) => analytics.track('user_signup', user));
+      eventBus.on('user.login', (user) => analytics.track('user_login', user));
+      
+      return analytics;
+    });
+  }
 };
 
 container.register(analyticsPlugin);
@@ -630,8 +832,8 @@ container.set('env', process.env.NODE_ENV ?? 'development');
 
 // Base configuration
 container.set('baseConfig', {
-    database: { poolSize: 10 },
-    cache: { ttl: 3600 }
+  database: { poolSize: 10 },
+  cache: { ttl: 3600 }
 });
 
 container.set('database', (c) => {
@@ -648,6 +850,65 @@ container.set('cache', (c) => {
     }
     return new MemoryCache();
 });
+```
+
+## Browser Compatibility
+
+Jimple works in all modern browsers. For older browsers, you may need polyfills for:
+- `Map` and `Set` (ES6)
+- `Proxy` (for proxy mode only)
+
+Consider using [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) for broad compatibility.
+
+## Extending Jimple
+
+You can create custom container classes:
+
+```js
+class MyContainer extends Jimple {
+  constructor() {
+    super();
+    this.loadDefaultServices();
+  }
+  
+  loadDefaultServices() {
+    this.set('logger', () => new DefaultLogger());
+  }
+  
+  // Add custom methods
+  getLogger() {
+    return this.get('logger');
+  }
+}
+
+const container = new MyContainer();
+```
+
+## Performance Tips
+
+- **Use factories sparingly** - Only when you truly need new instances
+- **Lazy load expensive services** - Services are created only when needed
+- **Organize with providers** - Split configuration into logical modules
+- **Avoid circular dependencies** - Design services to avoid circular references
+
+## Migration from Other DI Containers
+
+### From Manual Dependency Management
+
+**Before:**
+```js
+const logger = new Logger();
+const database = new Database(config);
+const userService = new UserService(logger, database);
+```
+
+**After:**
+```js
+container.set('logger', () => new Logger());
+container.set('database', (c) => new Database(c.get('config')));
+container.set('userService', (c) => 
+  new UserService(c.get('logger'), c.get('database'))
+);
 ```
 
 ## License
