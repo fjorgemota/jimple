@@ -32,6 +32,7 @@ A lightweight, powerful dependency injection container for Node.js and browsers.
 - [Extending Jimple](#extending-jimple)
 - [Performance Tips](#performance-tips)
 - [Migration from Other DI Containers](#migration-from-other-di-containers)
+- [Documentation](#documentation)
 
 ## Features
 
@@ -266,8 +267,8 @@ const container = new Jimple<Services>();
 container.set('apiKey', 'secret-key');
 container.set('logger', (c) => new Logger());
 container.set('database', (c) => new Database());
-container.set('userService', (c) => 
-  new UserService(c.get('logger'), c.get('database'))
+container.set('userService', (c) =>
+        new UserService(c.get('logger'), c.get('database'))
 );
 
 // Type-safe access
@@ -311,7 +312,7 @@ const databaseProvider = {
       host: process.env.DB_HOST ?? 'localhost',
       port: process.env.DB_PORT ?? 5432
     });
-    
+
     container.set('database', (c) => {
       const config = c.get('dbConfig');
       return new Database(config);
@@ -382,6 +383,10 @@ const provider = {
 };
 ```
 
+**📚 For complete API documentation with detailed examples, see the [full API reference](https://docs.jimple.dev)**
+
+**📚 For complete API documentation with detailed examples, see the [full API reference](https://docs.jimple.dev)**
+
 ## Real-World Example
 
 Here's a more comprehensive example showing how to structure a web application:
@@ -419,8 +424,8 @@ container.set('userRepository', (c) => {
 
 container.set('userService', (c) => {
   return new UserService(
-    c.get('userRepository'),
-    c.get('logger')
+          c.get('userRepository'),
+          c.get('logger')
   );
 });
 
@@ -432,9 +437,9 @@ container.set('userController', (c) => {
 container.set('server', (c) => {
   const config = c.get('config').server;
   const app = new ExpressApp();
-  
+
   app.use('/users', c.get('userController').routes());
-  
+
   return app;
 });
 
@@ -486,11 +491,11 @@ container.set('server', (c) => {
   const app = c.get('app');
   const cors = c.get('cors');
   const userController = c.get('userController');
-  
+
   app.use(cors);
   app.get('/users', userController.getUsers);
   app.post('/users', userController.createUser);
-  
+
   return app;
 });
 
@@ -536,10 +541,10 @@ const analyticsPlugin = {
     container.set('analytics', (c) => {
       const analytics = new Analytics();
       const eventBus = c.get('eventBus');
-      
+
       eventBus.on('user.created', (user) => analytics.track('user_signup', user));
       eventBus.on('user.login', (user) => analytics.track('user_login', user));
-      
+
       return analytics;
     });
   }
@@ -586,11 +591,11 @@ class MyContainer extends Jimple {
     super();
     this.loadDefaultServices();
   }
-  
+
   loadDefaultServices() {
     this.set('logger', () => new DefaultLogger());
   }
-  
+
   // Add custom methods
   getLogger() {
     return this.get('logger');
@@ -622,10 +627,15 @@ const userService = new UserService(logger, database);
 ```js
 container.set('logger', () => new Logger());
 container.set('database', (c) => new Database(c.get('config')));
-container.set('userService', (c) => 
-  new UserService(c.get('logger'), c.get('database'))
+container.set('userService', (c) =>
+        new UserService(c.get('logger'), c.get('database'))
 );
 ```
+
+## Documentation
+
+- **📖 [Interactive Guide](https://fjorgemota.github.io/jimple/)** - Learn with live examples and tutorials
+- **📚 [Complete API Reference](https://fjorgemota.github.io/jimple/api/)** - Detailed JSDoc documentation with full method signatures and examples
 
 ## License
 
