@@ -14,9 +14,9 @@
   "browser": "dist/Jimple.js",
   "runkitExampleFilename": "example.js",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --name Jimple",
     "test": "npm run size && npm run test:node && npm run test:browser",
-    "doc": "documentation build src/** -f html -o docs",
+    "doc": "documentation build src/** -f html -o docs/api && npm run build && cp dist/Jimple.umd.js docs/Jimple.umd.js",
     "format": "prettier -w src/*",
     "size": "npm run build && size-limit",
     "test:browser": "vitest --run",
@@ -45,7 +45,7 @@
   "bugs": {
     "url": "https://github.com/fjorgemota/jimple/issues"
   },
-  "homepage": "https://github.com/fjorgemota/jimple#readme",
+  "homepage": "https://fjorgemota.github.io/jimple/",
   "size-limit": [
     {
       "path": "dist/Jimple.umd.js",
