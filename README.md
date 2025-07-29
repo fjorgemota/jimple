@@ -70,148 +70,17 @@ container.set('logger', (c) => {
   return {
     log: (msg) => console.log(`[${new Date().toISOString()}] ${msg}`)
   };
-```
-
-## ES6 Proxy Mode
-
-Use modern JavaScript syntax for a more natural API:
-
-```js
-const container = new Jimple();
-
-// Set services using property syntax
-container['logger'] = (c) => new Logger();
-container['userService'] = (c) => new UserService(c['logger']);
-
-// Access services as properties
-const userService = container.userService;
-```
-
-**Limitations:**
-- Can't overwrite built-in methods (`set`, `get`, etc.)
-- Accessing non-existent properties throws an error
-- TypeScript requires special handling (see below)
-
-## TypeScript Support
-
-Jimple provides full TypeScript support with interface definitions:
-
-### Basic TypeScript Usage
-
-```ts
-interface Services {
-  logger: Logger;
-  database: Database;
-  userService: UserService;
-  apiKey: string;
-}
-
-const container = new Jimple<Services>();
-
-container.set('apiKey', 'secret-key');
-container.set('logger', (c) => new Logger());
-container.set('database', (c) => new Database());
-container.set('userService', (c) => 
-  new UserService(c.get('logger'), c.get('database'))
-);
-
-// Type-safe access
-const userService: UserService = container.get('userService'); // ✅
-const wrong: Database = container.get('userService'); // ❌ Compile error
-```
-
-### TypeScript with Proxy Mode
-
-```ts
-interface Services {
-  logger: Logger;
-  userService: UserService;
-}
-
-const container = Jimple.create<Services>({
-  logger: (c) => new Logger(),
-  userService: (c) => new UserService(c.logger)
-});
-
-const userService: UserService = container.userService; // ✅ Type-safe
-```
-
-**Note**: Due to TypeScript limitations with proxies, you can't set properties directly. Use the `set` method instead:
-
-```ts
-container.set('newService', (c) => new Service()); // ✅ Works
-container.newService = (c) => new Service();       // ❌ TypeScript error
-```
-
-## Modular Configuration with Providers
-
-Organize your container configuration into reusable modules:
-
-### Basic Provider
-
-```js
-const databaseProvider = {
-  register(container) {
-    container.set('dbConfig', {
-      host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 5432
-    });
-    
-    container.set('database', (c) => {
-      const config = c.get('dbConfig');
-      return new Database(config);
-    });
-  }
-};
-
-container.register(databaseProvider);
-```
-
-### File-based Providers (Node.js)
-
-```js
-// providers/database.js
-module.exports.register = function(container) {
-  container.set('database', (c) => new Database(c.get('dbConfig')));
-};
-
-// main.js
-container.register(require('./providers/database'));
-```
-
-### Provider Helper
-
-```js
-const { provider } = require("jimple");
-
-module.exports = provider((container) => {
-  container.set('apiService', (c) => new ApiService(c.get('apiConfig')));
-});
-```
-
-### Multiple Named Providers
-
-```js
-module.exports = {
-  database: provider((c) => {
-    c.set('database', () => new Database());
-  }),
-  cache: provider((c) => {
-    c.set('cache', () => new Cache());
-  })
-};
-```
 });
 
 // Define a service that depends on another
 container.set('userService', (c) => {
-const logger = c.get('logger');
-return {
-createUser: (name) => {
-logger.log(`Creating user: ${name}`);
-return { id: Math.random(), name };
-}
-};
+  const logger = c.get('logger');
+  return {
+    createUser: (name) => {
+      logger.log(`Creating user: ${name}`);
+      return { id: Math.random(), name };
+    }
+  };
 });
 
 // Use your services
@@ -231,7 +100,7 @@ npm install jimple
 <script src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
 ```
 
-**⚠️ Production Warning**: Replace `latest` with a [specific version](https://github.com/fjorgemota/jimple/releases) for production use.
+**⚠️ Production Warning**: Replace `latest` with a specific version for production use.
 
 ### Import Methods
 
@@ -443,8 +312,8 @@ Organize your container configuration into reusable modules:
 const databaseProvider = {
   register(container) {
     container.set('dbConfig', {
-      host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 5432
+      host: process.env.DB_HOST ?? 'localhost',
+      port: process.env.DB_PORT ?? 5432
     });
     
     container.set('database', (c) => {
@@ -492,91 +361,20 @@ module.exports = {
 };
 ```
 
-## ES6 Proxy Mode
-
-Use modern JavaScript syntax for a more natural API:
-
-```js
-const container = new Jimple();
-
-// Set services using property syntax
-container['logger'] = (c) => new Logger();
-container['userService'] = (c) => new UserService(c['logger']);
-
-// Access services as properties
-const userService = container.userService;
-```
-
-**Limitations:**
-- Can't overwrite built-in methods (`set`, `get`, etc.)
-- Accessing non-existent properties throws an error
-- TypeScript requires special handling (see below)
-
-## TypeScript Support
-
-Jimple provides full TypeScript support with interface definitions:
-
-### Basic TypeScript Usage
-
-```ts
-interface Services {
-  logger: Logger;
-  database: Database;
-  userService: UserService;
-  apiKey: string;
-}
-
-const container = new Jimple<Services>();
-
-container.set('apiKey', 'secret-key');
-container.set('logger', (c) => new Logger());
-container.set('database', (c) => new Database());
-container.set('userService', (c) => 
-  new UserService(c.get('logger'), c.get('database'))
-);
-
-// Type-safe access
-const userService: UserService = container.get('userService'); // ✅
-const wrong: Database = container.get('userService'); // ❌ Compile error
-```
-
-### TypeScript with Proxy Mode
-
-```ts
-interface Services {
-  logger: Logger;
-  userService: UserService;
-}
-
-const container = Jimple.create<Services>({
-  logger: (c) => new Logger(),
-  userService: (c) => new UserService(c.logger)
-});
-
-const userService: UserService = container.userService; // ✅ Type-safe
-```
-
-**Note**: Due to TypeScript limitations with proxies, you can't set properties directly. Use the `set` method instead:
-
-```ts
-container.set('newService', (c) => new Service()); // ✅ Works
-container.newService = (c) => new Service();       // ❌ TypeScript error
-```
-
 ## API Reference
 
 ### Container Methods
 
-| Method | Description | Returns |
-|--------|-------------|---------|
-| `set(id, value)` | Define a service or parameter | `void` |
-| `get(id)` | Retrieve a service or parameter | `any` |
-| `has(id)` | Check if service/parameter exists | `boolean` |
-| `factory(fn)` | Create a factory service | `Function` |
-| `protect(fn)` | Protect a function from being treated as service | `Function` |
-| `extend(id, fn)` | Extend an existing service | `void` |
+| Method | Description | Returns    |
+|--------|-------------|------------|
+| `set(id, value)` | Define a service or parameter | `void`     |
+| `get(id)` | Retrieve a service or parameter | `any`      |
+| `has(id)` | Check if service/parameter exists | `boolean`  |
+| `factory(fn)` | Create a factory service | `fn`       |
+| `protect(fn)` | Protect a function from being treated as service | `fn`       |
+| `extend(id, fn)` | Extend an existing service | `void`     |
 | `raw(id)` | Get the raw service definition | `Function` |
-| `register(provider)` | Register a service provider | `void` |
+| `register(provider)` | Register a service provider | `void`     |
 
 ### Provider Interface
 
@@ -600,11 +398,11 @@ const container = new Jimple();
 // Configuration
 container.set('config', {
   database: {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ?? 5432
   },
   server: {
-    port: process.env.PORT || 3000
+    port: process.env.PORT ?? 3000
   }
 });
 
@@ -647,76 +445,6 @@ container.set('server', (c) => {
 // Start the application
 const server = container.get('server');
 server.listen(container.get('config').server.port);
-```
-
-## Features
-
-✅ **Lightweight** - ~1KB minified and gzipped  
-✅ **Zero dependencies** - No external dependencies in Node.js  
-✅ **Universal** - Works in Node.js and browsers  
-✅ **TypeScript** - Fully typed with excellent IDE support  
-✅ **ES6 Proxy support** - Modern syntax with property access  
-✅ **Extensible** - Easy to extend and customize  
-✅ **Well tested** - 100% code coverage  
-✅ **Stable API** - Mature, stable API you can depend on
-
-## Browser Compatibility
-
-Jimple works in all modern browsers. For older browsers, you may need polyfills for:
-- `Map` and `Set` (ES6)
-- `Proxy` (for proxy mode only)
-
-Consider using [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) for broad compatibility.
-
-## Extending Jimple
-
-You can create custom container classes:
-
-```js
-class MyContainer extends Jimple {
-  constructor() {
-    super();
-    this.loadDefaultServices();
-  }
-  
-  loadDefaultServices() {
-    this.set('logger', () => new DefaultLogger());
-  }
-  
-  // Add custom methods
-  getLogger() {
-    return this.get('logger');
-  }
-}
-
-const container = new MyContainer();
-```
-
-## Performance Tips
-
-- **Use factories sparingly** - Only when you truly need new instances
-- **Lazy load expensive services** - Services are created only when needed
-- **Organize with providers** - Split configuration into logical modules
-- **Avoid circular dependencies** - Design services to avoid circular references
-
-## Migration from Other DI Containers
-
-### From Manual Dependency Management
-
-**Before:**
-```js
-const logger = new Logger();
-const database = new Database(config);
-const userService = new UserService(logger, database);
-```
-
-**After:**
-```js
-container.set('logger', () => new Logger());
-container.set('database', (c) => new Database(c.get('config')));
-container.set('userService', (c) => 
-  new UserService(c.get('logger'), c.get('database'))
-);
 ```
 
 ## More Examples
@@ -837,18 +565,18 @@ container.set('baseConfig', {
 });
 
 container.set('database', (c) => {
-    if (c.get('env') === 'production') {
-        const config = { ...c.get('baseConfig').database, poolSize: 50 };
-        return new PostgresDatabase(config);
-    }
-    return new SQLiteDatabase(':memory:');
+  if (c.get('env') === 'production') {
+    const config = { ...c.get('baseConfig').database, poolSize: 50 };
+    return new PostgresDatabase(config);
+  }
+  return new SQLiteDatabase(':memory:');
 });
 
 container.set('cache', (c) => {
-    if (c.get('env') === 'production') {
-        return new RedisCache(process.env.REDIS_URL);
-    }
-    return new MemoryCache();
+  if (c.get('env') === 'production') {
+    return new RedisCache(process.env.REDIS_URL);
+  }
+  return new MemoryCache();
 });
 ```
 
