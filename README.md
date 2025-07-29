@@ -29,7 +29,6 @@ A lightweight, powerful dependency injection container for Node.js and browsers.
 - [API Reference](#api-reference)
 - [Real-World Example](#real-world-example)
 - [More Examples](#more-examples)
-- [Browser Compatibility](#browser-compatibility)
 - [Extending Jimple](#extending-jimple)
 - [Performance Tips](#performance-tips)
 - [Migration from Other DI Containers](#migration-from-other-di-containers)
@@ -52,6 +51,8 @@ Dependency injection helps you write more maintainable, testable code by:
 - **Improving testability** - Easy to swap dependencies with mocks during testing
 - **Managing complexity** - Centralized configuration of how objects are wired together
 - **Lazy loading** - Services are only created when needed
+- **Singleton by default**: Same instance returned on subsequent calls
+- **Dependency management**: Services can depend on other services
 
 ## Quick Start
 
@@ -140,11 +141,6 @@ container.set('emailService', (c) => {
   return new EmailService(db);
 });
 ```
-
-**Key Features:**
-- **Lazy loading**: Services are only created when first accessed
-- **Singleton by default**: Same instance returned on subsequent calls
-- **Dependency injection**: Services can depend on other services
 
 ### Parameters
 
@@ -579,14 +575,6 @@ container.set('cache', (c) => {
   return new MemoryCache();
 });
 ```
-
-## Browser Compatibility
-
-Jimple works in all modern browsers. For older browsers, you may need polyfills for:
-- `Map` and `Set` (ES6)
-- `Proxy` (for proxy mode only)
-
-Consider using [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) for broad compatibility.
 
 ## Extending Jimple
 
