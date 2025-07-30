@@ -16,7 +16,9 @@
   "scripts": {
     "build": "microbundle --name Jimple",
     "test": "npm run size && npm run test:node && npm run test:browser",
-    "doc": "documentation build src/** -f html -o docs/api && npm run build && cp dist/Jimple.umd.js docs/Jimple.umd.js",
+    "doc": "rm -Rf docs && documentation build src/** -f html -o docs/api && npm run build && npm run doc:build",
+    "doc:build": "webpack --mode production",
+    "doc:dev": "webpack serve --mode development",
     "format": "prettier -w src/*",
     "size": "npm run build && size-limit",
     "test:browser": "vitest --run",
@@ -58,14 +60,24 @@
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-istanbul": "^3.2.4",
     "babel-cli": "^6.26.0",
+    "css-loader": "^7.1.2",
     "documentation": "^14.0.3",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
     "microbundle": "^0.15.1",
+    "mini-css-extract-plugin": "^2.9.2",
+    "monaco-editor": "^0.52.2",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "playwright": "^1.54.1",
     "prettier": "^3.6.2",
     "size-limit": "^11.2.0",
+    "style-loader": "^4.0.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.6",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "webpack": "^5.101.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   },
   "engines": {
     "node": ">=20.0.0"
