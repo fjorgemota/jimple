@@ -134,7 +134,10 @@ describe("Jimple", function () {
         symbol: () => symbol;
       }
       const jimple = new Jimple<SymbolServiceMap>();
-      jimple.set("symbol", jimple.factory(() => Symbol()));
+      jimple.set(
+        "symbol",
+        jimple.factory(() => Symbol()),
+      );
       expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
     });
     it("should return raw values of protected closures", function () {
@@ -538,17 +541,17 @@ describe("Jimple", function () {
       expect(jimple.nextAge).toBe(20);
     });
     it("Should throw an error when trying to access non-existent key", function () {
-        interface EmptyServiceMap {}
-        const jimple = Jimple.create<EmptyServiceMap>();
-        expect(function () {
-            // @ts-ignore
-            jimple.nonExistentKey;
-        }).to.throw();
-        expect(function () {
-          // @ts-ignore
-          jimple._items;
-        }).to.throw();
-    })
+      interface EmptyServiceMap {}
+      const jimple = Jimple.create<EmptyServiceMap>();
+      expect(function () {
+        // @ts-ignore
+        jimple.nonExistentKey;
+      }).to.throw();
+      expect(function () {
+        // @ts-ignore
+        jimple._items;
+      }).to.throw();
+    });
     it("should allow setting services and properties after initialization", function () {
       interface ParameterServiceMap {
         age: number;
@@ -580,24 +583,24 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = Jimple.create<ParameterServiceMap>({
-        name: "xpto"
-      })
+        name: "xpto",
+      });
       expect("set" in jimple).toBe(true);
       expect("name" in jimple).toBe(true);
       expect("age" in jimple).toBe(false);
-    })
+    });
     it("should be able to list keys", function () {
-        interface ParameterServiceMap {
-            name: string;
-            age: number;
-        }
-        const jimple = Jimple.create<ParameterServiceMap>({
-            name: "xpto",
-            age: 19
-        })
-        expect(Object.keys(jimple)).toContain("name");
-        expect(Object.keys(jimple)).toContain("age");
-    })
+      interface ParameterServiceMap {
+        name: string;
+        age: number;
+      }
+      const jimple = Jimple.create<ParameterServiceMap>({
+        name: "xpto",
+        age: 19,
+      });
+      expect(Object.keys(jimple)).toContain("name");
+      expect(Object.keys(jimple)).toContain("age");
+    });
     it("should return property descriptor for properties", function () {
       interface ParameterServiceMap {
         name: string;
@@ -615,7 +618,10 @@ describe("Jimple", function () {
       expect(nameDescriptor?.get!()).toBe("name");
       expect(nameDescriptor?.enumerable).toBe(true);
       expect(nameDescriptor?.configurable).toBe(true);
-      const nonExistentDescriptor = Object.getOwnPropertyDescriptor(jimple, "non_existent_key");
+      const nonExistentDescriptor = Object.getOwnPropertyDescriptor(
+        jimple,
+        "non_existent_key",
+      );
       expect(nonExistentDescriptor).to.be.undefined;
     });
     it("should support protect()", function () {

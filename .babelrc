@@ -1,12 +1,13 @@
 {
   "presets": [
-      [
-        "@babel/preset-env", {
-          "targets": {
-            "node": "20.0",
-            "browsers": [ "defaults", "not dead" ]
-          }
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "20.0",
+          "browsers": ["defaults", "not dead"]
         }
-      ]
-   ]
+      }
+    ]
+  ]
 }

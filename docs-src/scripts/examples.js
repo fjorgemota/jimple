@@ -1,6 +1,6 @@
 export const examples = {
-    quickstart: {
-        javascript: `// Create container
+  quickstart: {
+    javascript: `// Create container
 const container = new Jimple();
 
 // Define a simple service
@@ -24,10 +24,10 @@ container.set('userService', (c) => {
 // Use your services
 const userService = container.get('userService');
 const user = userService.createUser('Alice');
-console.log('User created:', user);`
-    },
-    services: {
-        javascript: `const container = new Jimple();
+console.log('User created:', user);`,
+  },
+  services: {
+    javascript: `const container = new Jimple();
 
 // Database connection service
 container.set('database', (c) => {
@@ -58,10 +58,10 @@ container.set('dbConfig', {
 
 // Use the services
 const emailService = container.get('emailService');
-emailService.sendEmail('user@example.com', 'Welcome!');`
-    },
-    parameters: {
-       javascript: `const container = new Jimple();
+emailService.sendEmail('user@example.com', 'Welcome!');`,
+  },
+  parameters: {
+    javascript: `const container = new Jimple();
 
 // Configuration parameters
 container.set('dbConfig', {
@@ -88,10 +88,10 @@ container.set('apiClient', (c) => {
 
 const client = container.get('apiClient');
 client.request('/users');
-console.log('Base URL:', client.baseUrl);`
-    },
-    factory: {
-       javascript: `const container = new Jimple();
+console.log('Base URL:', client.baseUrl);`,
+  },
+  factory: {
+    javascript: `const container = new Jimple();
 
 // Regular service (singleton)
 container.set('logger', (c) => {
@@ -122,10 +122,10 @@ const req1 = container.get('httpRequest');
 const req2 = container.get('httpRequest');
 console.log('Same request instance?', req1 === req2);
 console.log('Request 1 ID:', req1.id);
-console.log('Request 2 ID:', req2.id);`
-    },
-    proxy: {
-        javascript: `// Using ES6 Proxy mode for cleaner syntax
+console.log('Request 2 ID:', req2.id);`,
+  },
+  proxy: {
+    javascript: `// Using ES6 Proxy mode for cleaner syntax
 const container = Jimple.create();
 
 // Set services using property syntax
@@ -153,10 +153,10 @@ container2.set('logger', (c) => ({
 }));
 
 const logger = container2.get('logger');
-logger.log('This is traditional syntax');`
-    },
-    typescript: {
-        typescript: `// Define service interface
+logger.log('This is traditional syntax');`,
+  },
+  typescript: {
+    typescript: `// Define service interface
 interface Services {
   logger: {
     log(msg: string): void;
@@ -210,10 +210,10 @@ console.log('User2 created:', user2);
 // This would cause a TypeScript error:
 // const wrong: Services['database'] = container.get('userService');
 
-`
-    },
-    express: {
-      javascript: `// Express.js web server with Jimple DI
+`,
+  },
+  express: {
+    javascript: `// Express.js web server with Jimple DI
 const container = new Jimple();
 
 // Configuration
@@ -276,10 +276,10 @@ container.set('server', (c) => {
 const server = container.get('server');
 server.listen(container.get('port'), () => {
   console.log(\`Server running on port \${container.get('port')}\`);
-});`
-    },
-    testing: {
-       javascript: `// Testing with mocks example
+});`,
+  },
+  testing: {
+    javascript: `// Testing with mocks example
 console.log('=== Production Container ===');
 
 // Production container
@@ -335,6 +335,6 @@ testContainer.set('userService', (c) => ({
 
 // Use test service
 const testUserService = testContainer.get('userService');
-testUserService.registerUser('test@example.com');`
-    }
+testUserService.registerUser('test@example.com');`,
+  },
 };

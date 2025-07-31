@@ -48,6 +48,7 @@
 ## Why Dependency Injection?
 
 Dependency injection helps you write more maintainable, testable code by:
+
 - **Decoupling components** - Services don't need to know how their dependencies are created
 - **Improving testability** - Easy to swap dependencies with mocks during testing
 - **Managing complexity** - Centralized configuration of how objects are wired together
@@ -62,42 +63,44 @@ npm install jimple
 ```
 
 ```js
-import Jimple from 'jimple';
+import Jimple from "jimple";
 
 // Create container
 const container = new Jimple();
 
 // Define a simple service
-container.set('logger', (c) => {
+container.set("logger", (c) => {
   return {
-    log: (msg) => console.log(`[${new Date().toISOString()}] ${msg}`)
+    log: (msg) => console.log(`[${new Date().toISOString()}] ${msg}`),
   };
 });
 
 // Define a service that depends on another
-container.set('userService', (c) => {
-  const logger = c.get('logger');
+container.set("userService", (c) => {
+  const logger = c.get("logger");
   return {
     createUser: (name) => {
       logger.log(`Creating user: ${name}`);
       return { id: Math.random(), name };
-    }
+    },
   };
 });
 
 // Use your services
-const userService = container.get('userService');
-const user = userService.createUser('Alice');
+const userService = container.get("userService");
+const user = userService.createUser("Alice");
 ```
 
 ## Installation
 
 ### npm
+
 ```bash
 npm install jimple
 ```
 
 ### CDN (Browser)
+
 ```html
 <script src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
 ```
@@ -107,18 +110,21 @@ npm install jimple
 ### Import Methods
 
 **ES6 Modules**
+
 ```js
 import Jimple from "jimple";
 ```
 
 **CommonJS**
+
 ```js
 const Jimple = require("jimple");
 ```
 
 **AMD**
+
 ```js
-define(["jimple"], function(Jimple) {
+define(["jimple"], function (Jimple) {
   // Your code here
 });
 ```
@@ -131,14 +137,14 @@ Services are objects that perform tasks in your application. They're defined as 
 
 ```js
 // Database connection service
-container.set('database', (c) => {
-  const config = c.get('dbConfig');
+container.set("database", (c) => {
+  const config = c.get("dbConfig");
   return new Database(config.host, config.port);
 });
 
 // Email service that depends on database
-container.set('emailService', (c) => {
-  const db = c.get('database');
+container.set("emailService", (c) => {
+  const db = c.get("database");
   return new EmailService(db);
 });
 ```
@@ -149,14 +155,14 @@ Parameters store configuration values, strings, numbers, or any non-function dat
 
 ```js
 // Configuration parameters
-container.set('dbConfig', {
-  host: 'localhost',
+container.set("dbConfig", {
+  host: "localhost",
   port: 5432,
-  database: 'myapp'
+  database: "myapp",
 });
 
-container.set('apiKey', 'abc123');
-container.set('isProduction', process.env.NODE_ENV === 'production');
+container.set("apiKey", "abc123");
+container.set("isProduction", process.env.NODE_ENV === "production");
 ```
 
 ### Factory Services
@@ -164,14 +170,17 @@ container.set('isProduction', process.env.NODE_ENV === 'production');
 When you need a **new instance** every time instead of a singleton:
 
 ```js
-container.set('httpRequest', container.factory((c) => {
-  const config = c.get('httpConfig');
-  return new HttpRequest(config);
-}));
+container.set(
+  "httpRequest",
+  container.factory((c) => {
+    const config = c.get("httpConfig");
+    return new HttpRequest(config);
+  }),
+);
 
 // Each call returns a new instance
-const req1 = container.get('httpRequest');
-const req2 = container.get('httpRequest'); // Different instance
+const req1 = container.get("httpRequest");
+const req2 = container.get("httpRequest"); // Different instance
 ```
 
 ## Advanced Features
@@ -181,11 +190,14 @@ const req2 = container.get('httpRequest'); // Different instance
 To store an actual function (not a service factory) as a parameter:
 
 ```js
-container.set('utility', container.protect(() => {
-  return Math.random() * 100;
-}));
+container.set(
+  "utility",
+  container.protect(() => {
+    return Math.random() * 100;
+  }),
+);
 
-const utilityFn = container.get('utility'); // Returns the function itself
+const utilityFn = container.get("utility"); // Returns the function itself
 const result = utilityFn(); // Call the function
 ```
 
@@ -194,11 +206,11 @@ const result = utilityFn(); // Call the function
 Add behavior to existing services:
 
 ```js
-container.set('logger', (c) => new Logger());
+container.set("logger", (c) => new Logger());
 
 // Extend the logger to add file output
-container.extend('logger', (logger, c) => {
-  logger.addFileHandler('/var/log/app.log');
+container.extend("logger", (logger, c) => {
+  logger.addFileHandler("/var/log/app.log");
   return logger;
 });
 ```
@@ -208,9 +220,9 @@ container.extend('logger', (logger, c) => {
 Handle optional services with fallbacks:
 
 ```js
-container.set('cache', (c) => {
-  if (c.has('redisConfig')) {
-    return new RedisCache(c.get('redisConfig'));
+container.set("cache", (c) => {
+  if (c.has("redisConfig")) {
+    return new RedisCache(c.get("redisConfig"));
   }
   return new MemoryCache(); // Fallback
 });
@@ -221,9 +233,9 @@ container.set('cache', (c) => {
 Get the service definition function instead of the service itself:
 
 ```js
-container.set('database', (c) => new Database());
+container.set("database", (c) => new Database());
 
-const dbFactory = container.raw('database');
+const dbFactory = container.raw("database");
 const db1 = dbFactory(container);
 const db2 = dbFactory(container); // Create another instance manually
 ```
@@ -236,14 +248,15 @@ Use modern JavaScript syntax for a more natural API:
 const container = new Jimple();
 
 // Set services using property syntax
-container['logger'] = (c) => new Logger();
-container['userService'] = (c) => new UserService(c['logger']);
+container["logger"] = (c) => new Logger();
+container["userService"] = (c) => new UserService(c["logger"]);
 
 // Access services as properties
 const userService = container.userService;
 ```
 
 **Limitations:**
+
 - Can't overwrite built-in methods (`set`, `get`, etc.)
 - Accessing non-existent properties throws an error
 - TypeScript requires special handling (see below)
@@ -264,16 +277,17 @@ interface Services {
 
 const container = new Jimple<Services>();
 
-container.set('apiKey', 'secret-key');
-container.set('logger', (c) => new Logger());
-container.set('database', (c) => new Database());
-container.set('userService', (c) =>
-        new UserService(c.get('logger'), c.get('database'))
+container.set("apiKey", "secret-key");
+container.set("logger", (c) => new Logger());
+container.set("database", (c) => new Database());
+container.set(
+  "userService",
+  (c) => new UserService(c.get("logger"), c.get("database")),
 );
 
 // Type-safe access
-const userService: UserService = container.get('userService'); // ✅
-const wrong: Database = container.get('userService'); // ❌ Compile error
+const userService: UserService = container.get("userService"); // ✅
+const wrong: Database = container.get("userService"); // ❌ Compile error
 ```
 
 ### TypeScript with Proxy Mode
@@ -286,7 +300,7 @@ interface Services {
 
 const container = Jimple.create<Services>({
   logger: (c) => new Logger(),
-  userService: (c) => new UserService(c.logger)
+  userService: (c) => new UserService(c.logger),
 });
 
 const userService: UserService = container.userService; // ✅ Type-safe
@@ -295,8 +309,8 @@ const userService: UserService = container.userService; // ✅ Type-safe
 **Note**: Due to TypeScript limitations with proxies, you can't set properties directly. Use the `set` method instead:
 
 ```ts
-container.set('newService', (c) => new Service()); // ✅ Works
-container.newService = (c) => new Service();       // ❌ TypeScript error
+container.set("newService", (c) => new Service()); // ✅ Works
+container.newService = (c) => new Service(); // ❌ TypeScript error
 ```
 
 ## Modular Configuration with Providers
@@ -308,16 +322,16 @@ Organize your container configuration into reusable modules:
 ```js
 const databaseProvider = {
   register(container) {
-    container.set('dbConfig', {
-      host: process.env.DB_HOST ?? 'localhost',
-      port: process.env.DB_PORT ?? 5432
+    container.set("dbConfig", {
+      host: process.env.DB_HOST ?? "localhost",
+      port: process.env.DB_PORT ?? 5432,
     });
 
-    container.set('database', (c) => {
-      const config = c.get('dbConfig');
+    container.set("database", (c) => {
+      const config = c.get("dbConfig");
       return new Database(config);
     });
-  }
+  },
 };
 
 container.register(databaseProvider);
@@ -327,12 +341,12 @@ container.register(databaseProvider);
 
 ```js
 // providers/database.js
-module.exports.register = function(container) {
-  container.set('database', (c) => new Database(c.get('dbConfig')));
+module.exports.register = function (container) {
+  container.set("database", (c) => new Database(c.get("dbConfig")));
 };
 
 // main.js
-container.register(require('./providers/database'));
+container.register(require("./providers/database"));
 ```
 
 ### Provider Helper
@@ -341,7 +355,7 @@ container.register(require('./providers/database'));
 const { provider } = require("jimple");
 
 module.exports = provider((container) => {
-  container.set('apiService', (c) => new ApiService(c.get('apiConfig')));
+  container.set("apiService", (c) => new ApiService(c.get("apiConfig")));
 });
 ```
 
@@ -350,11 +364,11 @@ module.exports = provider((container) => {
 ```js
 module.exports = {
   database: provider((c) => {
-    c.set('database', () => new Database());
+    c.set("database", () => new Database());
   }),
   cache: provider((c) => {
-    c.set('cache', () => new Cache());
-  })
+    c.set("cache", () => new Cache());
+  }),
 };
 ```
 
@@ -362,16 +376,16 @@ module.exports = {
 
 ### Container Methods
 
-| Method | Description | Returns    |
-|--------|-------------|------------|
-| `set(id, value)` | Define a service or parameter | `void`     |
-| `get(id)` | Retrieve a service or parameter | `any`      |
-| `has(id)` | Check if service/parameter exists | `boolean`  |
-| `factory(fn)` | Create a factory service | `fn`       |
-| `protect(fn)` | Protect a function from being treated as service | `fn`       |
-| `extend(id, fn)` | Extend an existing service | `void`     |
-| `raw(id)` | Get the raw service definition | `Function` |
-| `register(provider)` | Register a service provider | `void`     |
+| Method               | Description                                      | Returns    |
+| -------------------- | ------------------------------------------------ | ---------- |
+| `set(id, value)`     | Define a service or parameter                    | `void`     |
+| `get(id)`            | Retrieve a service or parameter                  | `any`      |
+| `has(id)`            | Check if service/parameter exists                | `boolean`  |
+| `factory(fn)`        | Create a factory service                         | `fn`       |
+| `protect(fn)`        | Protect a function from being treated as service | `fn`       |
+| `extend(id, fn)`     | Extend an existing service                       | `void`     |
+| `raw(id)`            | Get the raw service definition                   | `Function` |
+| `register(provider)` | Register a service provider                      | `void`     |
 
 ### Provider Interface
 
@@ -379,7 +393,7 @@ module.exports = {
 const provider = {
   register(container) {
     // Define services and parameters
-  }
+  },
 };
 ```
 
@@ -392,60 +406,57 @@ const provider = {
 Here's a more comprehensive example showing how to structure a web application:
 
 ```js
-import Jimple from 'jimple';
+import Jimple from "jimple";
 
 const container = new Jimple();
 
 // Configuration
-container.set('config', {
+container.set("config", {
   database: {
-    host: process.env.DB_HOST ?? 'localhost',
-    port: process.env.DB_PORT ?? 5432
+    host: process.env.DB_HOST ?? "localhost",
+    port: process.env.DB_PORT ?? 5432,
   },
   server: {
-    port: process.env.PORT ?? 3000
-  }
+    port: process.env.PORT ?? 3000,
+  },
 });
 
 // Infrastructure services
-container.set('database', (c) => {
-  const config = c.get('config').database;
+container.set("database", (c) => {
+  const config = c.get("config").database;
   return new Database(config.host, config.port);
 });
 
-container.set('logger', (c) => {
-  return new Logger(c.get('config').logLevel);
+container.set("logger", (c) => {
+  return new Logger(c.get("config").logLevel);
 });
 
 // Business services
-container.set('userRepository', (c) => {
-  return new UserRepository(c.get('database'));
+container.set("userRepository", (c) => {
+  return new UserRepository(c.get("database"));
 });
 
-container.set('userService', (c) => {
-  return new UserService(
-          c.get('userRepository'),
-          c.get('logger')
-  );
+container.set("userService", (c) => {
+  return new UserService(c.get("userRepository"), c.get("logger"));
 });
 
 // HTTP services
-container.set('userController', (c) => {
-  return new UserController(c.get('userService'));
+container.set("userController", (c) => {
+  return new UserController(c.get("userService"));
 });
 
-container.set('server', (c) => {
-  const config = c.get('config').server;
+container.set("server", (c) => {
+  const config = c.get("config").server;
   const app = new ExpressApp();
 
-  app.use('/users', c.get('userController').routes());
+  app.use("/users", c.get("userController").routes());
 
   return app;
 });
 
 // Start the application
-const server = container.get('server');
-server.listen(container.get('config').server.port);
+const server = container.get("server");
+server.listen(container.get("config").server.port);
 ```
 
 ## More Examples
@@ -453,56 +464,59 @@ server.listen(container.get('config').server.port);
 ### Express.js Web Server
 
 ```js
-import express from 'express';
-import Jimple from 'jimple';
+import express from "express";
+import Jimple from "jimple";
 
 const container = new Jimple();
 
 // Configuration
-container.set('port', process.env.PORT ?? 3000);
-container.set('corsOrigins', process.env.CORS_ORIGINS?.split(',') ?? ['http://localhost:3000']);
+container.set("port", process.env.PORT ?? 3000);
+container.set(
+  "corsOrigins",
+  process.env.CORS_ORIGINS?.split(",") ?? ["http://localhost:3000"],
+);
 
 // Services
-container.set('app', (c) => {
+container.set("app", (c) => {
   const app = express();
   app.use(express.json());
   return app;
 });
 
-container.set('cors', (c) => {
+container.set("cors", (c) => {
   return (req, res, next) => {
     const origin = req.headers.origin;
-    if (c.get('corsOrigins').includes(origin)) {
-      res.header('Access-Control-Allow-Origin', origin);
+    if (c.get("corsOrigins").includes(origin)) {
+      res.header("Access-Control-Allow-Origin", origin);
     }
     next();
   };
 });
 
-container.set('userController', (c) => {
+container.set("userController", (c) => {
   return {
-    getUsers: (req, res) => res.json([{ id: 1, name: 'Alice' }]),
-    createUser: (req, res) => res.json({ id: 2, ...req.body })
+    getUsers: (req, res) => res.json([{ id: 1, name: "Alice" }]),
+    createUser: (req, res) => res.json({ id: 2, ...req.body }),
   };
 });
 
 // Setup routes
-container.set('server', (c) => {
-  const app = c.get('app');
-  const cors = c.get('cors');
-  const userController = c.get('userController');
+container.set("server", (c) => {
+  const app = c.get("app");
+  const cors = c.get("cors");
+  const userController = c.get("userController");
 
   app.use(cors);
-  app.get('/users', userController.getUsers);
-  app.post('/users', userController.createUser);
+  app.get("/users", userController.getUsers);
+  app.post("/users", userController.createUser);
 
   return app;
 });
 
 // Start server
-const server = container.get('server');
-server.listen(container.get('port'), () => {
-  console.log(`Server running on port ${container.get('port')}`);
+const server = container.get("server");
+server.listen(container.get("port"), () => {
+  console.log(`Server running on port ${container.get("port")}`);
 });
 ```
 
@@ -511,19 +525,19 @@ server.listen(container.get('port'), () => {
 ```js
 // Production container
 const container = new Jimple();
-container.set('emailService', (c) => new RealEmailService(c.get('apiKey')));
-container.set('userService', (c) => new UserService(c.get('emailService')));
+container.set("emailService", (c) => new RealEmailService(c.get("apiKey")));
+container.set("userService", (c) => new UserService(c.get("emailService")));
 
 // Test container with mocks
 const testContainer = new Jimple();
-testContainer.set('emailService', () => ({
-  send: jest.fn().mockResolvedValue({ success: true })
+testContainer.set("emailService", () => ({
+  send: jest.fn().mockResolvedValue({ success: true }),
 }));
-testContainer.set('userService', (c) => new UserService(c.get('emailService')));
+testContainer.set("userService", (c) => new UserService(c.get("emailService")));
 
 // Your tests use the mock
-const userService = testContainer.get('userService');
-await userService.registerUser('test@example.com');
+const userService = testContainer.get("userService");
+await userService.registerUser("test@example.com");
 ```
 
 ### Plugin Architecture
@@ -532,22 +546,24 @@ await userService.registerUser('test@example.com');
 const container = new Jimple();
 
 // Core services
-container.set('eventBus', () => new EventEmitter());
-container.set('pluginManager', (c) => new PluginManager(c.get('eventBus')));
+container.set("eventBus", () => new EventEmitter());
+container.set("pluginManager", (c) => new PluginManager(c.get("eventBus")));
 
 // Plugin provider
 const analyticsPlugin = {
   register(container) {
-    container.set('analytics', (c) => {
+    container.set("analytics", (c) => {
       const analytics = new Analytics();
-      const eventBus = c.get('eventBus');
+      const eventBus = c.get("eventBus");
 
-      eventBus.on('user.created', (user) => analytics.track('user_signup', user));
-      eventBus.on('user.login', (user) => analytics.track('user_login', user));
+      eventBus.on("user.created", (user) =>
+        analytics.track("user_signup", user),
+      );
+      eventBus.on("user.login", (user) => analytics.track("user_login", user));
 
       return analytics;
     });
-  }
+  },
 };
 
 container.register(analyticsPlugin);
@@ -557,24 +573,24 @@ container.register(analyticsPlugin);
 
 ```js
 const container = new Jimple();
-container.set('env', process.env.NODE_ENV ?? 'development');
+container.set("env", process.env.NODE_ENV ?? "development");
 
 // Base configuration
-container.set('baseConfig', {
+container.set("baseConfig", {
   database: { poolSize: 10 },
-  cache: { ttl: 3600 }
+  cache: { ttl: 3600 },
 });
 
-container.set('database', (c) => {
-  if (c.get('env') === 'production') {
-    const config = { ...c.get('baseConfig').database, poolSize: 50 };
+container.set("database", (c) => {
+  if (c.get("env") === "production") {
+    const config = { ...c.get("baseConfig").database, poolSize: 50 };
     return new PostgresDatabase(config);
   }
-  return new SQLiteDatabase(':memory:');
+  return new SQLiteDatabase(":memory:");
 });
 
-container.set('cache', (c) => {
-  if (c.get('env') === 'production') {
+container.set("cache", (c) => {
+  if (c.get("env") === "production") {
     return new RedisCache(process.env.REDIS_URL);
   }
   return new MemoryCache();
@@ -593,12 +609,12 @@ class MyContainer extends Jimple {
   }
 
   loadDefaultServices() {
-    this.set('logger', () => new DefaultLogger());
+    this.set("logger", () => new DefaultLogger());
   }
 
   // Add custom methods
   getLogger() {
-    return this.get('logger');
+    return this.get("logger");
   }
 }
 
@@ -617,6 +633,7 @@ const container = new MyContainer();
 ### From Manual Dependency Management
 
 **Before:**
+
 ```js
 const logger = new Logger();
 const database = new Database(config);
@@ -624,11 +641,13 @@ const userService = new UserService(logger, database);
 ```
 
 **After:**
+
 ```js
-container.set('logger', () => new Logger());
-container.set('database', (c) => new Database(c.get('config')));
-container.set('userService', (c) =>
-        new UserService(c.get('logger'), c.get('database'))
+container.set("logger", () => new Logger());
+container.set("database", (c) => new Database(c.get("config")));
+container.set(
+  "userService",
+  (c) => new UserService(c.get("logger"), c.get("database")),
 );
 ```
 
