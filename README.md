@@ -6,7 +6,7 @@
 [![node version](https://img.shields.io/node/v/jimple.svg)](http://npmjs.org/package/jimple)
 [![JSDelivr](https://data.jsdelivr.com/v1/package/npm/jimple/badge)](https://www.jsdelivr.com/package/npm/jimple)
 
-A lightweight, powerful dependency injection container for Node.js and browsers. Jimple is a JavaScript port of the popular [Pimple DI container](https://github.com/silexphp/Pimple/) from PHP, bringing clean dependency management to your JavaScript projects.
+**Jimple** is a lightweight and powerful dependency injection container for JavaScript and TypeScript, built for **Node.js and the browser**. Inspired by [Pimple](https://github.com/silexphp/Pimple/), it brings clean, flexible dependency management to modern JavaScript projects — with zero dependencies and a minimal API.
 
 ## Table of Contents
 
