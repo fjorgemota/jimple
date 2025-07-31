@@ -5,12 +5,14 @@
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
   "source": "src/Jimple.ts",
   "exports": {
+    "types": "./dist/Jimple.d.ts",
     "require": "./dist/Jimple.cjs",
     "default": "./dist/Jimple.modern.js"
   },
-  "main": "./dist/Jimple.cjs",
-  "module": "./dist/Jimple.module.js",
-  "umd:main": "./dist/Jimple.umd.js",
+  "types": "dist/Jimple.d.ts",
+  "main": "dist/Jimple.cjs",
+  "module": "dist/Jimple.module.js",
+  "umd:main": "dist/Jimple.umd.js",
   "browser": "dist/Jimple.js",
   "runkitExampleFilename": "example.js",
   "scripts": {
