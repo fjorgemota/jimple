@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
-        run: npm install --no-audit
+        run: npm ci
 
       - name: Generate documentation
         run: npm run doc
