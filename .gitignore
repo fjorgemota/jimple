@@ -258,3 +258,6 @@ fabric.properties
 
 # Ignore compiled documentation
 docs/
+
+# Ignore coverage
+coverage/
