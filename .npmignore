@@ -1,0 +1,6 @@
+docs/
+docs-src/
+coverage/
+.idea/
+.github/
+webpack.config.js
