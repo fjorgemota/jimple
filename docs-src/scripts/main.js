@@ -8,7 +8,7 @@ Object.keys(examples).forEach(exampleKey => {
     const iframe = document.getElementById(`${exampleKey}-editor`);
     if (!iframe) return;
 
-    const currentLang = 'typescript';
+    const currentLang = exampleKey === 'typescript' ? 'typescript' : 'javascript';
 
     iframe.src = `iframe.html?example=${exampleKey}&language=${currentLang}`;
 
