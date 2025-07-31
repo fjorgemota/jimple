@@ -19,7 +19,7 @@
     "doc": "rm -Rf docs && documentation build src/** -f html -o docs/api && npm run build && npm run doc:build",
     "doc:build": "webpack --mode production",
     "doc:dev": "webpack serve --mode development",
-    "format": "prettier -w src/*",
+    "format": "prettier -w .",
     "size": "npm run build && size-limit",
     "test:browser": "vitest --run",
     "test:node": "vitest --run --browser.enabled=false --coverage",
