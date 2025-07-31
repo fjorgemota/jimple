@@ -70,6 +70,7 @@
     "monaco-editor-webpack-plugin": "^7.1.0",
     "playwright": "^1.54.1",
     "prettier": "^3.6.2",
+    "raw-loader": "^4.0.2",
     "size-limit": "^11.2.0",
     "style-loader": "^4.0.0",
     "typescript": "^5.8.3",

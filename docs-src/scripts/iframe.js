@@ -1,0 +1,160 @@
+import Jimple from "../../dist/Jimple.module.js";
+import libSource from '../../dist/Jimple.d.ts';
+import * as monaco from 'monaco-editor';
+import * as ts from 'typescript';
+import { examples } from './examples.js';
+
+window.Jimple = Jimple;
+
+const libUri = "ts:filename/Jimple.d.ts";
+
+// validation settings
+monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+    noSemanticValidation: false,
+    noSyntaxValidation: false,
+});
+
+// compiler options
+monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+    allowNonTsExtensions: true,
+    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+    target: monaco.languages.typescript.ScriptTarget.ES2020,
+    module: monaco.languages.typescript.ModuleKind.ESNext,
+    noLib: false,
+});
+
+const jimpleSource = libSource.replace("export default", "declare").replace("export {}", "").replace("export", "");
+
+monaco.languages.typescript.javascriptDefaults.addExtraLib(jimpleSource, libUri);
+monaco.editor.createModel(jimpleSource, "typescript", monaco.Uri.parse(libUri));
+// get query string "example"
+const urlParams = new URLSearchParams(window.location.search);
+const exampleKey = !!examples[urlParams.get('example')] ? urlParams.get('example') : 'quickstart';
+
+const currentLang = ['typescript', 'javascript'].includes(urlParams.get('language')) ? urlParams.get('language') : 'typescript';
+
+const editor = monaco.editor.create(document.getElementById('editor'), {
+    language: currentLang,
+    value: examples[exampleKey][currentLang] ?? '',
+    theme: 'vs-dark',
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    fontSize: 14,
+    automaticLayout: true,
+});
+
+function runCode() {
+    console.log("running code!");
+    const code = editor.getValue();
+
+    let outputContent = '';
+
+    // Capture console output
+    const originalLog = console.log;
+    const originalError = console.error;
+    const logs = [];
+
+    console.log = (...args) => {
+        logs.push({ type: 'log', args });
+        originalLog(...args);
+    };
+
+    console.error = (...args) => {
+        logs.push({ type: 'error', args });
+        originalError(...args);
+    };
+
+    try {
+        let executableCode = code;
+
+        // Remove import statements for demo
+        executableCode = executableCode
+            .replace(/import.*from.*['"];?/g, '')
+            .replace(/export.*{.*};?/g, '');
+
+        // Transpile TypeScript to JavaScript if needed
+        if (currentLang === 'typescript') {
+            try {
+                executableCode = transpileTypeScript(executableCode);
+            } catch (transpileError) {
+                outputContent = `<div style="color: #ef4444;">TypeScript Error: ${transpileError.message}</div>`;
+                return;
+            }
+        }
+
+        // Execute the code
+        eval(executableCode);
+
+        // Display output
+        if (logs.length === 0) {
+            outputContent = '<span style="color: #64748b;">Code executed successfully (no output)</span>';
+        } else {
+            outputContent = logs.map(log => {
+                const color = log.type === 'error' ? '#ef4444' : '#94a3b8';
+                const content = log.args.map(arg =>
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ');
+                return `<div style="color: ${color}; margin-bottom: 0.5rem;">${content}</div>`;
+            }).join('');
+        }
+    } catch (error) {
+        outputContent = `<div style="color: #ef4444;">Runtime Error: ${error.message}</div>`;
+    } finally {
+        console.log(outputContent);
+        // Restore console
+        console.log = originalLog;
+        console.error = originalError;
+        // post message to parent page
+        window.parent.postMessage({
+            type: 'update-output',
+            exampleKey,
+            outputContent,
+        }, '*');
+    }
+}
+
+window.addEventListener('message', (message) => {
+    if (message.data?.type === 'run-code' && message.data?.exampleKey === exampleKey) {
+        runCode();
+    }
+})
+
+// Robust TypeScript transpiler using the official TypeScript compiler
+function transpileTypeScript(code) {
+    if (typeof ts === 'undefined') {
+        // Fallback: show helpful message and try to run as JavaScript
+        console.warn('TypeScript compiler not available. Attempting to run as JavaScript...');
+        return code.replace(/:\s*\w+/g, '').replace(/interface[^}]+}/g, '');
+    }
+
+    try {
+        const compilerOptions = {
+            target: ts.ScriptTarget.ES2018,
+            module: ts.ModuleKind.None,
+            removeComments: false,
+            strict: false,
+            skipLibCheck: true,
+            skipDefaultLibCheck: true,
+            allowJs: true,
+            noEmitOnError: false,
+            noImplicitAny: false,
+            suppressImplicitAnyIndexErrors: true,
+            // Additional options for better compatibility
+            downlevelIteration: true,
+            allowSyntheticDefaultImports: true,
+            esModuleInterop: true
+        };
+
+        const result = ts.transpile(code, compilerOptions);
+
+        if (!result) {
+            throw new Error('Failed to transpile TypeScript code');
+        }
+
+        return result;
+    } catch (error) {
+        // If TypeScript compilation fails, provide helpful error
+        throw new Error(`TypeScript compilation failed: ${error.message || 'Unknown error'}`);
+    }
+}
+

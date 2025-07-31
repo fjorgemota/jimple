@@ -2,16 +2,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import MonacoEditorWebpackPlugin   from "monaco-editor-webpack-plugin";
+import MonacoEditorWebpackPlugin from "monaco-editor-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  entry: './docs-src/scripts/main.js',
+  entry: {
+    index: './docs-src/scripts/main.js',
+    iframe: './docs-src/scripts/iframe.js',
+  },
   output: {
     path: path.resolve(__dirname, 'docs'),
-    filename: 'main.js',
+    filename: '[name].js',
     clean: {
       keep: /^(api).*/, // Keep existing API docs and UMD bundle
     },
@@ -28,6 +31,10 @@ export default {
       {
         test: /\.html$/i,
         use: 'html-loader',
+      },
+      {
+        test: /\.d.ts$/i,
+        use: 'raw-loader',
       }
     ],
   },
@@ -35,11 +42,17 @@ export default {
     new HtmlWebpackPlugin({
       template: './docs-src/index.html',
       filename: 'index.html',
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './docs-src/iframe.html',
+      filename: 'iframe.html',
+      chunks: ['iframe'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'styles.css',
+      filename: 'styles.[name].css',
     }),
-      new MonacoEditorWebpackPlugin(),
+    new MonacoEditorWebpackPlugin(),
   ],
   devServer: {
     static: {

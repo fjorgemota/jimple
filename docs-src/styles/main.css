@@ -320,6 +320,9 @@ body {
 .editor-container {
     height: 300px;
     background: var(--bg-code);
+    width: 100%;
+    border: 0;
+    overflow: hidden;
 }
 
 .output {
