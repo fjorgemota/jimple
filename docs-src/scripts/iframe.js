@@ -48,7 +48,6 @@ const editor = monaco.editor.create(document.getElementById('editor'), {
 });
 
 function runCode() {
-    console.log("running code!");
     const code = editor.getValue();
 
     let outputContent = '';
@@ -104,7 +103,6 @@ function runCode() {
     } catch (error) {
         outputContent = `<div style="color: #ef4444;">Runtime Error: ${error.message}</div>`;
     } finally {
-        console.log(outputContent);
         // Restore console
         console.log = originalLog;
         console.error = originalError;
