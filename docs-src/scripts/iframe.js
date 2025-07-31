@@ -6,13 +6,12 @@ import { examples } from './examples.js';
 
 window.Jimple = Jimple;
 
-const libUri = "ts:filename/Jimple.d.ts";
+const libUri = "file:///Jimple.d.ts";
+const urlParams = new URLSearchParams(window.location.search);
+const exampleKey = !!examples[urlParams.get('example')] ? urlParams.get('example') : 'quickstart';
 
-// validation settings
-monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: false,
-    noSyntaxValidation: false,
-});
+const currentLang = ['typescript', 'javascript'].includes(urlParams.get('language')) ? urlParams.get('language') : 'typescript';
+
 
 // compiler options
 monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
@@ -23,19 +22,24 @@ monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
     noLib: false,
 });
 
+
+// validation settings
+monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+    noSemanticValidation: currentLang === 'javascript',
+    noSyntaxValidation: false,
+});
+
 const jimpleSource = libSource.replace("export default", "declare").replace("export {}", "").replace("export", "");
 
 monaco.languages.typescript.javascriptDefaults.addExtraLib(jimpleSource, libUri);
 monaco.editor.createModel(jimpleSource, "typescript", monaco.Uri.parse(libUri));
-// get query string "example"
-const urlParams = new URLSearchParams(window.location.search);
-const exampleKey = !!examples[urlParams.get('example')] ? urlParams.get('example') : 'quickstart';
-
-const currentLang = ['typescript', 'javascript'].includes(urlParams.get('language')) ? urlParams.get('language') : 'typescript';
 
 const editor = monaco.editor.create(document.getElementById('editor'), {
-    language: currentLang,
-    value: examples[exampleKey][currentLang] ?? '',
+    model: monaco.editor.createModel(
+        examples[exampleKey][currentLang] ?? '',
+        currentLang,
+        monaco.Uri.parse('file://example.' + (currentLang === 'typescript' ? 'ts' : 'js'))
+    ),
     theme: 'vs-dark',
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
