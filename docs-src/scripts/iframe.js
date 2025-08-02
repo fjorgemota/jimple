@@ -1,7 +1,6 @@
 import Jimple from "../../dist/Jimple.module.js";
-import libSource from "../../dist/Jimple.d.ts";
+import libSource from "../../dist/Jimple.d.ts?raw";
 import * as monaco from "monaco-editor";
-import * as ts from "typescript";
 import { examples } from "./examples.js";
 
 window.Jimple = Jimple;
@@ -59,10 +58,44 @@ const editor = monaco.editor.create(document.getElementById("editor"), {
   automaticLayout: true,
 });
 
-function runCode() {
-  const code = editor.getValue();
+window.addEventListener("message", (message) => {
+  if (
+    message.data?.type === "run-code" &&
+    message.data?.exampleKey === exampleKey
+  ) {
+    runCode(editor);
+  }
+});
 
-  let outputContent = "";
+function runCode(editor) {
+  runCodeInternal(editor).then(
+    (outputContent) => {
+      window.parent.postMessage(
+        {
+          type: "update-output",
+          exampleKey,
+          outputContent,
+        },
+        "*",
+      );
+    },
+    (e) => {
+      window.parent.postMessage(
+        {
+          type: "update-output",
+          exampleKey,
+          outputContent:
+            "Internal error. Please, report an issue on https://github.com/fjorgemota/Jimple/ with the following error: " +
+            e.message,
+        },
+        "*",
+      );
+    },
+  );
+}
+
+async function runCodeInternal(editor) {
+  const code = editor.getValue();
 
   // Capture console output
   const originalLog = console.log;
@@ -90,10 +123,9 @@ function runCode() {
     // Transpile TypeScript to JavaScript if needed
     if (currentLang === "typescript") {
       try {
-        executableCode = transpileTypeScript(executableCode);
+        executableCode = await transpileTypeScript(executableCode);
       } catch (transpileError) {
-        outputContent = `<div style="color: #ef4444;">TypeScript Error: ${transpileError.message}</div>`;
-        return;
+        return `<div style="color: #ef4444;">TypeScript Error: ${transpileError.message}</div>`;
       }
     }
 
@@ -102,10 +134,9 @@ function runCode() {
 
     // Display output
     if (logs.length === 0) {
-      outputContent =
-        '<span style="color: #64748b;">Code executed successfully (no output)</span>';
+      return '<span style="color: #64748b;">Code executed successfully (no output)</span>';
     } else {
-      outputContent = logs
+      return logs
         .map((log) => {
           const color = log.type === "error" ? "#ef4444" : "#94a3b8";
           const content = log.args
@@ -120,42 +151,17 @@ function runCode() {
         .join("");
     }
   } catch (error) {
-    outputContent = `<div style="color: #ef4444;">Runtime Error: ${error.message}</div>`;
+    return `<div style="color: #ef4444;">Runtime Error: ${error.message}</div>`;
   } finally {
     // Restore console
     console.log = originalLog;
     console.error = originalError;
-    // post message to parent page
-    window.parent.postMessage(
-      {
-        type: "update-output",
-        exampleKey,
-        outputContent,
-      },
-      "*",
-    );
   }
 }
 
-window.addEventListener("message", (message) => {
-  if (
-    message.data?.type === "run-code" &&
-    message.data?.exampleKey === exampleKey
-  ) {
-    runCode();
-  }
-});
-
 // Robust TypeScript transpiler using the official TypeScript compiler
-function transpileTypeScript(code) {
-  if (typeof ts === "undefined") {
-    // Fallback: show helpful message and try to run as JavaScript
-    console.warn(
-      "TypeScript compiler not available. Attempting to run as JavaScript...",
-    );
-    return code.replace(/:\s*\w+/g, "").replace(/interface[^}]+}/g, "");
-  }
-
+async function transpileTypeScript(code) {
+  const ts = await import("typescript");
   try {
     const compilerOptions = {
       target: ts.ScriptTarget.ES2018,
