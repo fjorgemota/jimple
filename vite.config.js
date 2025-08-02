@@ -3,10 +3,11 @@ import monacoEditorPlugin from "vite-plugin-monaco-editor";
 import { createHtmlPlugin } from "vite-plugin-html";
 
 export default defineConfig({
-  root: "docs-src", // ponto de entrada dos arquivos fonte
+  root: "docs-src",
+  base: "./",
   build: {
-    outDir: "../docs", // saída para a pasta `docs` como no Webpack
-    emptyOutDir: false, // equivalente ao `clean: { keep: ... }`
+    outDir: "../docs",
+    emptyOutDir: false,
   },
   plugins: [
     createHtmlPlugin({
