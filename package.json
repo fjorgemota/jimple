@@ -18,9 +18,9 @@
   "scripts": {
     "build": "microbundle --name Jimple",
     "test": "npm run size && npm run test:node && npm run test:browser",
-    "doc": "rm -Rf docs && documentation build src/** -f html -o docs/api && npm run build && npm run doc:build",
+    "doc": "rm -Rf docs-src/public/api && documentation build src/** -f html -o docs-src/public/api && npm run build && npm run doc:build",
     "doc:build": "vite build",
-    "doc:dev": "vite",
+    "doc:dev": "rm -Rf docs-src/public/api && documentation build src/** -f html -o docs-src/public/api && vite",
     "format": "prettier -w .",
     "size": "npm run build && size-limit",
     "test:browser": "vitest --run",
