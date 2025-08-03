@@ -210,7 +210,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /**
    * Defines a function as a parameter
    */
-  protect<T extends Function>(fn: T): T {
+  protect<T extends (...args: any[]) => any>(fn: T): T {
     addFunctionTo(this._protected, fn);
     return fn;
   }
