@@ -202,7 +202,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /**
    * Defines a service as a factory
    */
-  factory<T extends Function>(fn: T): T {
+  factory<
+    TKey extends keyof TMap,
+    T extends ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
+  >(fn: T): T {
     addFunctionTo(this._factories, fn);
     return fn;
   }
