@@ -35,7 +35,7 @@ monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
 const jimpleSource = libSource
   .replace("export default", "declare")
   .replace("export {}", "")
-  .replace("export", "");
+  .replace(/export/g, "");
 
 monaco.languages.typescript.javascriptDefaults.addExtraLib(
   jimpleSource,
