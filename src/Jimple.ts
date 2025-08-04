@@ -260,8 +260,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /**
    * Uses a provider to extend the service
    */
-  register(provider: ServiceProvider<TMap>): void {
-    provider.register(this._bind);
+  register<K extends keyof TMap>(
+      provider: ServiceProvider<Pick<TMap, K>>
+  ): void {
+    provider.register(this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>);
   }
 
   /**
