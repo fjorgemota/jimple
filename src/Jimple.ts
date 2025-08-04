@@ -1,8 +1,8 @@
 type ServiceFactory<T, TContainer> = (container: TContainer) => T;
 type ServiceExtender<T, TContainer> = (original: T, container: TContainer) => T;
 
-interface Provider<TContainer> {
-  register: (container: TContainer) => void;
+export interface ServiceProvider<TMap extends ServiceMap = ServiceMap> {
+  register(container: JimpleWithProxy<TMap>): void;
 }
 
 interface ServiceMap {}
@@ -72,9 +72,9 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   private readonly _protected = new Set<Function>();
   private readonly _bind: JimpleWithProxy<TMap>;
 
-  static provider<TContainer>(
-    register: (container: TContainer) => void,
-  ): Provider<TContainer> {
+  static provider<TMap extends ServiceMap = ServiceMap>(
+    register: ServiceProvider<TMap>["register"],
+  ): ServiceProvider<TMap> {
     return { register };
   }
 
@@ -260,7 +260,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /**
    * Uses a provider to extend the service
    */
-  register(provider: Provider<JimpleWithProxy<TMap>>): void {
+  register(provider: ServiceProvider<TMap>): void {
     provider.register(this._bind);
   }
 
