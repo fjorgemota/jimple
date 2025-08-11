@@ -653,8 +653,8 @@ container.set(
 
 ## Documentation
 
-- **📖 [Interactive Guide](https://fjorgemota.github.io/jimple/)** - Learn with live examples and tutorials
-- **📚 [Complete API Reference](https://fjorgemota.github.io/jimple/api/)** - Detailed JSDoc documentation with full method signatures and examples
+- **📖 [Interactive Guide](https://jimple.js.org/)** - Learn with live examples and tutorials
+- **📚 [Complete API Reference](https://jimple.js.org/api/)** - Detailed JSDoc documentation with full method signatures and examples
 
 ## License
 
