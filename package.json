@@ -49,7 +49,7 @@
   "bugs": {
     "url": "https://github.com/fjorgemota/jimple/issues"
   },
-  "homepage": "https://fjorgemota.github.io/jimple/",
+  "homepage": "https://jimple.js.org/",
   "size-limit": [
     {
       "path": "dist/Jimple.umd.js",
