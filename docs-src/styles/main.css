@@ -197,8 +197,9 @@ body {
 }
 
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -209,6 +210,7 @@ body {
   border-radius: 1rem;
   box-shadow: var(--shadow);
   text-align: center;
+  flex: 0 1 250px;
 }
 
 .feature-icon {
