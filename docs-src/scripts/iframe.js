@@ -159,38 +159,46 @@ async function runCodeInternal(editor) {
   }
 }
 
-// Robust TypeScript transpiler using the official TypeScript compiler
+// Usa o worker do Monaco pra type-check + emit (sem import de "typescript")
 async function transpileTypeScript(code) {
-  const ts = await import("typescript");
-  try {
-    const compilerOptions = {
-      target: ts.ScriptTarget.ES2018,
-      module: ts.ModuleKind.None,
-      removeComments: false,
-      strict: false,
-      skipLibCheck: true,
-      skipDefaultLibCheck: true,
-      allowJs: true,
-      noEmitOnError: false,
-      noImplicitAny: false,
-      suppressImplicitAnyIndexErrors: true,
-      // Additional options for better compatibility
-      downlevelIteration: true,
-      allowSyntheticDefaultImports: true,
-      esModuleInterop: true,
-    };
+  const model = editor.getModel();
+  if (!model) throw new Error("Editor model not found.");
+  model.setValue(code); // mantém o worker em sincronia
 
-    const result = ts.transpile(code, compilerOptions);
+  const getWorker = await monaco.languages.typescript.getTypeScriptWorker();
+  const client = await getWorker(model.uri);
+  const uri = model.uri.toString();
 
-    if (!result) {
-      throw new Error("Failed to transpile TypeScript code");
-    }
+  // diagnostics
+  const [syntactic, semantic, options] = await Promise.all([
+    client.getSyntacticDiagnostics(uri),
+    client.getSemanticDiagnostics(uri),
+    client.getCompilerOptionsDiagnostics(uri),
+  ]);
+  const all = [...options, ...syntactic, ...semantic];
 
-    return result;
-  } catch (error) {
-    // If TypeScript compilation fails, provide helpful error
-    throw new Error(
-      `TypeScript compilation failed: ${error.message || "Unknown error"}`,
-    );
+  if (all.length) {
+    const formatted = all.map(d => {
+      const start = typeof d.start === "number" ? d.start : 0;
+      const pos = model.getPositionAt(start); // <- converte offset pra linha/coluna
+      const fileName = model.uri.path || model.uri.toString();
+      const msg = flattenMessageText(d.messageText);
+      return `${fileName}:${pos.lineNumber}:${pos.column} - TS${d.code}: ${msg}`;
+    }).join("\n");
+    throw new Error("TypeScript type-check failed:\n" + formatted);
+  }
+
+  // emit
+  const emit = await client.getEmitOutput(uri);
+  if (emit.emitSkipped) throw new Error("Emit skipped.");
+  const js = emit.outputFiles.find(f => f.name.endsWith(".js"))?.text;
+  if (!js) throw new Error("No JS output produced.");
+  return js;
+
+  function flattenMessageText(mt) {
+    if (typeof mt === "string") return mt;
+    let out = mt.messageText || "";
+    if (Array.isArray(mt.next)) out += " " + mt.next.map(flattenMessageText).join(" ");
+    return out.trim();
   }
 }
