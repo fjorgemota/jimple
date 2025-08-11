@@ -554,6 +554,47 @@ code {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
+/* Documentation Cards */
+.documentation-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.documentation-card {
+  background: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.documentation-card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.documentation-card-title {
+  margin-bottom: 0.5rem;
+}
+
+.documentation-card-desc {
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.documentation-card-link-primary {
+  background: var(--primary);
+  color: white;
+  text-decoration: none;
+}
+
+.documentation-card-link-accent {
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .main {

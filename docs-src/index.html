@@ -547,65 +547,18 @@ const db2 = dbFactory(container); // Create another instance manually</code></pr
           <!-- Documentation Links -->
           <section class="section" id="documentation">
             <h2>Documentation</h2>
-            <div
-              style="
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 1.5rem;
-                margin-top: 1.5rem;
-              "
-            >
-              <div
-                style="
-                  background: var(--bg-secondary);
-                  padding: 2rem;
-                  border-radius: 1rem;
-                  text-align: center;
-                "
-              >
-                <div style="font-size: 2rem; margin-bottom: 1rem">📖</div>
-                <h3 style="margin-bottom: 0.5rem">Interactive Guide</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--text-secondary)">
-                  This page! Learn Jimple with live examples, tutorials, and
-                  hands-on code playgrounds.
-                </p>
-                <a
-                  href="#quick-start"
-                  class="btn"
-                  style="
-                    background: var(--primary);
-                    color: white;
-                    text-decoration: none;
-                  "
-                >
-                  Start Learning
-                </a>
+            <div class="documentation-links">
+              <div class="documentation-card">
+                <div class="documentation-card-icon">📖</div>
+                <h3 class="documentation-card-title">Interactive Guide</h3>
+                <p class="documentation-card-desc">This page! Learn Jimple with live examples, tutorials, and hands-on code playgrounds.</p>
+                <a href="#quick-start" class="btn documentation-card-link-primary">Start Learning</a>
               </div>
-              <div
-                style="
-                  background: var(--bg-secondary);
-                  padding: 2rem;
-                  border-radius: 1rem;
-                  text-align: center;
-                "
-              >
-                <div style="font-size: 2rem; margin-bottom: 1rem">📚</div>
-                <h3 style="margin-bottom: 0.5rem">Complete API Reference</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--text-secondary)">
-                  Detailed JSDoc documentation with full method signatures,
-                  parameters, and comprehensive examples.
-                </p>
-                <a
-                  href="api/"
-                  class="btn"
-                  style="
-                    background: var(--accent);
-                    color: white;
-                    text-decoration: none;
-                  "
-                >
-                  View API Docs
-                </a>
+              <div class="documentation-card">
+                <div class="documentation-card-icon">📚</div>
+                <h3 class="documentation-card-title">Complete API Reference</h3>
+                <p class="documentation-card-desc">Detailed JSDoc documentation with full method signatures, parameters, and comprehensive examples.</p>
+                <a href="api/" class="btn documentation-card-link-accent">View API Docs</a>
               </div>
             </div>
           </section>
