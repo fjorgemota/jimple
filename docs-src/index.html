@@ -30,6 +30,13 @@
             <li><a href="#examples">Examples</a></li>
             <li><a href="https://github.com/fjorgemota/jimple">GitHub</a></li>
           </ul>
+          <button
+            id="theme-toggle"
+            aria-label="Switch theme"
+            title="Switch theme"
+          >
+            🌙
+          </button>
         </nav>
       </div>
     </header>
@@ -64,7 +71,7 @@
     <!-- Features Section -->
     <section class="features">
       <div class="container">
-        <h2 style="text-align: center; margin-bottom: 1rem">Features</h2>
+        <h2 class="features-title">Features</h2>
         <div class="features-grid">
           <div class="feature">
             <div class="feature-icon">⚡</div>
@@ -483,34 +490,10 @@ const db2 = dbFactory(container); // Create another instance manually</code></pr
               </tbody>
             </table>
 
-            <div
-              style="
-                background: var(--bg-secondary);
-                padding: 1.5rem;
-                border-radius: 0.75rem;
-                margin-top: 1.5rem;
-                text-align: center;
-              "
-            >
-              <h4 style="margin-bottom: 0.5rem; color: var(--text)">
-                Need More Details?
-              </h4>
-              <p style="margin-bottom: 1rem; color: var(--text-secondary)">
-                For complete API documentation with detailed examples and type
-                definitions:
-              </p>
-              <a
-                href="api/"
-                class="btn"
-                style="
-                  background: var(--primary);
-                  color: white;
-                  text-decoration: none;
-                  display: inline-block;
-                "
-              >
-                View Full API Documentation →
-              </a>
+            <div class="api-details-box">
+              <h4 class="api-details-title">Need More Details?</h4>
+              <p class="api-details-desc">For complete API documentation with detailed examples and type definitions:</p>
+              <a href="api/" class="btn btn-primary api-details-link">View Full API Documentation →</a>
             </div>
           </section>
 

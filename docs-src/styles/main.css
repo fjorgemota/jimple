@@ -19,6 +19,39 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
+/* Dark Theme */
+:root[data-theme="dark"] {
+  --primary: #60a5fa;
+  --primary-dark: #1e40af;
+  --secondary: #94a3b8;
+  --accent: #22d3ee;
+  --bg: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-code: #1e293b;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #334155;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+/* Fixes tab button text color in dark theme */
+:root[data-theme="dark"] .tab-btn {
+  color: var(--text-secondary);
+}
+:root[data-theme="dark"] .tab-btn.active,
+:root[data-theme="dark"] .tab-btn:hover {
+  color: white;
+}
+
+#theme-toggle {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 body {
   font-family: "Inter", sans-serif;
   line-height: 1.6;
@@ -156,6 +189,11 @@ body {
 .features {
   padding: 4rem 0;
   background: var(--bg-secondary);
+}
+
+.features-title {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .features-grid {
@@ -411,6 +449,36 @@ code {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
+}
+
+.api-details-box {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.api-details-title {
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.api-details-desc {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+.api-details-link {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+  background: var(--primary);
+  color: white;
+}
+
+.api-details-link:hover {
+  background: var(--primary-dark);
 }
 
 /* Tab navigation - Desktop styles */
