@@ -567,6 +567,9 @@ code {
   padding: 2rem;
   border-radius: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .documentation-card-icon {
@@ -574,25 +577,29 @@ code {
   margin-bottom: 1rem;
 }
 
-.documentation-card-title {
+.section h3.documentation-card-title {
+  margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
 .documentation-card-desc {
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
+  flex-grow: 1;
 }
 
 .documentation-card-link-primary {
   background: var(--primary);
   color: white;
   text-decoration: none;
+  margin-top: auto;
 }
 
 .documentation-card-link-accent {
   background: var(--accent);
   color: white;
   text-decoration: none;
+  margin-top: auto;
 }
 
 /* Responsive */
