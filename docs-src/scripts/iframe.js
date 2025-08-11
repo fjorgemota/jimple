@@ -159,7 +159,7 @@ async function runCodeInternal(editor) {
   }
 }
 
-// Usa o worker do Monaco pra type-check + emit (sem import de "typescript")
+// Transpile TypeScript code to JavaScript using Monaco's TypeScript worker
 async function transpileTypeScript(code) {
   const model = editor.getModel();
   if (!model) throw new Error("Editor model not found.");
@@ -180,12 +180,11 @@ async function transpileTypeScript(code) {
   if (all.length) {
     const formatted = all.map(d => {
       const start = typeof d.start === "number" ? d.start : 0;
-      const pos = model.getPositionAt(start); // <- converte offset pra linha/coluna
-      const fileName = model.uri.path || model.uri.toString();
+      const pos = model.getPositionAt(start);
       const msg = flattenMessageText(d.messageText);
-      return `${fileName}:${pos.lineNumber}:${pos.column} - TS${d.code}: ${msg}`;
+      return `example.ts:${pos.lineNumber}:${pos.column} - TS${d.code}: ${msg}`;
     }).join("\n");
-    throw new Error("TypeScript type-check failed:\n" + formatted);
+    throw new Error(formatted);
   }
 
   // emit
