@@ -187,7 +187,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
   ): void {
     const originalItem = this._items[key as string];
-    assert( ! isFunction(originalItem) || !this._instances.has(originalItem),  `Cannot redefine service '${String(key)}' because it is already instantiated.`);
+    assert( (! isFunction(originalItem) && ! isAsyncFunction(originalItem)) || !this._instances.has(originalItem),  `Cannot redefine service '${String(key)}' because it is already instantiated.`);
     this._items[key as string] = value;
   }
 
