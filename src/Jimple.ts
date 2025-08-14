@@ -243,6 +243,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       isFunction(fn),
       `The 'new' service definition for '${String(key)}' is not a invokable object.`,
     );
+    assert(
+        ! this._instances.has(originalItem),
+        `Cannot extend service '${String(key)}' because it is already instantiated.`,
+    )
 
     this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
       return fn(originalItem(app), this._bind);

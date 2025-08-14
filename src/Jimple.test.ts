@@ -462,7 +462,7 @@ describe("Jimple", function () {
         jimple.extend("age", 1);
       }).to.throw();
     });
-    it("should overwrite service correctly", function () {
+    it("should throw an error if service was already instantiated", function () {
       interface ParameterServiceMap {
         age: number;
         one: number;
@@ -473,6 +473,23 @@ describe("Jimple", function () {
       });
       jimple.set("one", 1);
       expect(jimple.get("age")).toBe(19);
+      expect(() => {
+        jimple.extend("age", function (result, app) {
+          return result + app.get("one");
+        });
+      }).to.throw();
+      expect(jimple.get("age")).toBe(19);
+    });
+    it("should overwrite service correctly", function () {
+      interface ParameterServiceMap {
+        age: number;
+        one: number;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("age", function () {
+        return 19;
+      });
+      jimple.set("one", 1);
       jimple.extend("age", function (result, app) {
         return result + app.get("one");
       });
