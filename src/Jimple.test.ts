@@ -181,7 +181,7 @@ describe("Jimple", function () {
       expect(jimple.has("name")).to.be.ok;
       expect(jimple.get("age")).toBe(19);
       expect(jimple.get("name")).toBe("xpto");
-    })
+    });
     it("should throw an error if overwriting services already instantiated", function () {
       interface ParameterServiceMap {
         age: number;
@@ -199,7 +199,7 @@ describe("Jimple", function () {
         });
       }).to.throw();
       expect(jimple.get("age")).toBe(19);
-    })
+    });
     it("should work fine if overwriting services not already instantiated", function () {
       interface ParameterServiceMap {
         age: number;
@@ -238,7 +238,7 @@ describe("Jimple", function () {
       expect(jimple.keys()).to.not.contain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeFalsy();
-    })
+    });
 
     it("should support unsetting services", function () {
       interface ParameterServiceMap {
@@ -266,8 +266,8 @@ describe("Jimple", function () {
       expect(jimple.keys()).to.not.contain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeFalsy();
-    })
-  })
+    });
+  });
   describe("#raw()", function () {
     it("should throw an exception when getting non existent key", function () {
       interface EmptyServiceMap {}
@@ -673,7 +673,7 @@ describe("Jimple", function () {
     it("should allow unsetting services and properties after initialization", function () {
       interface ParameterServiceMap {
         age: number;
-        name: string
+        name: string;
       }
       const jimple = Jimple.create<ParameterServiceMap>();
       // @ts-ignore

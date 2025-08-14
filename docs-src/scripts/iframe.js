@@ -178,26 +178,29 @@ async function transpileTypeScript(code) {
   const all = [...options, ...syntactic, ...semantic];
 
   if (all.length) {
-    const formatted = all.map(d => {
-      const start = typeof d.start === "number" ? d.start : 0;
-      const pos = model.getPositionAt(start);
-      const msg = flattenMessageText(d.messageText);
-      return `example.ts:${pos.lineNumber}:${pos.column} - TS${d.code}: ${msg}`;
-    }).join("\n");
+    const formatted = all
+      .map((d) => {
+        const start = typeof d.start === "number" ? d.start : 0;
+        const pos = model.getPositionAt(start);
+        const msg = flattenMessageText(d.messageText);
+        return `example.ts:${pos.lineNumber}:${pos.column} - TS${d.code}: ${msg}`;
+      })
+      .join("\n");
     throw new Error(formatted);
   }
 
   // emit
   const emit = await client.getEmitOutput(uri);
   if (emit.emitSkipped) throw new Error("Emit skipped.");
-  const js = emit.outputFiles.find(f => f.name.endsWith(".js"))?.text;
+  const js = emit.outputFiles.find((f) => f.name.endsWith(".js"))?.text;
   if (!js) throw new Error("No JS output produced.");
   return js;
 
   function flattenMessageText(mt) {
     if (typeof mt === "string") return mt;
     let out = mt.messageText || "";
-    if (Array.isArray(mt.next)) out += " " + mt.next.map(flattenMessageText).join(" ");
+    if (Array.isArray(mt.next))
+      out += " " + mt.next.map(flattenMessageText).join(" ");
     return out.trim();
   }
 }

@@ -111,8 +111,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       },
 
       set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {
-        assert( !(prop in target) || typeof prop !== "string",
-            `Cannot set method '${String(prop)}'. Use the method 'set' to set this value instead.`);
+        assert(
+          !(prop in target) || typeof prop !== "string",
+          `Cannot set method '${String(prop)}'. Use the method 'set' to set this value instead.`,
+        );
         target.set(prop as keyof TMap, value);
         return true;
       },
@@ -126,8 +128,10 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       },
 
       deleteProperty(target: Jimple<TMap>, prop: string | symbol): boolean {
-        assert( !(prop in target) || typeof prop !== "string",
-            `Cannot unset method '${String(prop)}'. Use the method 'unset' to unset this key instead.`);
+        assert(
+          !(prop in target) || typeof prop !== "string",
+          `Cannot unset method '${String(prop)}'. Use the method 'unset' to unset this key instead.`,
+        );
         target.unset(prop as keyof TMap);
         return true;
       },
@@ -194,7 +198,11 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
   ): void {
     const originalItem = this._items[key as string];
-    assert( (! isFunction(originalItem) && ! isAsyncFunction(originalItem)) || !this._instances.has(originalItem),  `Cannot redefine service '${String(key)}' because it is already instantiated.`);
+    assert(
+      (!isFunction(originalItem) && !isAsyncFunction(originalItem)) ||
+        !this._instances.has(originalItem),
+      `Cannot redefine service '${String(key)}' because it is already instantiated.`,
+    );
     this._items[key as string] = value;
   }
 
@@ -202,13 +210,13 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * Unsets a parameter or service
    */
   unset<TKey extends keyof TMap>(key: TKey): void {
-      const item = this._items[key as string];
-      if (isFunction(item) || isAsyncFunction(item)) {
-        this._instances.delete(item);
-        this._factories.delete(item);
-        this._protected.delete(item);
-      }
-      delete this._items[key as string];
+    const item = this._items[key as string];
+    if (isFunction(item) || isAsyncFunction(item)) {
+      this._instances.delete(item);
+      this._factories.delete(item);
+      this._protected.delete(item);
+    }
+    delete this._items[key as string];
   }
 
   /**
@@ -266,9 +274,9 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       `The 'new' service definition for '${String(key)}' is not a invokable object.`,
     );
     assert(
-        ! this._instances.has(originalItem),
-        `Cannot extend service '${String(key)}' because it is already instantiated.`,
-    )
+      !this._instances.has(originalItem),
+      `Cannot extend service '${String(key)}' because it is already instantiated.`,
+    );
 
     this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
       return fn(originalItem(app), this._bind);
