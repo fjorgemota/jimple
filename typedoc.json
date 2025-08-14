@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/Jimple.ts"],
+  "out": "docs-src/public/api",
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
+}
