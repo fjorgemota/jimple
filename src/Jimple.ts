@@ -111,11 +111,8 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       },
 
       set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {
-        if (prop in target && typeof prop === "string") {
-          throw new Error(
-            `Cannot set method '${prop}' directly. Use the method 'set' to set this value instead.`,
-          );
-        }
+        assert( !(prop in target) || typeof prop !== "string",
+            `Cannot set method '${String(prop)}' directly. Use the method 'set' to set this value instead.`);
         target.set(prop as keyof TMap, value);
         return true;
       },
