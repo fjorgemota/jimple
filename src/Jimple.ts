@@ -3,14 +3,17 @@
  * @template T - The type of service being created
  * @template TContainer - The type of the container being injected
  */
-type ServiceFactory<T, TContainer> = (container: TContainer) => T;
+export type ServiceFactory<T, TContainer> = (container: TContainer) => T;
 
 /**
  * Extender function type that modifies an existing service.
  * @template T - The type of service being extended
  * @template TContainer - The type of the container being injected
  */
-type ServiceExtender<T, TContainer> = (original: T, container: TContainer) => T;
+export type ServiceExtender<T, TContainer> = (
+  original: T,
+  container: TContainer,
+) => T;
 
 /**
  * Interface for service providers that can register services with a container.
@@ -34,21 +37,21 @@ export interface ServiceProvider<TMap extends ServiceMap = ServiceMap> {
  * }
  * ```
  */
-interface ServiceMap {}
+export interface ServiceMap {}
 
 /**
  * Utility type to extract the service type from a service map.
  * @template TMap - The service map
  * @template TKey - The key in the service map
  */
-type ServiceType<TMap, TKey extends keyof TMap> = TMap[TKey];
+export type ServiceType<TMap, TKey extends keyof TMap> = TMap[TKey];
 
 /**
  * Type for initial service registration, allowing either concrete instances or factory functions.
  * @template TMap - The service map
  * @template TContainer - The container type
  */
-type InitialServiceMap<TMap, TContainer> = {
+export type InitialServiceMap<TMap, TContainer> = {
   [TKey in keyof TMap]:
     | TMap[TKey]
     | ServiceFactory<ServiceType<TMap, TKey>, TContainer>;
@@ -67,6 +70,7 @@ export type JimpleWithProxy<TMap extends ServiceMap> = Jimple<TMap> & {
  * @param ok - The condition to assert
  * @param message - Error message to throw if condition is false
  * @throws {Error} When the assertion fails
+ * @internal
  */
 function assert(ok: boolean, message: string): asserts ok {
   if (!ok) {
@@ -78,6 +82,7 @@ function assert(ok: boolean, message: string): asserts ok {
  * Type guard to check if a value is a regular function.
  * @param fn - The value to check
  * @returns True if the value is a function
+ * @internal
  */
 function isFunction(fn: unknown): fn is Function {
   return (
@@ -90,6 +95,7 @@ function isFunction(fn: unknown): fn is Function {
  * Type guard to check if a value is an async function.
  * @param fn - The value to check
  * @returns True if the value is an async function
+ * @internal
  */
 function isAsyncFunction(fn: unknown): fn is Function {
   return (
@@ -102,6 +108,7 @@ function isAsyncFunction(fn: unknown): fn is Function {
  * Type guard to check if a value is a plain object (not an array, function, etc.).
  * @param value - The value to check
  * @returns True if the value is a plain object
+ * @internal
  */
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   if (Object.prototype.toString.call(value) !== "[object Object]") {
@@ -118,6 +125,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * @param container - The container to check
  * @param key - The service key to check
  * @throws {Error} When the service is not defined
+ * @internal
  */
 function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
   container: Jimple<TMap>,
@@ -132,6 +140,7 @@ function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
  * @param set - The set to add the function to
  * @param fn - The function to add
  * @throws {Error} When the value is not a function
+ * @internal
  */
 function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
   assert(
@@ -161,7 +170,7 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
  * const userService = container.userService; // Typed as UserService
  * ```
  */
-export default class Jimple<TMap extends ServiceMap = ServiceMap> {
+export class Jimple<TMap extends ServiceMap = ServiceMap> {
   /** Internal storage for service definitions and parameters */
   private readonly _items: Record<string, unknown> = {};
 
@@ -585,3 +594,5 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>;
   }
 }
+
+export default Jimple;
