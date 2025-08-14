@@ -376,15 +376,16 @@ module.exports = {
 
 ### Container Methods
 
-| Method               | Description                                      | Returns    |
-| -------------------- | ------------------------------------------------ | ---------- |
-| `set(id, value)`     | Define a service or parameter                    | `void`     |
-| `get(id)`            | Retrieve a service or parameter                  | `any`      |
-| `has(id)`            | Check if service/parameter exists                | `boolean`  |
-| `factory(fn)`        | Create a factory service                         | `fn`       |
-| `protect(fn)`        | Protect a function from being treated as service | `fn`       |
-| `extend(id, fn)`     | Extend an existing service                       | `void`     |
-| `raw(id)`            | Get the raw service definition                   | `Function` |
+| Method             | Description                                      | Returns    |
+|--------------------|--------------------------------------------------| ---------- |
+| `set(id, value)`   | Define a service or parameter                    | `void`     |
+| `unset(id, value)` | Unset a service or parameter                     | `void`     |
+| `get(id)`          | Retrieve a service or parameter                  | `any`      |
+| `has(id)`          | Check if service/parameter exists                | `boolean`  |
+| `factory(fn)`      | Create a factory service                         | `fn`       |
+| `protect(fn)`      | Protect a function from being treated as service | `fn`       |
+| `extend(id, fn)`   | Extend an existing service                       | `void`     |
+| `raw(id)`          | Get the raw service definition                   | `Function` |
 | `register(provider)` | Register a service provider                      | `void`     |
 
 ### Provider Interface
