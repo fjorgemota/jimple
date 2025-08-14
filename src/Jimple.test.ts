@@ -215,6 +215,59 @@ describe("Jimple", function () {
       expect(jimple.get("age")).toBe(20);
     });
   });
+  describe("#unset()", function () {
+    it("should support unsetting parameters", function () {
+      interface ParameterServiceMap {
+        age: number;
+        name: string;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("age", 19);
+      jimple.set("name", "xpto");
+      expect(jimple.keys()).to.contain("age");
+      expect(jimple.keys()).to.contain("name");
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
+      jimple.unset("age");
+      expect(jimple.keys()).to.not.contain("age");
+      expect(jimple.keys()).to.contain("name");
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeTruthy();
+      jimple.unset("name");
+      expect(jimple.keys()).to.not.contain("age");
+      expect(jimple.keys()).to.not.contain("name");
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
+    })
+
+    it("should support unsetting services", function () {
+      interface ParameterServiceMap {
+        age: number;
+        name: string;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("age", function () {
+        return 19;
+      });
+      jimple.set("name", function () {
+        return "xpto";
+      });
+      expect(jimple.keys()).to.contain("age");
+      expect(jimple.keys()).to.contain("name");
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
+      jimple.unset("age");
+      expect(jimple.keys()).to.not.contain("age");
+      expect(jimple.keys()).to.contain("name");
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeTruthy();
+      jimple.unset("name");
+      expect(jimple.keys()).to.not.contain("age");
+      expect(jimple.keys()).to.not.contain("name");
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
+    })
+  })
   describe("#raw()", function () {
     it("should throw an exception when getting non existent key", function () {
       interface EmptyServiceMap {}
@@ -616,6 +669,26 @@ describe("Jimple", function () {
       jimple.nextAge = (j) => j.age + j.one;
       expect(jimple.nextAge).toBe(20);
     });
+
+    it("should allow unsetting services and properties after initialization", function () {
+      interface ParameterServiceMap {
+        age: number;
+        name: string
+      }
+      const jimple = Jimple.create<ParameterServiceMap>();
+      // @ts-ignore
+      jimple.age = () => 19;
+      // @ts-ignore
+      jimple.name = "xpto";
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
+      delete jimple.age;
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeTruthy();
+      delete jimple.name;
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
+    });
     it("should throw an error when trying to set a method or private parameter", function () {
       const jimple = Jimple.create();
       expect(function () {
@@ -625,6 +698,17 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple._items = 42;
+      }).to.throw();
+    });
+    it("should throw an error when trying to delete a method or private parameter", function () {
+      const jimple = Jimple.create();
+      expect(function () {
+        // @ts-ignore
+        delete jimple.keys;
+      }).to.throw();
+      expect(function () {
+        // @ts-ignore
+        delete jimple._items;
       }).to.throw();
     });
     it("should be able to check if a property exists", function () {
