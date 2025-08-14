@@ -136,6 +136,7 @@ describe("Jimple", function () {
       const jimple = new Jimple<SymbolServiceMap>();
       jimple.set(
         "symbol",
+        // @ts-ignore
         jimple.factory(() => Symbol()),
       );
       expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
@@ -326,9 +327,11 @@ describe("Jimple", function () {
     it("should not throw exceptions if function is passed in", function () {
       const jimple = new Jimple();
       expect(function () {
-        jimple.factory(Symbol);
+        // @ts-ignore
+        jimple.factory(() => Symbol());
       }).to.not.throw();
       expect(function () {
+        // @ts-ignore
         jimple.factory(function () {
           return "xpto";
         });
@@ -339,7 +342,9 @@ describe("Jimple", function () {
       const fn = function () {
         return "xpto";
       };
-      expect(jimple.factory(Symbol)).toBe(Symbol);
+      // @ts-ignore
+      expect(jimple.factory(() => Symbol())).toBe(Symbol);
+      // @ts-ignore
       expect(jimple.factory(fn)).toBe(fn);
     });
   });
@@ -682,9 +687,11 @@ describe("Jimple", function () {
       jimple.name = "xpto";
       expect(jimple.has("age")).toBeTruthy();
       expect(jimple.has("name")).toBeTruthy();
+      // @ts-ignore
       delete jimple.age;
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeTruthy();
+      // @ts-ignore
       delete jimple.name;
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeFalsy();
