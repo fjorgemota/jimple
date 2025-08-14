@@ -125,6 +125,13 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
         return target.has(prop as keyof TMap);
       },
 
+      deleteProperty(target: Jimple<TMap>, prop: string | symbol): boolean {
+        assert( !(prop in target) || typeof prop !== "string",
+            `Cannot unset method '${String(prop)}'. Use the method 'unset' to unset this key instead.`);
+        target.unset(prop as keyof TMap);
+        return true;
+      },
+
       ownKeys(target: Jimple<TMap>): ArrayLike<string | symbol> {
         const classKeys = Object.getOwnPropertyNames(target);
         const serviceKeys = target.keys().map((k) => String(k));
