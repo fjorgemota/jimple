@@ -181,6 +181,38 @@ describe("Jimple", function () {
       expect(jimple.has("name")).to.be.ok;
       expect(jimple.get("age")).toBe(19);
       expect(jimple.get("name")).toBe("xpto");
+    })
+    it("should throw an error if overwriting services already instantiated", function () {
+      interface ParameterServiceMap {
+        age: number;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("age", function () {
+        return 19;
+      });
+      expect(jimple.keys()).toContain("age");
+      expect(jimple.has("age")).to.be.ok;
+      expect(jimple.get("age")).toBe(19);
+      expect(() => {
+        jimple.set("age", function () {
+          return 20;
+        });
+      }).to.throw();
+      expect(jimple.get("age")).toBe(19);
+    })
+    it("should work fine if overwriting services not already instantiated", function () {
+      interface ParameterServiceMap {
+        age: number;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("age", function () {
+        return 19;
+      });
+      expect(jimple.keys()).toContain("age");
+      jimple.set("age", function () {
+        return 20;
+      });
+      expect(jimple.get("age")).toBe(20);
     });
   });
   describe("#raw()", function () {
