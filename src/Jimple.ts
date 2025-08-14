@@ -202,14 +202,13 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * Unsets a parameter or service
    */
   unset<TKey extends keyof TMap>(key: TKey): void {
-    checkDefined(this, key);
-    const item = this._items[key as string];
-    if (isFunction(item) || isAsyncFunction(item)) {
-      this._instances.delete(item);
-      this._factories.delete(item);
-      this._protected.delete(item);
-    }
-    delete this._items[key as string];
+      const item = this._items[key as string];
+      if (isFunction(item) || isAsyncFunction(item)) {
+        this._instances.delete(item);
+        this._factories.delete(item);
+        this._protected.delete(item);
+      }
+      delete this._items[key as string];
   }
 
   /**
