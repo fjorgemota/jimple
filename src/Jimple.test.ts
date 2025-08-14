@@ -343,7 +343,7 @@ describe("Jimple", function () {
         return "xpto";
       };
       // @ts-ignore
-      expect(jimple.factory(() => Symbol())).toBe(Symbol);
+      expect(jimple.factory(Symbol)).toBe(Symbol);
       // @ts-ignore
       expect(jimple.factory(fn)).toBe(fn);
     });
