@@ -156,8 +156,6 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
  *
  * @template TMap - The service map extending ServiceMap
  *
- * @class Jimple
- *
  * @example
  * ```typescript
  * interface MyServices extends ServiceMap {
