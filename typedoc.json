@@ -2,6 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["./src/Jimple.ts"],
   "out": "docs-src/public/api",
+  "readme": "none", 
   "compilerOptions": {
     "skipLibCheck": true
   }
