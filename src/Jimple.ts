@@ -156,6 +156,8 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
  *
  * @template TMap - The service map extending ServiceMap
  *
+ * @name Jimple
+ *
  * @example
  * ```typescript
  * interface MyServices extends ServiceMap {
@@ -170,7 +172,7 @@ function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
  * const userService = container.userService; // Typed as UserService
  * ```
  */
-export class Jimple<TMap extends ServiceMap = ServiceMap> {
+export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /** Internal storage for service definitions and parameters */
   private readonly _items: Record<string, unknown> = {};
 
@@ -594,5 +596,3 @@ export class Jimple<TMap extends ServiceMap = ServiceMap> {
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>;
   }
 }
-
-export default Jimple;
