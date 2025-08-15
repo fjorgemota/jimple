@@ -2,7 +2,9 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["./src/Jimple.ts"],
   "out": "docs-src/public/api",
-  "readme": "none", 
+  "readme": "none",
+  "plugin": ["typedoc-plugin-rename-defaults"],
+  "entryPointStrategy": "expand",
   "compilerOptions": {
     "skipLibCheck": true
   }
