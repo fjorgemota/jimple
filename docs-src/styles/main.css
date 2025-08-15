@@ -515,6 +515,7 @@ code {
 .tab-btn {
   padding: 0.5rem 1rem;
   background: var(--bg-secondary);
+  color: var(--text);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   cursor: pointer;
