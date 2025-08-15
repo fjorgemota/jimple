@@ -215,6 +215,32 @@ container.extend("logger", (logger, c) => {
 });
 ```
 
+### Removing Services
+
+Remove services or parameters from the container with `unset()`:
+
+```js
+container.set("logger", (c) => new Logger());
+container.set("apiUrl", "https://api.example.com");
+
+// Remove a service
+container.unset("logger");
+console.log(container.has("logger")); // false
+
+// Remove a parameter
+container.unset("apiUrl");
+console.log(container.has("apiUrl")); // false
+
+// Safe to unset non-existent services
+container.unset("nonExistent"); // No error thrown
+```
+
+**Important Notes:**
+- Removes the service/parameter completely from the container
+- Clears any cached instances and metadata for services
+- Cannot be undone - you'll need to re-register the service
+- Safe to call on non-existent services (no error thrown)
+
 ### Optional Dependencies & Defaults
 
 Handle optional services with fallbacks:
