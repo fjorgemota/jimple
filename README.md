@@ -59,7 +59,7 @@ Dependency injection helps you write more maintainable, testable code by:
 ## Quick Start
 
 ```bash
-npm install jimple@2.0.0-beta.3
+npm install jimple@2.0.0-beta.4
 ```
 
 ```js

@@ -1,7 +1,7 @@
 {
   "name": "jimple",
   "type": "module",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "A Dependency Injection container to NodeJS and to the browser developed in ES6",
   "source": "src/Jimple.ts",
   "exports": {
