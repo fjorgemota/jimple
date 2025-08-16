@@ -402,9 +402,9 @@ module.exports = {
 ### Container Methods
 
 | Method               | Description                                      | Returns    |
-| -------------------- | ------------------------------------------------ | ---------- |
+| -------------------- |--------------------------------------------------| ---------- |
 | `set(id, value)`     | Define a service or parameter                    | `void`     |
-| `unset(id, value)`   | Unset a service or parameter                     | `void`     |
+| `unset(id, value)`   | Remove a service or parameter                    | `void`     |
 | `get(id)`            | Retrieve a service or parameter                  | `any`      |
 | `has(id)`            | Check if service/parameter exists                | `boolean`  |
 | `factory(fn)`        | Create a factory service                         | `fn`       |
