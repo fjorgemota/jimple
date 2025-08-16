@@ -1,5 +1,5 @@
 import "../styles/main.css";
-import { examples } from "./examples.js";
+import { examples } from "./examples";
 
 const editors = {};
 

@@ -1,7 +1,7 @@
 import Jimple from "../../dist/Jimple.module.js";
 import libSource from "../../dist/Jimple.d.ts?raw";
 import * as monaco from "monaco-editor";
-import { examples } from "./examples.js";
+import { examples } from "./examples/";
 
 window.Jimple = Jimple;
 
