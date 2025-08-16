@@ -213,7 +213,7 @@ container.extend("logger", (logger, c) => {
 });
 ```
 
-### Removing Services
+### Removing Services or Parameters
 
 Remove services or parameters from the container with `unset()`:
 
