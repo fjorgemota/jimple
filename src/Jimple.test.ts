@@ -135,9 +135,9 @@ describe("Jimple", function () {
       }
       const jimple = new Jimple<SymbolServiceMap>();
       jimple.set(
-          "symbol",
-          // @ts-ignore
-          jimple.factory(() => Symbol()),
+        "symbol",
+        // @ts-ignore
+        jimple.factory(() => Symbol()),
       );
       expect(jimple.get("symbol")).not.toEqual(jimple.get("symbol"));
     });
@@ -528,10 +528,10 @@ describe("Jimple", function () {
       }
       const jimple = new Jimple<ParameterServiceMap>();
       jimple.set(
-          "theAnswer",
-          jimple.protect(function () {
-            return 42;
-          }),
+        "theAnswer",
+        jimple.protect(function () {
+          return 42;
+        }),
       );
       expect(function () {
         jimple.extend("theAnswer", function () {
@@ -593,10 +593,10 @@ describe("Jimple", function () {
       const jimple = new Jimple<ParameterServiceMap>();
       let counter = 0;
       jimple.set(
-          "age",
-          jimple.factory(function () {
-            return 19 + counter++;
-          }),
+        "age",
+        jimple.factory(function () {
+          return 19 + counter++;
+        }),
       );
       jimple.set("one", 1);
       expect(jimple.get("age")).toBe(19);
@@ -759,8 +759,8 @@ describe("Jimple", function () {
       expect(nameDescriptor?.enumerable).toBe(true);
       expect(nameDescriptor?.configurable).toBe(true);
       const nonExistentDescriptor = Object.getOwnPropertyDescriptor(
-          jimple,
-          "non_existent_key",
+        jimple,
+        "non_existent_key",
       );
       expect(nonExistentDescriptor).toBeUndefined();
     });
