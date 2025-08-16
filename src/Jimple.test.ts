@@ -6,8 +6,8 @@ describe("Jimple", function () {
   describe("#constructor()", function () {
     it("should support passing no parameters", function () {
       const jimple = new Jimple();
-      expect(jimple).to.be.an.instanceof(Jimple);
-      expect(jimple.keys()).to.be.empty;
+      expect(jimple).toBeInstanceOf(Jimple);
+      expect(jimple.keys()).toHaveLength(0);
     });
     it("should support passing some parameters", function () {
       const jimple = new Jimple({
@@ -36,7 +36,7 @@ describe("Jimple", function () {
       expect(jimple.keys()).toContain("n2");
       expect(jimple.get("n2")).toBe(20);
       expect(jimple.get("n")).toBe(19);
-      expect(jimple.raw("n")).to.be.a("function");
+      expect(jimple.raw("n")).toBeTypeOf("function");
     });
     it("should support passing some services and parameters", function () {
       interface NServiceMap {
@@ -63,7 +63,7 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.get("non-existent-key");
-      }).to.throw();
+      }).toThrow();
     });
     it("should support getting parameters", function () {
       interface ParameterServiceMap {
@@ -86,13 +86,13 @@ describe("Jimple", function () {
           yield 19;
         },
       });
-      expect(jimple.get("age")).to.not.equal(19);
+      expect(jimple.get("age")).not.toEqual(19);
       const it = jimple.get("age")();
-      expect(it.next()).to.eql({
+      expect(it.next()).toEqual({
         value: 19,
         done: false,
       });
-      expect(it.next()).to.eql({
+      expect(it.next()).toEqual({
         value: undefined,
         done: true,
       });
@@ -106,8 +106,8 @@ describe("Jimple", function () {
           return 19;
         },
       });
-      expect(jimple.get("age")).to.not.equal(19);
-      expect(await jimple.get("age")).to.equal(19);
+      expect(jimple.get("age")).not.toEqual(19);
+      expect(await jimple.get("age")).toEqual(19);
     });
     it("should support getting services", function () {
       interface ParameterServiceMap {
@@ -135,11 +135,11 @@ describe("Jimple", function () {
       }
       const jimple = new Jimple<SymbolServiceMap>();
       jimple.set(
-        "symbol",
-        // @ts-ignore
-        jimple.factory(() => Symbol()),
+          "symbol",
+          // @ts-ignore
+          jimple.factory(() => Symbol()),
       );
-      expect(jimple.get("symbol")).to.not.equal(jimple.get("symbol"));
+      expect(jimple.get("symbol")).not.toEqual(jimple.get("symbol"));
     });
     it("should return raw values of protected closures", function () {
       interface SymbolServiceMap {
@@ -178,8 +178,8 @@ describe("Jimple", function () {
       });
       expect(jimple.keys()).toContain("age");
       expect(jimple.keys()).toContain("name");
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
       expect(jimple.get("age")).toBe(19);
       expect(jimple.get("name")).toBe("xpto");
     });
@@ -192,13 +192,13 @@ describe("Jimple", function () {
         return 19;
       });
       expect(jimple.keys()).toContain("age");
-      expect(jimple.has("age")).to.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
       expect(jimple.get("age")).toBe(19);
       expect(() => {
         jimple.set("age", function () {
           return 20;
         });
-      }).to.throw();
+      }).toThrow();
       expect(jimple.get("age")).toBe(19);
     });
     it("should work fine if overwriting services not already instantiated", function () {
@@ -225,18 +225,18 @@ describe("Jimple", function () {
       const jimple = new Jimple<ParameterServiceMap>();
       jimple.set("age", 19);
       jimple.set("name", "xpto");
-      expect(jimple.keys()).to.contain("age");
-      expect(jimple.keys()).to.contain("name");
+      expect(jimple.keys()).toContain("age");
+      expect(jimple.keys()).toContain("name");
       expect(jimple.has("age")).toBeTruthy();
       expect(jimple.has("name")).toBeTruthy();
       jimple.unset("age");
-      expect(jimple.keys()).to.not.contain("age");
-      expect(jimple.keys()).to.contain("name");
+      expect(jimple.keys()).not.toContain("age");
+      expect(jimple.keys()).toContain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeTruthy();
       jimple.unset("name");
-      expect(jimple.keys()).to.not.contain("age");
-      expect(jimple.keys()).to.not.contain("name");
+      expect(jimple.keys()).not.toContain("age");
+      expect(jimple.keys()).not.toContain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeFalsy();
     });
@@ -253,18 +253,18 @@ describe("Jimple", function () {
       jimple.set("name", function () {
         return "xpto";
       });
-      expect(jimple.keys()).to.contain("age");
-      expect(jimple.keys()).to.contain("name");
+      expect(jimple.keys()).toContain("age");
+      expect(jimple.keys()).toContain("name");
       expect(jimple.has("age")).toBeTruthy();
       expect(jimple.has("name")).toBeTruthy();
       jimple.unset("age");
-      expect(jimple.keys()).to.not.contain("age");
-      expect(jimple.keys()).to.contain("name");
+      expect(jimple.keys()).not.toContain("age");
+      expect(jimple.keys()).toContain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeTruthy();
       jimple.unset("name");
-      expect(jimple.keys()).to.not.contain("age");
-      expect(jimple.keys()).to.not.contain("name");
+      expect(jimple.keys()).not.toContain("age");
+      expect(jimple.keys()).not.toContain("name");
       expect(jimple.has("age")).toBeFalsy();
       expect(jimple.has("name")).toBeFalsy();
     });
@@ -276,7 +276,7 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.raw("non-existent-key");
-      }).to.throw();
+      }).toThrow();
     });
     it("should return raw parameters", function () {
       interface ParameterServiceMap {
@@ -306,7 +306,7 @@ describe("Jimple", function () {
       expect(jimple.keys()).toContain("age");
       expect(jimple.get("age")).toBe(19);
       const rawAge = jimple.raw("age");
-      expect(rawAge).to.be.a("function");
+      expect(rawAge).toBeTypeOf("function");
       expect((rawAge as Function)()).toBe(19);
       expect(jimple.get("symbol")).toBe(jimple.get("symbol"));
       expect(jimple.raw("symbol")).toBe(s);
@@ -318,24 +318,24 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.factory(19);
-      }).to.throw();
+      }).toThrow();
       expect(function () {
         // @ts-ignore
         jimple.factory("xpto");
-      }).to.throw();
+      }).toThrow();
     });
     it("should not throw exceptions if function is passed in", function () {
       const jimple = new Jimple();
       expect(function () {
         // @ts-ignore
         jimple.factory(() => Symbol());
-      }).to.not.throw();
+      }).not.toThrow();
       expect(function () {
         // @ts-ignore
         jimple.factory(function () {
           return "xpto";
         });
-      }).to.not.throw();
+      }).not.toThrow();
     });
     it("should return unmodified function", function () {
       const jimple = new Jimple();
@@ -354,22 +354,22 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.protect(19);
-      }).to.throw();
+      }).toThrow();
       expect(function () {
         // @ts-ignore
         jimple.protect("xpto");
-      }).to.throw();
+      }).toThrow();
     });
     it("should not throw exceptions if function is passed in", function () {
       const jimple = new Jimple();
       expect(function () {
         jimple.protect(Symbol);
-      }).to.not.throw();
+      }).not.toThrow();
       expect(function () {
         jimple.protect(function () {
           return "xpto";
         });
-      }).to.not.throw();
+      }).not.toThrow();
     });
     it("should return unmodified function", function () {
       const jimple = new Jimple();
@@ -387,12 +387,12 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.keys()).to.be.empty;
+      expect(jimple.keys()).toHaveLength(0);
       jimple.set("age", 19);
       expect(jimple.keys()).toContain("age");
-      expect(jimple.keys()).to.have.length(1);
+      expect(jimple.keys()).toHaveLength(1);
       jimple.set("name", "xpto");
-      expect(jimple.keys()).to.have.length(2);
+      expect(jimple.keys()).toHaveLength(2);
       expect(jimple.keys()).toContain("age");
       expect(jimple.keys()).toContain("name");
     });
@@ -402,16 +402,16 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.keys()).to.be.empty;
+      expect(jimple.keys()).toHaveLength(0);
       jimple.set("age", function () {
         return 19;
       });
       expect(jimple.keys()).toContain("age");
-      expect(jimple.keys()).to.have.length(1);
+      expect(jimple.keys()).toHaveLength(1);
       jimple.set("name", function () {
         return "xpto";
       });
-      expect(jimple.keys()).to.have.length(2);
+      expect(jimple.keys()).toHaveLength(2);
       expect(jimple.keys()).toContain("age");
       expect(jimple.keys()).toContain("name");
     });
@@ -421,14 +421,14 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.keys()).to.be.empty;
+      expect(jimple.keys()).toHaveLength(0);
       jimple.set("age", 19);
       expect(jimple.keys()).toContain("age");
-      expect(jimple.keys()).to.have.length(1);
+      expect(jimple.keys()).toHaveLength(1);
       jimple.set("name", function () {
         return "xpto";
       });
-      expect(jimple.keys()).to.have.length(2);
+      expect(jimple.keys()).toHaveLength(2);
       expect(jimple.keys()).toContain("age");
       expect(jimple.keys()).toContain("name");
     });
@@ -440,14 +440,14 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.has("age")).to.not.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("age", 19);
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("name", "xpto");
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
     });
     it("should recognize services", function () {
       interface ParameterServiceMap {
@@ -455,18 +455,18 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.has("age")).to.not.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("age", function () {
         return 19;
       });
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("name", function () {
         return "xpto";
       });
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
     });
     it("should return keys of services and parameters", function () {
       interface ParameterServiceMap {
@@ -474,16 +474,16 @@ describe("Jimple", function () {
         name: string;
       }
       const jimple = new Jimple<ParameterServiceMap>();
-      expect(jimple.has("age")).to.not.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeFalsy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("age", 19);
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.not.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeFalsy();
       jimple.set("name", function () {
         return "xpto";
       });
-      expect(jimple.has("age")).to.be.ok;
-      expect(jimple.has("name")).to.be.ok;
+      expect(jimple.has("age")).toBeTruthy();
+      expect(jimple.has("name")).toBeTruthy();
     });
   });
   describe("#register()", function () {
@@ -498,7 +498,7 @@ describe("Jimple", function () {
         },
       };
       jimple.register(provider);
-      expect(called).to.be.ok;
+      expect(called).toBeTruthy();
     });
   });
   describe("#extend()", function () {
@@ -508,7 +508,7 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.extend("not-found-key", function () {});
-      }).to.throw();
+      }).toThrow();
     });
     it("should throw an error on parameter key", function () {
       interface ParameterServiceMap {
@@ -520,7 +520,7 @@ describe("Jimple", function () {
         jimple.extend("age", function (): number {
           return 42;
         });
-      }).to.throw();
+      }).toThrow();
     });
     it("should throw an error on protected key", function () {
       interface ParameterServiceMap {
@@ -528,16 +528,16 @@ describe("Jimple", function () {
       }
       const jimple = new Jimple<ParameterServiceMap>();
       jimple.set(
-        "theAnswer",
-        jimple.protect(function () {
-          return 42;
-        }),
+          "theAnswer",
+          jimple.protect(function () {
+            return 42;
+          }),
       );
       expect(function () {
         jimple.extend("theAnswer", function () {
           return 41;
         });
-      }).to.throw();
+      }).toThrow();
     });
     it("should throw an error on invalid callable", function () {
       interface ParameterServiceMap {
@@ -550,7 +550,7 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.extend("age", 1);
-      }).to.throw();
+      }).toThrow();
     });
     it("should throw an error if service was already instantiated", function () {
       interface ParameterServiceMap {
@@ -567,7 +567,7 @@ describe("Jimple", function () {
         jimple.extend("age", function (result, app) {
           return result + app.get("one");
         });
-      }).to.throw();
+      }).toThrow();
       expect(jimple.get("age")).toBe(19);
     });
     it("should overwrite service correctly", function () {
@@ -593,10 +593,10 @@ describe("Jimple", function () {
       const jimple = new Jimple<ParameterServiceMap>();
       let counter = 0;
       jimple.set(
-        "age",
-        jimple.factory(function () {
-          return 19 + counter++;
-        }),
+          "age",
+          jimple.factory(function () {
+            return 19 + counter++;
+          }),
       );
       jimple.set("one", 1);
       expect(jimple.get("age")).toBe(19);
@@ -616,7 +616,7 @@ describe("Jimple", function () {
         called = true;
       });
       jimple.register(provider);
-      expect(called).to.be.ok;
+      expect(called).toBeTruthy();
     });
   });
   describe("#proxy", function () {
@@ -653,11 +653,11 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.nonExistentKey;
-      }).to.throw();
+      }).toThrow();
       expect(function () {
         // @ts-ignore
         jimple._items;
-      }).to.throw();
+      }).toThrow();
     });
     it("should allow setting services and properties after initialization", function () {
       interface ParameterServiceMap {
@@ -701,22 +701,22 @@ describe("Jimple", function () {
       expect(function () {
         // @ts-ignore
         jimple.keys = () => [];
-      }).to.throw();
+      }).toThrow();
       expect(function () {
         // @ts-ignore
         jimple._items = 42;
-      }).to.throw();
+      }).toThrow();
     });
     it("should throw an error when trying to delete a method or private parameter", function () {
       const jimple = Jimple.create();
       expect(function () {
         // @ts-ignore
         delete jimple.keys;
-      }).to.throw();
+      }).toThrow();
       expect(function () {
         // @ts-ignore
         delete jimple._items;
-      }).to.throw();
+      }).toThrow();
     });
     it("should be able to check if a property exists", function () {
       interface ParameterServiceMap {
@@ -749,7 +749,7 @@ describe("Jimple", function () {
         name: "xpto",
       });
       const setDescriptor = Object.getOwnPropertyDescriptor(jimple, "set");
-      expect(setDescriptor).to.be.undefined;
+      expect(setDescriptor).toBeUndefined();
       const nameDescriptor = Object.getOwnPropertyDescriptor(jimple, "name");
       expect(nameDescriptor).toBeDefined();
       expect(nameDescriptor?.get).toBeDefined();
@@ -759,10 +759,10 @@ describe("Jimple", function () {
       expect(nameDescriptor?.enumerable).toBe(true);
       expect(nameDescriptor?.configurable).toBe(true);
       const nonExistentDescriptor = Object.getOwnPropertyDescriptor(
-        jimple,
-        "non_existent_key",
+          jimple,
+          "non_existent_key",
       );
-      expect(nonExistentDescriptor).to.be.undefined;
+      expect(nonExistentDescriptor).toBeUndefined();
     });
     it("should support protect()", function () {
       interface ParameterServiceMap {
@@ -790,8 +790,8 @@ describe("Jimple", function () {
       jimple.symbol = jimple.factory(() => Symbol());
       // @ts-ignore
       jimple.cachedSymbol = () => Symbol();
-      expect(jimple.symbol).to.not.equal(jimple.symbol);
-      expect(jimple.cachedSymbol).to.equal(jimple.cachedSymbol);
+      expect(jimple.symbol).not.toEqual(jimple.symbol);
+      expect(jimple.cachedSymbol).toEqual(jimple.cachedSymbol);
     });
     it("should support raw()", function () {
       interface ParameterServiceMap {
