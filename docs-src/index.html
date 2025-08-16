@@ -405,12 +405,27 @@ define(["jimple"], function(Jimple) {
 
             <h3>Optional Dependencies & Defaults</h3>
             <p>Handle optional services with fallbacks:</p>
-            <pre><code>container.set('cache', (c) => {
-  if (c.has('redisConfig')) {
-    return new RedisCache(c.get('redisConfig'));
-  }
-  return new MemoryCache(); // Fallback
-});</code></pre>
+
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Optional Dependencies and Defaults Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                      class="editor-container"
+                      id="optional-editor"
+                      border="0"
+                      loading="lazy"
+              ></iframe>
+              <div class="output" id="optional-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
+          </section>
 
             <h3>Raw Service Access</h3>
             <p>

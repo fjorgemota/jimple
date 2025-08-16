@@ -5,6 +5,7 @@ import factory from './factory.js?raw';
 import protect from './protect.js?raw';
 import extend from './extend.js?raw';
 import unset from './unset.js?raw';
+import optional from './optional.js?raw';
 import raw from './raw.js?raw';
 import proxy from './proxy.js?raw';
 import typescript from './typescript.js?raw';
@@ -32,6 +33,9 @@ export const examples = {
   },
   unset: {
     javascript: unset,
+  },
+  optional: {
+    javascript: optional,
   },
   raw: {
     javascript: raw,
