@@ -329,12 +329,25 @@ define(["jimple"], function(Jimple) {
               To store an actual function (not a service factory) as a
               parameter:
             </p>
-            <pre><code>container.set('utility', container.protect(() => {
-  return Math.random() * 100;
-}));
-
-const utilityFn = container.get('utility'); // Returns the function itself
-const result = utilityFn(); // Call the function</code></pre>
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Protect Functions Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                      class="editor-container"
+                      id="protect-editor"
+                      border="0"
+                      loading="lazy"
+              ></iframe>
+              <div class="output" id="protect-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
 
             <h3>Extending Services</h3>
             <p>Add behavior to existing services:</p>

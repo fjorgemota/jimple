@@ -2,6 +2,7 @@ import quickstart from './quickstart.js?raw';
 import services from './services.js?raw';
 import parameters from './parameters.js?raw';
 import factory from './factory.js?raw';
+import protect from './protect.js?raw';
 import proxy from './proxy.js?raw';
 import typescript from './typescript.js?raw';
 import express from './express.js?raw';
@@ -19,6 +20,9 @@ export const examples = {
   },
   factory: {
     javascript: factory,
+  },
+  protect: {
+      javascript: protect,
   },
   proxy: {
     javascript: proxy,
