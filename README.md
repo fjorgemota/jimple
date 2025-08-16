@@ -102,10 +102,8 @@ npm install jimple
 ### CDN (Browser)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jimple@latest/src/Jimple.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jimple@2.0.0-beta.4/dist/Jimple.umd.js"></script>
 ```
-
-**⚠️ Production Warning**: Replace `latest` with a specific version for production use.
 
 ### Import Methods
 
