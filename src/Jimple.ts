@@ -338,18 +338,16 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
         return item as ServiceType<TMap, TKey>;
       } else if (this._instances.has(item)) {
         return this._instances.get(item) as ServiceType<TMap, TKey>;
-      } else {
-        const obj = (
-          item as ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>
-        )(this._bind);
-        if (!this._factories.has(item)) {
-          this._instances.set(item, obj);
-        }
-        return obj as ServiceType<TMap, TKey>;
       }
-    } else {
-      return item as ServiceType<TMap, TKey>;
+      const obj = (
+        item as ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>
+      )(this._bind);
+      if (!this._factories.has(item)) {
+        this._instances.set(item, obj);
+      }
+      return obj as ServiceType<TMap, TKey>;
     }
+    return item as ServiceType<TMap, TKey>;
   }
 
   /**
