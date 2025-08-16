@@ -18,7 +18,7 @@
   "scripts": {
     "build": "microbundle --name Jimple",
     "test": "npm run size && npm run test:node && npm run test:browser",
-    "doc": "npm run doc:api && npm run build && npm run doc:build",
+    "doc": "npm run build && npm run doc:api && npm run doc:build",
     "doc:build": "vite build",
     "doc:dev": "npm run doc:api && vite",
     "doc:api": "rm -Rf docs-src/public/api && typedoc",
