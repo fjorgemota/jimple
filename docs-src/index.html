@@ -339,10 +339,10 @@ define(["jimple"], function(Jimple) {
                 </div>
               </div>
               <iframe
-                      class="editor-container"
-                      id="protect-editor"
-                      border="0"
-                      loading="lazy"
+                class="editor-container"
+                id="protect-editor"
+                border="0"
+                loading="lazy"
               ></iframe>
               <div class="output" id="protect-output">
                 Click "Run" to execute the code
@@ -362,10 +362,10 @@ define(["jimple"], function(Jimple) {
                 </div>
               </div>
               <iframe
-                      class="editor-container"
-                      id="extend-editor"
-                      border="0"
-                      loading="lazy"
+                class="editor-container"
+                id="extend-editor"
+                border="0"
+                loading="lazy"
               ></iframe>
               <div class="output" id="extend-output">
                 Click "Run" to execute the code
@@ -373,11 +373,16 @@ define(["jimple"], function(Jimple) {
             </div>
 
             <h3>Removing Services or Parameters</h3>
-            <p>Remove services or parameters from the container with <code class="inline-code">unset()</code>:</p>
+            <p>
+              Remove services or parameters from the container with
+              <code class="inline-code">unset()</code>:
+            </p>
 
             <div class="playground">
               <div class="playground-header">
-                <span class="playground-title">Removing Services or Parameters Example</span>
+                <span class="playground-title"
+                  >Removing Services or Parameters Example</span
+                >
                 <div class="playground-buttons">
                   <button class="playground-btn active" data-lang="javascript">
                     JavaScript
@@ -385,10 +390,10 @@ define(["jimple"], function(Jimple) {
                 </div>
               </div>
               <iframe
-                      class="editor-container"
-                      id="unset-editor"
-                      border="0"
-                      loading="lazy"
+                class="editor-container"
+                id="unset-editor"
+                border="0"
+                loading="lazy"
               ></iframe>
               <div class="output" id="unset-output">
                 Click "Run" to execute the code
@@ -397,7 +402,9 @@ define(["jimple"], function(Jimple) {
 
             <p><strong>Important Notes:</strong></p>
             <ul>
-              <li>Removes the service/parameter completely from the container</li>
+              <li>
+                Removes the service/parameter completely from the container
+              </li>
               <li>Clears any cached instances and metadata for services</li>
               <li>Cannot be undone - you'll need to re-register the service</li>
               <li>Safe to call on non-existent services (no error thrown)</li>
@@ -408,7 +415,9 @@ define(["jimple"], function(Jimple) {
 
             <div class="playground">
               <div class="playground-header">
-                <span class="playground-title">Optional Dependencies and Defaults Example</span>
+                <span class="playground-title"
+                  >Optional Dependencies and Defaults Example</span
+                >
                 <div class="playground-buttons">
                   <button class="playground-btn active" data-lang="javascript">
                     JavaScript
@@ -416,16 +425,15 @@ define(["jimple"], function(Jimple) {
                 </div>
               </div>
               <iframe
-                      class="editor-container"
-                      id="optional-editor"
-                      border="0"
-                      loading="lazy"
+                class="editor-container"
+                id="optional-editor"
+                border="0"
+                loading="lazy"
               ></iframe>
               <div class="output" id="optional-output">
                 Click "Run" to execute the code
               </div>
             </div>
-          </section>
 
             <h3>Raw Service Access</h3>
             <p>
@@ -442,10 +450,10 @@ define(["jimple"], function(Jimple) {
                 </div>
               </div>
               <iframe
-                      class="editor-container"
-                      id="raw-editor"
-                      border="0"
-                      loading="lazy"
+                class="editor-container"
+                id="raw-editor"
+                border="0"
+                loading="lazy"
               ></iframe>
               <div class="output" id="raw-output">
                 Click "Run" to execute the code
