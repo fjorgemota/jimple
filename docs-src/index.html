@@ -351,13 +351,26 @@ define(["jimple"], function(Jimple) {
 
             <h3>Extending Services</h3>
             <p>Add behavior to existing services:</p>
-            <pre><code>container.set('logger', (c) => new Logger());
 
-// Extend the logger to add file output
-container.extend('logger', (logger, c) => {
-  logger.addFileHandler('/var/log/app.log');
-  return logger;
-});</code></pre>
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Extend Services Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                      class="editor-container"
+                      id="extend-editor"
+                      border="0"
+                      loading="lazy"
+              ></iframe>
+              <div class="output" id="extend-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
 
             <h3>Removing Services</h3>
             <p>Remove services or parameters from the container with <code class="inline-code">unset()</code>:</p>
