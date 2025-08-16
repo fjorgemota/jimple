@@ -374,19 +374,27 @@ define(["jimple"], function(Jimple) {
 
             <h3>Removing Services or Parameters</h3>
             <p>Remove services or parameters from the container with <code class="inline-code">unset()</code>:</p>
-            <pre><code>container.set('logger', (c) => new Logger());
-container.set('apiUrl', 'https://api.example.com');
 
-// Remove a service
-container.unset('logger');
-console.log(container.has('logger')); // false
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Removing Services or Parameters Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                      class="editor-container"
+                      id="unset-editor"
+                      border="0"
+                      loading="lazy"
+              ></iframe>
+              <div class="output" id="unset-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
 
-// Remove a parameter
-container.unset('apiUrl');
-console.log(container.has('apiUrl')); // false
-
-// Safe to unset non-existent services
-container.unset('nonExistent'); // No error thrown</code></pre>
             <p><strong>Important Notes:</strong></p>
             <ul>
               <li>Removes the service/parameter completely from the container</li>

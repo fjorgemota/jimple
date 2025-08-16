@@ -4,6 +4,7 @@ import parameters from './parameters.js?raw';
 import factory from './factory.js?raw';
 import protect from './protect.js?raw';
 import extend from './extend.js?raw';
+import unset from './unset.js?raw';
 import proxy from './proxy.js?raw';
 import typescript from './typescript.js?raw';
 import express from './express.js?raw';
@@ -27,6 +28,9 @@ export const examples = {
   },
   extend: {
     javascript: extend,
+  },
+  unset: {
+    javascript: unset,
   },
   proxy: {
     javascript: proxy,
