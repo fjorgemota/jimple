@@ -416,11 +416,26 @@ define(["jimple"], function(Jimple) {
             <p>
               Get the service definition function instead of the service itself:
             </p>
-            <pre><code>container.set('database', (c) => new Database());
 
-const dbFactory = container.raw('database');
-const db1 = dbFactory(container);
-const db2 = dbFactory(container); // Create another instance manually</code></pre>
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Raw Service Access Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                      class="editor-container"
+                      id="raw-editor"
+                      border="0"
+                      loading="lazy"
+              ></iframe>
+              <div class="output" id="raw-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
           </section>
 
           <!-- ES6 Proxy Mode -->
