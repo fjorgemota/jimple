@@ -533,13 +533,14 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       `Cannot extend service '${String(key)}' because it is already instantiated.`,
     );
 
-    this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
+    const wrapper = this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
       return fn(originalItem(app), app);
     };
 
-    if (this._factories.has(originalItem)) {
-      this._factories.delete(originalItem);
-      this._factories.add(this._items[key as string] as Function);
+    const { _factories } = this;
+
+    if (_factories.delete(originalItem)) {
+      _factories.add(wrapper);
     }
   }
 
