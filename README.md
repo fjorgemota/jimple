@@ -59,7 +59,7 @@ Dependency injection helps you write more maintainable, testable code by:
 ## Quick Start
 
 ```bash
-npm install jimple@2.0.0-beta.4
+npm install jimple@2.0.0-beta.5
 ```
 
 ```js
@@ -102,7 +102,7 @@ npm install jimple
 ### CDN (Browser)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jimple@2.0.0-beta.4/dist/Jimple.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jimple@2.0.0-beta.5/dist/Jimple.umd.js"></script>
 ```
 
 ### Import Methods
