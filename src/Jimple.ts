@@ -541,11 +541,23 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       `Cannot extend service '${key as string}' because it is already instantiated.`,
     );
 
+    type ServiceExtenderWrapper = typeof originalItem & { _: (typeof fn)[] };
+    const maybeList = (originalItem as ServiceExtenderWrapper)._;
+    if (maybeList) {
+      maybeList.push(fn);
+      return;
+    }
+    const list = [fn];
+
     const wrapper = (this._items[key as string] = (
-      app: JimpleWithProxy<TMap>,
+        app: JimpleWithProxy<TMap>,
     ) => {
-      return fn(originalItem(app), app);
-    });
+      return list.reduce(
+          (result, extend) => extend(result, app),
+          originalItem(app),
+      );
+    }) as ServiceExtenderWrapper;
+    wrapper._ = list;
 
     const { _factories } = this;
 

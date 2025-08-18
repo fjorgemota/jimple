@@ -607,6 +607,22 @@ describe("Jimple", function () {
       });
       expect(jimple.get("n")).toBe(9);
     });
+    it("should never hit the stack limit", function () {
+      interface ParameterServiceMap {
+        n: number;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("n", function () {
+        return 1;
+      });
+      for (let i = 0; i < 20000; i++) {
+        jimple.extend("n", function (result, app) {
+          expect(result).toBe(i + 1);
+          return result + 1;
+        });
+      }
+      expect(jimple.get("n")).toBe(20001);
+    });
     it("should update factories correctly", function () {
       interface ParameterServiceMap {
         age: number;
