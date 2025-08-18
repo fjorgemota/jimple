@@ -585,6 +585,28 @@ describe("Jimple", function () {
       });
       expect(jimple.get("age")).toBe(20);
     });
+    it("should call extenders in expected order", function () {
+      interface ParameterServiceMap {
+        n: number;
+      }
+      const jimple = new Jimple<ParameterServiceMap>();
+      jimple.set("n", function () {
+        return 1;
+      });
+      jimple.extend("n", function (result, app) {
+        expect(result).toBe(1);
+        return 3;
+      });
+      jimple.extend("n", function (result, app) {
+        expect(result).toBe(3);
+        return 5;
+      });
+      jimple.extend("n", function (result, app) {
+        expect(result).toBe(5);
+        return 9;
+      });
+      expect(jimple.get("n")).toBe(9);
+    });
     it("should update factories correctly", function () {
       interface ParameterServiceMap {
         age: number;
