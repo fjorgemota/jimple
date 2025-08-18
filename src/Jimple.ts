@@ -119,23 +119,6 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Asserts if a service is defined in the container and throws an error if not.
- *
- * @template TMap - The service map
- * @template TKey - The service key type
- * @param container - The container to check
- * @param key - The service key to check
- * @throws {Error} When the service is not defined
- * @internal
- */
-function assertDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
-  container: Jimple<TMap>,
-  key: TKey,
-): void {
-  assert(container.has(key), `Service "${key as string}" not found.`);
-}
-
-/**
  * Checks if a value is a valid service definition (function or async function).
  * This is used to ensure that only valid service definitions are added to the container.
  *
@@ -340,8 +323,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   get<TKey extends keyof TMap>(key: TKey): ServiceType<TMap, TKey> {
-    assertDefined(this, key);
-    const item = this._items[key as string];
+    const item = this.raw(key);
 
     if (isServiceDefinition(item)) {
       if (this._protected.has(item)) {
@@ -349,15 +331,13 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       } else if (this._instances.has(item)) {
         return this._instances.get(item) as ServiceType<TMap, TKey>;
       }
-      const obj = (
-        item as ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>
-      )(this._bind);
+      const obj = item(this._bind);
       if (!this._factories.has(item)) {
         this._instances.set(item, obj);
       }
-      return obj as ServiceType<TMap, TKey>;
+      return obj;
     }
-    return item as ServiceType<TMap, TKey>;
+    return item;
   }
 
   /**
@@ -519,15 +499,11 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * });
    * ```
    */
-  extend<TKey extends keyof TMap, TResult extends ServiceType<TMap, TKey>>(
+  extend<TKey extends keyof TMap>(
     key: TKey,
-    fn: ServiceExtender<TResult, JimpleWithProxy<TMap>>,
+    fn: ServiceExtender<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
   ): void {
-    assertDefined(this, key);
-    const originalItem = this._items[key as string] as ServiceFactory<
-      TResult,
-      JimpleWithProxy<TMap>
-    >;
+    const originalItem = this.raw(key);
 
     assert(
       isServiceDefinition(originalItem) && !this._protected.has(originalItem),
@@ -608,7 +584,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   ):
     | ServiceType<TMap, TKey>
     | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>> {
-    assertDefined(this, key);
+    assert(this.has(key), `Service "${key as string}" not found.`);
     return this._items[key as string] as
       | ServiceType<TMap, TKey>
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>;
