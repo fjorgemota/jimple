@@ -135,6 +135,18 @@ function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
 }
 
 /**
+ * Checks if a value is a valid service definition (function or async function).
+ * This is used to ensure that only valid service definitions are added to the container.
+ *
+ * @param fn - The value to check
+ * @returns True if the value is an async function
+ * @internal
+ */
+function isServiceDefinition(fn: unknown): fn is Function {
+  return isFunction(fn) || isAsyncFunction(fn);
+}
+
+/**
  * Adds a function to a set after validating it's a proper function.
  * @template T - The function type
  * @param set - The set to add the function to
@@ -143,10 +155,7 @@ function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
  * @internal
  */
 function addFunctionTo<T extends Function>(set: Set<T>, fn: T): void {
-  assert(
-    isFunction(fn),
-    "Service definition is not a Closure or invokable object",
-  );
+  assert(isServiceDefinition(fn), "Invalid service definition");
   set.add(fn);
 }
 
@@ -333,7 +342,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     checkDefined(this, key);
     const item = this._items[key as string];
 
-    if (isFunction(item) || isAsyncFunction(item)) {
+    if (isServiceDefinition(item)) {
       if (this._protected.has(item)) {
         return item as ServiceType<TMap, TKey>;
       } else if (this._instances.has(item)) {
@@ -379,8 +388,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   ): void {
     const originalItem = this._items[key as string];
     assert(
-      (!isFunction(originalItem) && !isAsyncFunction(originalItem)) ||
-        !this._instances.has(originalItem),
+      !isServiceDefinition(originalItem) || !this._instances.has(originalItem),
       `Cannot redefine service '${key as string}' because it is already instantiated.`,
     );
     this._items[key as string] = value;
@@ -401,7 +409,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    */
   unset<TKey extends keyof TMap>(key: TKey): void {
     const item = this._items[key as string];
-    if (isFunction(item) || isAsyncFunction(item)) {
+    if (isServiceDefinition(item)) {
       this._instances.delete(item);
       this._factories.delete(item);
       this._protected.delete(item);
@@ -521,21 +529,23 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     >;
 
     assert(
-      isFunction(originalItem) && !this._protected.has(originalItem),
+      isServiceDefinition(originalItem) && !this._protected.has(originalItem),
       `Identifier '${key as string}' does not contain a service definition`,
     );
     assert(
-      isFunction(fn),
-      `The 'new' service definition for '${key as string}' is not a invokable object.`,
+      isServiceDefinition(fn),
+      `Invalid 'new' service definition for '${key as string}'.`,
     );
     assert(
       !this._instances.has(originalItem),
       `Cannot extend service '${key as string}' because it is already instantiated.`,
     );
 
-    const wrapper = this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
+    const wrapper = (this._items[key as string] = (
+      app: JimpleWithProxy<TMap>,
+    ) => {
       return fn(originalItem(app), app);
-    };
+    });
 
     const { _factories } = this;
 
