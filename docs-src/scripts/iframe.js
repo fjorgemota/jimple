@@ -45,7 +45,7 @@ monaco.editor.createModel(jimpleSource, "typescript", monaco.Uri.parse(libUri));
 
 const editor = monaco.editor.create(document.getElementById("editor"), {
   model: monaco.editor.createModel(
-      (examples[exampleKey][currentLang] ?? "") + "\n\n",
+    (examples[exampleKey][currentLang] ?? "") + "\n\n",
     currentLang,
     monaco.Uri.parse(
       "file://example." + (currentLang === "typescript" ? "ts" : "js"),
