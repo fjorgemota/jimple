@@ -8,6 +8,7 @@ on:
       - main
 jobs:
   test-node:
+    name: NodeJS Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -49,8 +50,9 @@ jobs:
 
       - name: Run tests
         run: npm test
-        
+
   test-bun:
+    name: Bun Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
