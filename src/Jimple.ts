@@ -119,7 +119,8 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Checks if a service is defined in the container and throws an error if not.
+ * Asserts if a service is defined in the container and throws an error if not.
+ *
  * @template TMap - The service map
  * @template TKey - The service key type
  * @param container - The container to check
@@ -127,7 +128,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * @throws {Error} When the service is not defined
  * @internal
  */
-function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
+function assertDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
   container: Jimple<TMap>,
   key: TKey,
 ): void {
@@ -339,7 +340,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   get<TKey extends keyof TMap>(key: TKey): ServiceType<TMap, TKey> {
-    checkDefined(this, key);
+    assertDefined(this, key);
     const item = this._items[key as string];
 
     if (isServiceDefinition(item)) {
@@ -522,7 +523,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     key: TKey,
     fn: ServiceExtender<TResult, JimpleWithProxy<TMap>>,
   ): void {
-    checkDefined(this, key);
+    assertDefined(this, key);
     const originalItem = this._items[key as string] as ServiceFactory<
       TResult,
       JimpleWithProxy<TMap>
@@ -607,7 +608,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   ):
     | ServiceType<TMap, TKey>
     | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>> {
-    checkDefined(this, key);
+    assertDefined(this, key);
     return this._items[key as string] as
       | ServiceType<TMap, TKey>
       | ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>;
