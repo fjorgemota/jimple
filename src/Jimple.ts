@@ -534,7 +534,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     );
 
     this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
-      return fn(originalItem(app), this._bind);
+      return fn(originalItem(app), app);
     };
 
     if (this._factories.has(originalItem)) {
