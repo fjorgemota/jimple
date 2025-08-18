@@ -131,7 +131,7 @@ function checkDefined<TMap extends ServiceMap, TKey extends keyof TMap>(
   container: Jimple<TMap>,
   key: TKey,
 ): void {
-  assert(container.has(key), `Identifier "${String(key)}" is not defined.`);
+  assert(container.has(key), `Identifier "${key as string}" is not defined.`);
 }
 
 /**
@@ -263,7 +263,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       set(target: Jimple<TMap>, prop: string | symbol, value: any): boolean {
         assert(
           !(prop in target) || typeof prop !== "string",
-          `Cannot set method '${String(prop)}'. Use the method 'set' to set this value instead.`,
+          `Cannot set method '${prop as string}'. Use the method 'set' to set this value instead.`,
         );
         target.set(prop as keyof TMap, value);
         return true;
@@ -280,7 +280,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       deleteProperty(target: Jimple<TMap>, prop: string | symbol): boolean {
         assert(
           !(prop in target) || typeof prop !== "string",
-          `Cannot unset method '${String(prop)}'. Use the method 'unset' to unset this key instead.`,
+          `Cannot unset method '${prop as string}'. Use the method 'unset' to unset this key instead.`,
         );
         target.unset(prop as keyof TMap);
         return true;
@@ -288,7 +288,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
 
       ownKeys(target: Jimple<TMap>): ArrayLike<string | symbol> {
         const classKeys = Object.getOwnPropertyNames(target);
-        const serviceKeys = target.keys().map((k) => String(k));
+        const serviceKeys = target.keys() as string[];
         return [...new Set([...classKeys, ...serviceKeys])];
       },
 
@@ -381,7 +381,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
     assert(
       (!isFunction(originalItem) && !isAsyncFunction(originalItem)) ||
         !this._instances.has(originalItem),
-      `Cannot redefine service '${String(key)}' because it is already instantiated.`,
+      `Cannot redefine service '${key as string}' because it is already instantiated.`,
     );
     this._items[key as string] = value;
   }
@@ -522,15 +522,15 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
 
     assert(
       isFunction(originalItem) && !this._protected.has(originalItem),
-      `Identifier '${String(key)}' does not contain a service definition`,
+      `Identifier '${key as string}' does not contain a service definition`,
     );
     assert(
       isFunction(fn),
-      `The 'new' service definition for '${String(key)}' is not a invokable object.`,
+      `The 'new' service definition for '${key as string}' is not a invokable object.`,
     );
     assert(
       !this._instances.has(originalItem),
-      `Cannot extend service '${String(key)}' because it is already instantiated.`,
+      `Cannot extend service '${key as string}' because it is already instantiated.`,
     );
 
     const wrapper = this._items[key as string] = (app: JimpleWithProxy<TMap>) => {
