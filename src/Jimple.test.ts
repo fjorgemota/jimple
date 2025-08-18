@@ -97,7 +97,7 @@ describe("Jimple", function () {
         done: true,
       });
     });
-    it("should treat async function as parameters", async function (ctx) {
+    it("should treat async function as parameters", async function () {
       interface GeneratorServiceMap {
         age: Promise<number>;
       }
