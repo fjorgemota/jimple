@@ -527,6 +527,116 @@ define(["jimple"], function(Jimple) {
             </div>
           </section>
 
+          <!-- Providers -->
+          <section class="section" id="providers">
+            <h2>Modular Configuration with Providers</h2>
+            <p>
+              Organize your container configuration into reusable modules.
+              Providers help you structure your application by grouping related
+              services and configuration into logical units.
+            </p>
+
+            <h3>Basic Provider</h3>
+            <p>
+              A provider is an object with a
+              <code class="inline-code">register</code> method that defines
+              services and parameters:
+            </p>
+
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Basic Provider Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                class="editor-container"
+                id="basic-provider-editor"
+                border="0"
+                loading="lazy"
+              ></iframe>
+              <div class="output" id="basic-provider-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
+
+            <h3>Multiple Providers</h3>
+            <p>
+              You can register multiple providers to organize different aspects
+              of your application:
+            </p>
+
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Multiple Providers Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                class="editor-container"
+                id="multiple-providers-editor"
+                border="0"
+                loading="lazy"
+              ></iframe>
+              <div class="output" id="multiple-providers-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
+
+            <h3>Provider Dependencies</h3>
+            <p>
+              Providers can depend on services defined by other providers,
+              allowing for modular composition:
+            </p>
+
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title"
+                  >Provider Dependencies Example</span
+                >
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                class="editor-container"
+                id="provider-dependencies-editor"
+                border="0"
+                loading="lazy"
+              ></iframe>
+              <div class="output" id="provider-dependencies-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
+
+            <p><strong>Benefits of Using Providers:</strong></p>
+            <ul>
+              <li>
+                <strong>Modularity</strong> - Group related services together
+              </li>
+              <li>
+                <strong>Reusability</strong> - Share providers across different
+                applications
+              </li>
+              <li>
+                <strong>Organization</strong> - Separate concerns into logical
+                modules
+              </li>
+              <li>
+                <strong>Testing</strong> - Easier to mock entire provider
+                modules
+              </li>
+            </ul>
+          </section>
+
           <!-- API Reference -->
           <section class="section" id="api-reference">
             <h2>API Reference</h2>

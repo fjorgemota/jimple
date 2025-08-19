@@ -11,6 +11,9 @@ import proxy from "./proxy.js?raw";
 import typescript from "./typescript.js?raw";
 import express from "./express.js?raw";
 import testing from "./testing.js?raw";
+import basicProvider from "./basic-provider.js?raw";
+import multipleProviders from "./multiple-providers.js?raw";
+import providerDependencies from "./provider-dependencies.js?raw";
 
 export const examples = {
   quickstart: {
@@ -51,5 +54,14 @@ export const examples = {
   },
   testing: {
     javascript: testing,
+  },
+  "basic-provider": {
+    javascript: basicProvider,
+  },
+  "multiple-providers": {
+    javascript: multipleProviders,
+  },
+  "provider-dependencies": {
+    javascript: providerDependencies,
   },
 };
