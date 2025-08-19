@@ -140,11 +140,18 @@ async function runCodeInternal(editor) {
         .map((log) => {
           const color = log.type === "error" ? "#ef4444" : "#94a3b8";
           const content = log.args
-            .map((arg) =>
-              typeof arg === "object"
-                ? JSON.stringify(arg, null, 2)
-                : String(arg),
-            )
+            .map((arg) => {
+              if (typeof arg === "object") {
+                try {
+                  return JSON.stringify(arg, null, 2);
+                } catch (e) {
+                  if (arg instanceof Jimple) {
+                    return `[Jimple Container with keys '${arg.keys()}']`;
+                  }
+                }
+              }
+              return String(arg);
+            })
             .join(" ");
           return `<div style="color: ${color}; margin-bottom: 0.5rem;">${content}</div>`;
         })
