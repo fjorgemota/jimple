@@ -413,7 +413,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   has<TKey extends keyof TMap>(key: TKey): boolean {
-    return this._items.hasOwnProperty(key as string);
+    return Object.prototype.hasOwnProperty.call(this._items, key as string);
   }
 
   /**
