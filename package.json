@@ -60,9 +60,9 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.5",
     "@size-limit/preset-small-lib": "^11.2.0",
-    "@vitest/browser": "^4.0.8",
-    "@vitest/browser-playwright": "^4.0.8",
-    "@vitest/coverage-istanbul": "^4.0.8",
+    "@vitest/browser": "^4.0.14",
+    "@vitest/browser-playwright": "^4.0.14",
+    "@vitest/coverage-istanbul": "^4.0.14",
     "babel-cli": "^6.26.0",
     "css-loader": "^7.1.2",
     "html-loader": "^5.1.0",
@@ -81,7 +81,7 @@
     "vite": "^7.2.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-monaco-editor": "^1.1.0",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.14"
   },
   "engines": {
     "node": ">=20.0.0"
