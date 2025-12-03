@@ -75,7 +75,4 @@ const logger = container.get("logger");
 logger.info("Application started successfully");
 logger.debug("All providers loaded");
 
-console.log(
-  "\n📋 Registered services:",
-  container.keys(),
-);
+console.log("\n📋 Registered services:", container.keys());
