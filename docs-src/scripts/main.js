@@ -61,7 +61,7 @@ function runCode(exampleKey) {
   if (!editorData) return;
   const outputElement = document.getElementById(`${exampleKey}-output`);
   // Clear previous output
-  outputElement.innerHTML = "";
+  outputElement.innerHTML = "Running code...";
 
   editorData.iframe.contentWindow.postMessage(
     {
