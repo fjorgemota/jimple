@@ -615,11 +615,13 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * container.registerAsync(databaseProvider);
    * ```
    */
-  async registerAsync<K extends keyof TMap>(
+  registerAsync<K extends keyof TMap>(
     provider: AsyncServiceProvider<Pick<TMap, K>>,
   ): Promise<void> {
-    await provider.registerAsync(
-      this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>,
+    return new Promise((resolve, reject) =>
+      provider
+        .registerAsync(this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>)
+        .then(() => resolve(), reject),
     );
   }
 
