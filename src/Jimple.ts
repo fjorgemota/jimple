@@ -36,7 +36,7 @@ export interface AsyncServiceProvider<TMap extends ServiceMap = ServiceMap> {
    * Registers services asynchronously with the provided container.
    * @param container - The container to register services with
    */
-  register(container: JimpleWithProxy<TMap>): Promise<void>;
+  registerAsync(container: JimpleWithProxy<TMap>): Promise<void>;
 }
 
 /**
@@ -224,9 +224,9 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   static providerAsync<TMap extends ServiceMap = ServiceMap>(
-    register: AsyncServiceProvider<TMap>["register"],
+    registerAsync: AsyncServiceProvider<TMap>["registerAsync"],
   ): AsyncServiceProvider<TMap> {
-    return { register };
+    return { registerAsync };
   }
 
   /**
@@ -618,7 +618,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   async registerAsync<K extends keyof TMap>(
     provider: AsyncServiceProvider<Pick<TMap, K>>,
   ): Promise<void> {
-    await provider.register(
+    await provider.registerAsync(
       this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>,
     );
   }

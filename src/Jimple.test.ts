@@ -507,7 +507,7 @@ describe("Jimple", function () {
       const jimple = new Jimple<EmptyServiceMap>();
       let called = false;
       const provider = {
-        register: async function (app: Jimple): Promise<void> {
+        registerAsync: async function (app: Jimple): Promise<void> {
           expect(app).toBe(jimple);
           called = true;
         },
