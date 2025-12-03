@@ -12,6 +12,7 @@ import typescript from "./typescript.js?raw";
 import express from "./express.js?raw";
 import testing from "./testing.js?raw";
 import basicProvider from "./basic-provider.js?raw";
+import asyncProvider from "./async-provider.js?raw";
 import multipleProviders from "./multiple-providers.js?raw";
 import providerDependencies from "./provider-dependencies.js?raw";
 
@@ -57,6 +58,9 @@ export const examples = {
   },
   "basic-provider": {
     javascript: basicProvider,
+  },
+  "async-provider": {
+    javascript: asyncProvider,
   },
   "multiple-providers": {
     javascript: multipleProviders,

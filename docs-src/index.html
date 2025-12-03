@@ -563,6 +563,34 @@ define(["jimple"], function(Jimple) {
               </div>
             </div>
 
+            <p>
+              A provider can also be asynchronous, by providing a
+              <code class="inline-code">registerAsync</code> method instead of
+              <code class="inline-code">register</code>. That method should
+              always return a promise, and should also be used to define
+              services and parameters.
+            </p>
+
+            <div class="playground">
+              <div class="playground-header">
+                <span class="playground-title">Async Provider Example</span>
+                <div class="playground-buttons">
+                  <button class="playground-btn active" data-lang="javascript">
+                    JavaScript
+                  </button>
+                </div>
+              </div>
+              <iframe
+                class="editor-container"
+                id="async-provider-editor"
+                border="0"
+                loading="lazy"
+              ></iframe>
+              <div class="output" id="async-provider-output">
+                Click "Run" to execute the code
+              </div>
+            </div>
+
             <h3>Multiple Providers</h3>
             <p>
               You can register multiple providers to organize different aspects
@@ -694,6 +722,11 @@ define(["jimple"], function(Jimple) {
                   <td><code>register(provider)</code></td>
                   <td>Register a service provider</td>
                   <td><code>void</code></td>
+                </tr>
+                <tr>
+                  <td><code>registerAsync(provider)</code></td>
+                  <td>Register an asynchronous service provider</td>
+                  <td><code>Promise&lt;void&gt;</code></td>
                 </tr>
               </tbody>
             </table>
