@@ -130,7 +130,7 @@ async function runCodeInternal(editor) {
     }
 
     // Execute the code
-    eval(executableCode);
+    await eval("(async () => {" + executableCode + "})()");
 
     // Display output
     if (logs.length === 0) {
