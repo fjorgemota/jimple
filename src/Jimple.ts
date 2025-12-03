@@ -28,6 +28,22 @@ export interface ServiceProvider<TMap extends ServiceMap = ServiceMap> {
 }
 
 /**
+ * Interface for async service providers that can register services with a container.
+ * @template TMap - The service map type extending ServiceMap
+ */
+export interface AsyncServiceProvider<TMap extends ServiceMap = ServiceMap> {
+  /**
+   * Registers services asynchronously with the provided container.
+   * @param container - The container to register services with
+   */
+  register(container: JimpleWithProxy<TMap>): Promise<void>;
+}
+
+type AnyServiceProvider<TMap extends ServiceMap = ServiceMap> =
+  | ServiceProvider<TMap>
+  | AsyncServiceProvider<TMap>;
+
+/**
  * Base interface for service mapping. Extend this interface to define your service types.
  * @example
  * ```typescript
@@ -559,9 +575,17 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   register<K extends keyof TMap>(
+      provider: AsyncServiceProvider<Pick<TMap, K>>,
+  ): Promise<void>;
+  register<K extends keyof TMap>(
     provider: ServiceProvider<Pick<TMap, K>>,
-  ): void {
-    provider.register(this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>);
+  ): void;
+  register<K extends keyof TMap>(
+    provider: AnyServiceProvider<Pick<TMap, K>>,
+  ): void | Promise<void> {
+    return provider.register(
+      this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>,
+    );
   }
 
   /**
