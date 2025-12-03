@@ -501,6 +501,22 @@ describe("Jimple", function () {
       expect(called).toBeTruthy();
     });
   });
+  describe("#registerAsync()", function () {
+    it("should call registerAsync() method on object", async function () {
+      interface EmptyServiceMap {}
+      const jimple = new Jimple<EmptyServiceMap>();
+      let called = false;
+      const provider = {
+        register: async function (app: Jimple): Promise<void> {
+          expect(app).toBe(jimple);
+          called = true;
+        },
+      };
+      expect(called).toBeFalsy();
+      await jimple.registerAsync(provider);
+      expect(called).toBeTruthy();
+    });
+  });
   describe("#extend()", function () {
     it("should throw an error on non-existent key", function () {
       interface EmptyServiceMap {}
@@ -654,6 +670,19 @@ describe("Jimple", function () {
         called = true;
       });
       jimple.register(provider);
+      expect(called).toBeTruthy();
+    });
+  });
+  describe("#providerAsync()", function () {
+    it("should register an asynchronous provider created by the shorthand static method", async function () {
+      const jimple = new Jimple();
+      let called = false;
+      const provider = Jimple.providerAsync(async function (app) {
+        expect(app).toBe(jimple);
+        called = true;
+      });
+      expect(called).toBeFalsy();
+      await jimple.registerAsync(provider);
       expect(called).toBeTruthy();
     });
   });

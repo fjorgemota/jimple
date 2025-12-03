@@ -39,10 +39,6 @@ export interface AsyncServiceProvider<TMap extends ServiceMap = ServiceMap> {
   register(container: JimpleWithProxy<TMap>): Promise<void>;
 }
 
-type AnyServiceProvider<TMap extends ServiceMap = ServiceMap> =
-  | ServiceProvider<TMap>
-  | AsyncServiceProvider<TMap>;
-
 /**
  * Base interface for service mapping. Extend this interface to define your service types.
  * @example
@@ -215,6 +211,25 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   }
 
   /**
+   * Creates an asynchronous service provider object.
+   * @template TMap - The service map
+   * @param register - Function that registers services with a container
+   * @returns A service provider object
+   *
+   * @example
+   * ```typescript
+   * const myProvider = Jimple.providerAsync<MyServices>(async (container) => {
+   *   container.set('config', await initLogger());
+   * });
+   * ```
+   */
+  static providerAsync<TMap extends ServiceMap = ServiceMap>(
+    register: AsyncServiceProvider<TMap>["register"],
+  ): AsyncServiceProvider<TMap> {
+    return { register };
+  }
+
+  /**
    * Creates a new Jimple container instance with proxy support.
    * @template TMap - The service map
    * @param values - Initial services and parameters to register
@@ -262,7 +277,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       get(target: Jimple<TMap>, prop: string | symbol): any {
         if (prop in target && typeof prop === "string") {
           const value = (target as any)[prop];
-          if (isFunction(value)) {
+          if (isFunction(value) || isAsyncFunction(value)) {
             return value.bind(target);
           }
         }
@@ -575,15 +590,35 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   register<K extends keyof TMap>(
-      provider: AsyncServiceProvider<Pick<TMap, K>>,
-  ): Promise<void>;
-  register<K extends keyof TMap>(
     provider: ServiceProvider<Pick<TMap, K>>,
-  ): void;
-  register<K extends keyof TMap>(
-    provider: AnyServiceProvider<Pick<TMap, K>>,
-  ): void | Promise<void> {
+  ): void {
     return provider.register(
+      this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>,
+    );
+  }
+
+  /**
+   * Uses an async provider to extend the service container.
+   * Providers are objects with a register method that can add multiple services and returns a Promise.
+   *
+   * @template K - The subset of service keys the provider manages
+   * @param provider - The asynchronous service provider to register
+   *
+   * @example
+   * ```typescript
+   * const databaseProvider = Jimple.providerAsync<MyServices>(async (container) => {
+   *   container.set("config", await initDb());
+   *   container.set('db', () => new Database(container.config));
+   *   container.set('userRepo', (c) => new UserRepository(c.db));
+   * });
+   *
+   * container.registerAsync(databaseProvider);
+   * ```
+   */
+  async registerAsync<K extends keyof TMap>(
+    provider: AsyncServiceProvider<Pick<TMap, K>>,
+  ): Promise<void> {
+    await provider.register(
       this._bind as unknown as JimpleWithProxy<Pick<TMap, K>>,
     );
   }
