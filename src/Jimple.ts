@@ -213,7 +213,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
   /**
    * Creates an asynchronous service provider object.
    * @template TMap - The service map
-   * @param register - Function that registers services with a container
+   * @param registerAsync - Function that registers services with a container asynchronously
    * @returns A service provider object
    *
    * @example
