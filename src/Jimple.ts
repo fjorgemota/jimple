@@ -496,7 +496,9 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * fn('Hello'); // Can be called later
    * ```
    */
-  protect<T extends (...args: any[]) => any>(fn: T): T {
+  protect<TKey extends keyof TMap, T extends ServiceType<TMap, TKey>>(
+    fn: T extends (...args: any[]) => any ? T : never,
+  ): T {
     addFunctionTo(this._protected, fn);
     return fn;
   }
