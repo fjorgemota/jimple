@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20, 22, latest]
+        node-version: [20, 22, 24, latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
