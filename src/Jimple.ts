@@ -65,7 +65,7 @@ export type ServiceType<TMap, TKey extends keyof TMap> = TMap[TKey];
  */
 export type InitialServiceMap<TMap, TContainer> = {
   [TKey in keyof TMap]:
-    | TMap[TKey]
+    | ServiceType<TMap, TKey>
     | ServiceFactory<ServiceType<TMap, TKey>, TContainer>;
 };
 
@@ -244,7 +244,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * ```
    */
   static create<TMap extends ServiceMap = ServiceMap>(
-    values?: Partial<InitialServiceMap<TMap, JimpleWithProxy<TMap>>>,
+    values?: InitialServiceMap<TMap, JimpleWithProxy<TMap>>,
   ): JimpleWithProxy<TMap> {
     return new this<TMap>(values) as JimpleWithProxy<TMap>;
   }
@@ -268,7 +268,7 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
       Object.keys(values).forEach((key) => {
         const value = values[key as keyof TMap];
         if (typeof value !== "undefined") {
-          this.set(key as keyof TMap, value);
+          this.set(key as keyof TMap, value as any);
         }
       });
     }
@@ -392,6 +392,11 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * container.set('cache', new MemoryCache());
    * ```
    */
+  set<TKey extends keyof TMap>(key: TKey, value: ServiceType<TMap, TKey>): void;
+  set<TKey extends keyof TMap>(
+    key: TKey,
+    value: ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
+  ): void;
   set<TKey extends keyof TMap>(
     key: TKey,
     value:
