@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "downlevelIteration": true
-  }
+    "rootDir": "./src"
+  },
+  "exclude": ["docs-src"]
 }
