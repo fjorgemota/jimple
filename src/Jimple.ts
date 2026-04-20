@@ -392,11 +392,11 @@ export default class Jimple<TMap extends ServiceMap = ServiceMap> {
    * container.set('cache', new MemoryCache());
    * ```
    */
-  set<TKey extends keyof TMap>(key: TKey, value: ServiceType<TMap, TKey>): void;
   set<TKey extends keyof TMap>(
     key: TKey,
     value: ServiceFactory<ServiceType<TMap, TKey>, JimpleWithProxy<TMap>>,
   ): void;
+  set<TKey extends keyof TMap>(key: TKey, value: ServiceType<TMap, TKey>): void;
   set<TKey extends keyof TMap>(
     key: TKey,
     value:
