@@ -361,9 +361,13 @@ describe("Jimple", function () {
       }).toThrow();
     });
     it("should not throw exceptions if function is passed in", function () {
-      const jimple = new Jimple();
+      interface SymbolServiceMap {
+        test: () => symbol;
+        xpto: () => string;
+      }
+      const jimple = new Jimple<SymbolServiceMap>();
       expect(function () {
-        jimple.protect(Symbol);
+        jimple.set("test", jimple.protect(Symbol));
       }).not.toThrow();
       expect(function () {
         jimple.protect(function () {
@@ -372,7 +376,11 @@ describe("Jimple", function () {
       }).not.toThrow();
     });
     it("should return unmodified function", function () {
-      const jimple = new Jimple();
+      interface SymbolServiceMap {
+        test: () => symbol;
+        xpto: () => string;
+      }
+      const jimple = new Jimple<SymbolServiceMap>();
       const fn = function () {
         return "xpto";
       };
@@ -540,7 +548,7 @@ describe("Jimple", function () {
     });
     it("should throw an error on protected key", function () {
       interface ParameterServiceMap {
-        theAnswer: number;
+        theAnswer: () => number;
       }
       const jimple = new Jimple<ParameterServiceMap>();
       jimple.set(
@@ -551,7 +559,7 @@ describe("Jimple", function () {
       );
       expect(function () {
         jimple.extend("theAnswer", function () {
-          return 41;
+          return () => 41;
         });
       }).toThrow();
     });
