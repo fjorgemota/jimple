@@ -59,20 +59,20 @@
     }
   ],
   "devDependencies": {
-    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-env": "^7.29.7",
     "@size-limit/preset-small-lib": "^12.1.0",
-    "@vitest/browser": "^4.1.4",
-    "@vitest/browser-playwright": "^4.1.4",
-    "@vitest/coverage-istanbul": "^4.1.4",
+    "@vitest/browser": "^4.1.8",
+    "@vitest/browser-playwright": "^4.1.8",
+    "@vitest/coverage-istanbul": "^4.1.8",
     "babel-cli": "^6.26.0",
-    "baseline-browser-mapping": "^2.10.20",
+    "baseline-browser-mapping": "^2.10.34",
     "css-loader": "^7.1.4",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.7",
     "microbundle": "^0.15.1",
     "mini-css-extract-plugin": "^2.10.2",
     "monaco-editor": "^0.55.1",
-    "playwright": "^1.59.1",
+    "playwright": "^1.60.0",
     "prettier": "^3.8.3",
     "raw-loader": "^4.0.2",
     "size-limit": "^12.1.0",
@@ -80,10 +80,10 @@
     "typedoc": "^0.28.19",
     "typedoc-plugin-rename-defaults": "^0.7.3",
     "typescript": "^6.0.3",
-    "vite": "^8.0.9",
+    "vite": "^8.0.16",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-monaco-editor": "^1.1.0",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.8"
   },
   "engines": {
     "node": ">=20.0.0"
