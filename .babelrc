@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
-          "node": "20.0",
+          "node": "24.0",
           "browsers": ["defaults", "not dead"]
         }
       }

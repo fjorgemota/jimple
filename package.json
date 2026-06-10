@@ -86,7 +86,7 @@
     "vitest": "^4.1.8"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   },
   "mangle": {
     "regex": "^_"
